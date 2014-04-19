@@ -1,0 +1,52 @@
+FUNCTION IDEAS CONTRIBUTED BY SOREN
+===================================
+
+parseMakefile()
+  This function reads in a Makefile and stores its dependency chain and any
+  other information that we may use for building the level and stores it in some
+  sort of internal representation.
+
+mainMenu()
+  This function draws the main menu and, depending on the user's selection, can
+  start the Makefile parser and game screen, customization screen, or quit
+  screen.
+
+Quitting
+--------
+
+quitTest()
+  This function initiates the quitting procedure, which is used to determine
+  the user's fitness for leaving the game. This function performs the following
+  tasks:
+    - Draw the quit screen.
+    - Activate quitButtonMove(), the first test.
+    - Activate quitDateTest(), the second test.
+    - Run terminate(), which quits the program.
+  If the user cancels during either of the tests, return to the main menu rather
+  than quitting.
+
+quitButtonMove()
+  This function moves the quit button across the quit screen on a timer, to make
+  it harder for the user to quit the game. If the quit button reaches the edge
+  of the screen, turn around and send it back in the opposite direction. If the
+  user clicks on the quit button, return back to quitTest.
+
+quitDateTest()
+  This function makes the user input the correct day that the provided date
+  falls on in order to continue quitting the program. It runs randomDate() to
+  find a date (returning some sort of date object, probably), then asks the user
+  for the answer, then runs getDay() to determine if the entry is correct and
+  the user can be allowed to continue the quit procedure.
+
+randomDate()
+  This function picks a random date from eligible ones (defined by some
+  configuration) and returns it to be displayed to the user.
+
+getDay()
+  This function determines the day that the date selected by randomDate() fell
+  on (in order to determine if the user is correct).
+
+terminate()
+  This function performs any necessary cleanup before terminating the program
+  (closing files, saving anything that can be saved, etc.). Then it quits the
+  program.
