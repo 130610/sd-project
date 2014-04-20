@@ -8,8 +8,12 @@ To The Team:
 	just meet for half an hour this weekend, and Soren or I can show you
 	the basics (basically it just makes it so we can all work on the same
 	directory on different machines, with some other features to make it so
-	we don't step on each others toes).
+<<<<<<< HEAD
+	we don't step on each others toes)!
 
 	This is a new function.
 	I'm editing this funciton.
 
+=======
+	we don't step on each others toes)!
+>>>>>>> 4072f0a1d11a2e06768da48e835c2692912d0087
