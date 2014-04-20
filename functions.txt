@@ -50,3 +50,6 @@ terminate()
   This function performs any necessary cleanup before terminating the program
   (closing files, saving anything that can be saved, etc.). Then it quits the
   program.
+
+New function()
+  does something
