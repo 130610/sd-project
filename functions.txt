@@ -50,6 +50,58 @@ terminate()
   This function performs any necessary cleanup before terminating the program
   (closing files, saving anything that can be saved, etc.). Then it quits the
   program.
+======================================
+Added Function Ideas by Kalpit
+======================================
 
-New function()
-  does something
+Story
+--------
+backStory()
+  This function displays the bacground story upon startup (ie. as soon as the
+  program is executed...NOT before each game is started). The story runs at a
+  slow pace (kind of like a powerpoint) with white texts on a black background.
+  
+  Each section of the story fades in and then fades out making it easier to read
+  and more "film-like." At the end of the story credits are given to all individuals
+  who participated and helped the production of the game in some way.
+
+printInstructions()
+  This function is called by the backStory() function and occurs after the story is displayed.
+  It prints the instructions of gameplay - with images of the keyboard (with useful buttons highlighted)
+  and samples of the game to see how the game will look. This function can also be called from the main,
+  start page. Therefore a button on the start page will also open this directions page.
+  (Discuss this with the group).
+  
+createMap()
+  This function creates the main map on which the koala will jump. It includes the following subfunctions:
+  1. makeBackground()
+        This function makes the background of the entire game..It is a jungle image...but the jungle should
+        look artificial - rather than an actual picture.
+  2. placeAvatar()
+        This function places the avatar at the very bottom of the map.
+  3. createTrajectory()
+        This function creates the dotted line for the trajectory of the Koala. The trajectory line is linked
+        to the koala's nose, so that wherever the koala moves, the trajectory line moves with it.
+  4. fillWater()
+        This function is called as soon as the Koala makes its first jump. The bottom of the map fills with
+        water (blue color) and if the Koala touches the blue, the game immediately ends..ie koala drowns.
+  5. makePower()
+        This function creates the image for the power meter
+  6. setPower()
+        This function sets the power of the Koala's jump based on the length of time that the user holds down
+        the spacebar.
+  7. returnToMainMenu()
+        This function with a keyboard press, returns the user to the main menu - in case he wants to load a
+        different makefile or can't complete a level.
+  8. createSorcerer()
+        This function creates the sorcerer at the very top of the map and has him move back and forth on the
+        topmost makefile.
+  9. placeBlocks()
+        This function places the Makefile blocks randomly or in a predefined order on the screen.
+  10. stick()
+        This function allows the Koala to stick to the blocks if he touches them.
+  11. Success()
+        This function prints a Success message and then returns the user to the start screen when his Koala hits the g++ sorcerer
+  
+Customize()
+  This function allows the user to choose a Koala avatar and then make it more personal by changing its color
