@@ -1,5 +1,5 @@
 In a makefile, targets specify their dependencies. It is never the case where a
-dependecy will say that it is needed by a target. Translating this to parents
+dependency will say that it is needed by a target. Translating this to parents
 and children in a tree, parents always decide who their children are, and
 children never decide who their parents are. Therefore, the only methods that
 should be exposed to the user dealing with the tree will be ones that don't add
