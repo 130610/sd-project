@@ -12,6 +12,7 @@
 #endif
 
 #include "texture.h"
+#include "button.h"
 
 using namespace std;
 

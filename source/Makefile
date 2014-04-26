@@ -11,7 +11,7 @@ endif
 start: start.o texture.o
 	g++ $(OPTS) -o start start.o texture.o $(LIBS)
 
-start.o: start.cpp
+start.o: start.cpp button.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
 
 texture.o: texture.cpp texture.h
