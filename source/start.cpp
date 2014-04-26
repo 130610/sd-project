@@ -18,14 +18,19 @@
 
 using namespace std;
 
+void init_gl_window();
+
 int WIDTH = 1024;  // width of the user window
 int HEIGHT = 768;  // height of the user window
 char programName[] = "Makefile Madness";
 
 int backgroundTexture;
+
 double shape_position_x = 250, shape_position_y = 200; // position of the shape
 double shape_width = 50, shape_height = 50; // size of the shape
 double move_x = 50, move_y = 40; // how far to move for each keypress
+
+enum screenType { START=1, GAME, LOAD, INSTRUCTIONS, CUSTOMIZE, QUIT } screen;
 
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
@@ -46,32 +51,24 @@ void display()
   // clear the buffer
   glClear(GL_COLOR_BUFFER_BIT);
 
-  drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
-  startButton.draw();
-  loadButton.draw();
-  instructionsButton.draw();
-  customizeButton.draw();
-  quitButton.draw();
-
-  /*
-  // let's draw a green square
-  glColor3f(0., 1., 0.);  // make it green
-  glBegin(GL_POLYGON);
-    glVertex2f(shape_position_x, shape_position_y);
-    glVertex2f(shape_position_x + shape_width, shape_position_y);
-    glVertex2f(shape_position_x + shape_width,
-               shape_position_y + shape_height);
-    glVertex2f(shape_position_x,
-               shape_position_y + shape_height);
-  glEnd();
-
-  // draw a red boundary
-  glColor3f(1., 0., 0.);
-  glBegin(GL_LINE_STRIP);
-    glVertex2f(shape_position_x, shape_position_y);
-    glVertex2f(shape_position_x + shape_width, shape_position_y);
-  glEnd();
-  */
+  switch(screen) {
+    case START:
+      drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
+      startButton.draw();
+      loadButton.draw();
+      instructionsButton.draw();
+      customizeButton.draw();
+      quitButton.draw();
+      break;
+    case GAME:
+    case LOAD:
+    case INSTRUCTIONS:
+    case CUSTOMIZE:
+    case QUIT:
+    default:
+      cerr << "Not defined yet!" << endl;
+      break;
+  }
 
   // tell the graphics card that we're done-- go ahead and draw!
   glutSwapBuffers();
@@ -195,5 +192,6 @@ void init_gl_window()
 
 int main()
 {
+  screen = START;
   init_gl_window();
 }
