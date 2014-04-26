@@ -1,15 +1,19 @@
-#include<iostream>
-#include<iomanip>
-#include<sstream>
-using namespace std;
-#include<vector>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <vector>
+#include <stdlib.h>
+#include <math.h>
+
 #ifdef MACOSX
-#include<GLUT/glut.h>
+#include <GLUT/glut.h>
 #else
-#include<GL/glut.h>
+#include <GL/glut.h>
 #endif
-#include<stdlib.h>
-#include<math.h>
+
+#include "texture.h"
+
+using namespace std;
 
 int WIDTH = 1024;  // width of the user window
 int HEIGHT = 768;  // height of the user window
@@ -28,7 +32,7 @@ void display()
   // clear the buffer
   glClear(GL_COLOR_BUFFER_BIT);
 
-  gl
+  drawTexture(backgroundTexture, 0.0, 0.0, 1024.0, 768.0);
 
   // let's draw a blue triangle
   glColor3f(0., 1., 0.);  // make it blue
@@ -146,6 +150,8 @@ void init_gl_window()
   glutInitWindowPosition(100,100);
   glutCreateWindow(programName);
   init();
+
+  backgroundTexture = loadTexture("../images/background.pam");
 
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);

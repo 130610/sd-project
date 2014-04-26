@@ -9,12 +9,13 @@ else
 endif
 
 start: start.o texture.o
-	g++ $(OPTS) -o start start.o $(LIBS)
+	g++ $(OPTS) -o start start.o texture.o $(LIBS)
 
 start.o: start.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
 
 texture.o: texture.cpp texture.h
+	g++ $(OPTS) $(MACOSX_DEFINE) -c texture.cpp
 
 clean:
 	rm -f *.o start
