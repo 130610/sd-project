@@ -13,6 +13,7 @@
 
 #include "texture.h"
 #include "button.h"
+#include "ColorPoint2.h"
 
 using namespace std;
 
@@ -25,6 +26,17 @@ double shape_position_x = 250, shape_position_y = 200; // position of the shape
 double shape_width = 50, shape_height = 50; // size of the shape
 double move_x = 50, move_y = 40; // how far to move for each keypress
 
+const int buttonHeight = 118;
+const int bufferHeight = buttonHeight / 4;
+const int buttonX = 256;
+
+Color buttonColor(0.5255, 0.5020, 0.5294); // gray
+Button startButton("foobar", buttonX, (bufferHeight), buttonColor);
+Button loadButton("foobar", buttonX, (bufferHeight*2 + buttonHeight), buttonColor);
+Button instructionsButton("foobar", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor);
+Button customizeButton("foobar", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor);
+Button quitButton("foobar", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor);
+
 // the display function actually does the work of drawing in the window.
 //   this function will be called every time the appearance of the window
 //   needs to be remade.
@@ -33,10 +45,17 @@ void display()
   // clear the buffer
   glClear(GL_COLOR_BUFFER_BIT);
 
-  drawTexture(backgroundTexture, 0.0, 0.0, 1024.0, 768.0);
+  drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
 
-  // let's draw a blue triangle
-  glColor3f(0., 1., 0.);  // make it blue
+  startButton.draw();
+  loadButton.draw();
+  instructionsButton.draw();
+  customizeButton.draw();
+  quitButton.draw();
+
+  /*
+  // let's draw a green square
+  glColor3f(0., 1., 0.);  // make it green
   glBegin(GL_POLYGON);
     glVertex2f(shape_position_x, shape_position_y);
     glVertex2f(shape_position_x + shape_width, shape_position_y);
@@ -52,6 +71,7 @@ void display()
     glVertex2f(shape_position_x, shape_position_y);
     glVertex2f(shape_position_x + shape_width, shape_position_y);
   glEnd();
+  */
 
   // tell the graphics card that we're done-- go ahead and draw!
   glutSwapBuffers();
