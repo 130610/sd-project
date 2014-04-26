@@ -14,6 +14,7 @@
 #include "texture.h"
 #include "button.h"
 #include "ColorPoint2.h"
+#include "text.h"
 
 using namespace std;
 
@@ -31,11 +32,11 @@ const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;
 
 Color buttonColor(0.5255, 0.5020, 0.5294); // gray
-Button startButton("foobar", buttonX, (bufferHeight), buttonColor);
-Button loadButton("foobar", buttonX, (bufferHeight*2 + buttonHeight), buttonColor);
-Button instructionsButton("foobar", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor);
-Button customizeButton("foobar", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor);
-Button quitButton("foobar", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor);
+Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor, 464);
+Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor, 452);
+Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor, 460);
+Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, 420);
+Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, 490);
 
 // the display function actually does the work of drawing in the window.
 //   this function will be called every time the appearance of the window
@@ -46,7 +47,6 @@ void display()
   glClear(GL_COLOR_BUFFER_BIT);
 
   drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
-
   startButton.draw();
   loadButton.draw();
   instructionsButton.draw();
@@ -128,6 +128,18 @@ void reshape(int w, int h)
    glLoadIdentity();
    glOrtho(0., WIDTH-1, 0., HEIGHT-1, -1.0, 1.0);
 }
+
+/*
+void reshape(int w,int h)
+{
+  glViewport(0,0,w,h);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluOrtho2D(0,w,h,0);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+}
+*/
 
 // the init function sets up the graphics card to draw properly
 void init(void)
