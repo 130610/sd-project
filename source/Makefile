@@ -23,5 +23,14 @@ button.o: button.cpp button.h
 text.o: text.cpp text.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c text.cpp
 
+target.o: target.cpp
+	g++ $(OPTS) -c target.cpp
+
+target-driver.o: target-driver.cpp
+	g++ $(OPTS) -c target-driver.cpp
+
+target-driver: target-driver.o target.o
+	g++ $(OPTS) -o TargetDriver $^ $(LIBS)
+
 clean:
 	rm -f *.o start
