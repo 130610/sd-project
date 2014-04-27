@@ -12,7 +12,7 @@ Target *parseTargets(const char *filename)
 	int i = 0;
 	ifstream ifs(filename);
 
-	while (ifs >> c) {
+	while (ifs.get(c)) {
 		line[i++] = c;
 		if (c == '\n') {
 			line[i] = '\0';
@@ -20,23 +20,33 @@ Target *parseTargets(const char *filename)
 			i = 0;
 		}
 	}
-	while (lineList[i++] != "") cout << lineList[i] << endl << endl;
-	return 0;
+
+	for (int i = 0; i < getLineListSize(lineList); i++) {
+		
+	}
 }
 
-void addLine(string *ll, char l[])
+void addLine(string *&ll, char *l)
 {
 	string *tmpList;
-	int len = 0;
+	int len = getLineListSize(ll);
 
-	while (ll[len++] != "")
 	tmpList = new string[len + 1];
 
 	for (int i = 0; i < len; i++) {
 		tmpList[i] = ll[i];
 	}
-	tmpList[len] = l;
+	tmpList[len - 1] = l;
+	//cout << l;
+	tmpList[len] = "";
 
 	delete [] ll;
 	ll = tmpList;
+}
+
+int getLineListSize(string *ll)
+{
+	int len = 0;
+	while (ll[len++] != "");
+	return len;
 }

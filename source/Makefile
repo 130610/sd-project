@@ -30,7 +30,8 @@ target-driver.o: target-driver.cpp
 	g++ $(OPTS) -c target-driver.cpp
 
 target-driver: target-driver.o target.o
-	g++ $(OPTS) -o TargetDriver $^ $(LIBS)
+	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
 clean:
 	rm -f *.o start
+	rm -f target-driver

@@ -18,6 +18,7 @@ public:
 };
 
 Target *parseTargets(const char *filename);
-void addLine(string *ll, char l[]);
+void addLine(string *&ll, char *l);
+int getLineListSize(string *ll);
 
 #endif
