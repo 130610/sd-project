@@ -13,12 +13,14 @@ private:
   int labelStartX;
   string label;
   Color color;
-
 public:
+  bool IsPressed, overButton;
+
   Button(string l, int xx, int yy, Color c, int lx=500)
     { x = xx; y = yy; color = c; label = l; labelStartX = lx; }
 
   void draw();
+  bool onButton(int, int);
 };
 
 #endif
