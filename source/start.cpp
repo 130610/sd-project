@@ -106,6 +106,13 @@ void keyboard( unsigned char c, int x, int y )
 {
   int win = glutGetWindow();
   switch(c) {
+    case 'g':
+    case 'G':
+      if (screen == START)
+        screen = GAME;
+      else if (screen == GAME)
+        screen = START;
+      break;
     case 'q':
     case 'Q':
     case 27:
