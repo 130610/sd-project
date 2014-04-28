@@ -5,7 +5,6 @@
 #include "target.h"
 using namespace std;
 
-Target **root;
 int numRoots = 1;
 
 Target::Target(string n, Target *p): targetName(n), children(0), posX(0), posY(0), numParents(0), numChildren(0)
@@ -33,6 +32,16 @@ void Target::addChildren(string dl)
 	children = tmpList;
 }
 
+void Target::printTree()
+{
+	cout << this->getName() << " depends on " ;
+	cout << children[0]->getName();
+	for (int i = 1; i < numChildren; i++) {
+		cout << " and " << children[i]->getName();
+	}
+	cout << endl;
+}
+
 vector<string>& SplitString::split(char delim)
 {
 	if (!flds.empty()) flds.clear();
@@ -56,7 +65,7 @@ vector<string>& SplitString::split(char delim)
 
 Target *parseTargets(const char *filename)
 {
-	root = new Target *[1];
+	Target **root = new Target *[1];
 	string *lineList = new string[1]; 
 	char line[128];
 	char c;
@@ -79,14 +88,14 @@ Target *parseTargets(const char *filename)
 			root[0] = new Target(tName);
 			root[0]->addChildren(tDepends);
 			numTargets++;
-			cout << "made root at line " << i + 1 << endl;
+//			cout << "made root at line " << i + 1 << endl;
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
-			cout << "found target at line " << i + 1 << endl;
-			addTarget(tName, tDepends);
+//			cout << "found target at line " << i + 1 << endl;
+			addTarget(root, tName, tDepends);
 			numTargets++;
 		}
 	}
-	cout << root[0]->findTarget("cat")->getName();
+//	cout << root[0]->findTarget("cat")->getName();
 	return root[0];
 }
 
@@ -154,26 +163,27 @@ Target *Target::findTarget(string n)
 	return 0;
 }
 
-void addTarget(string n, string d)
+void addTarget(Target **r, string n, string d)
 {
 	Target **tmpRoot;
 	bool exists = false;
 	for (int i = 0; i < numRoots; i++) {
-		if (root[i]->findTarget(n)) {
-			cout << "adding children to " << root[i]->findTarget(n)->getName() << endl; 
-			root[i]->findTarget(n)->addChildren(d);
+		if (r[i]->findTarget(n)) {
+//			cout << "adding children to " << r[i]->findTarget(n)->getName() << endl; 
+			r[i]->findTarget(n)->addChildren(d);
 			exists = true;
 			break;
 		}
 	}
 	if (!exists) {
-		cout << "adding root " << n << " at " << numRoots + 1 << endl;
+//		cout << "adding r " << n << " at " << numRoots + 1 << endl;
 		tmpRoot = new Target *[numRoots + 1];
 		for (int i = 0; i < numRoots; i++) {
-			tmpRoot[i] = root[i];
+			tmpRoot[i] = r[i];
 		}
 		tmpRoot[numRoots + 1] = new Target(n);
 		tmpRoot[numRoots + 1]->addChildren(d);
 		numRoots++;
 	}
 }
+

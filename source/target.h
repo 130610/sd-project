@@ -24,6 +24,7 @@ public:
 	void setName(string n) { targetName = n; }
 	string getName() { return targetName; }
 	Target* findTarget(string n);
+	void printTree();
 };
 
 class SplitString : public string {
@@ -37,6 +38,6 @@ Target *parseTargets(const char *filename);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);
 bool matchTargetLine(string l, string& n, string& d);
-void addTarget(string n, string d);
+void addTarget(Target** r, string n, string d);
 
 #endif
