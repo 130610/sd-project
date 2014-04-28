@@ -23,18 +23,22 @@ public:
 	void addChildren(string dl);
 	void setName(string n) { targetName = n; }
 	string getName() { return targetName; }
+	int getPosY() { return posX; }
+	int getPosX() { return posY; }
 	Target* findTarget(string n);
+	void initPositions(int d = 0, int ind = 0);
 	void printTree();
 };
 
-class SplitString : public string {
-	vector<string> flds;
-public:
-	SplitString(string s) : string(s) { };
-	vector<string>& split(char delim);
-};
+//class SplitString : public string {
+//	vector<string> flds;
+//public:
+//	SplitString(string s) : string(s) { };
+//	vector<string>& split(char delim);
+//};
 
 Target *parseTargets(const char *filename);
+vector<string> splitString(string s, char d);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);
 bool matchTargetLine(string l, string& n, string& d);

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <regex>
 #include "target.h"
 using namespace std;
 
@@ -16,14 +15,13 @@ Target::Target(string n, Target *p): targetName(n), children(0), posX(0), posY(0
 void Target::addChildren(string dl)
 {
 	Target **tmpList;
-	SplitString depends(dl);
-	vector<string> dependsList = depends.split(' ');
+	vector<string> dependsList = splitString(dl, ' ');
 	tmpList = new Target*[numChildren + dependsList.size()];
 
 	for (int i = 0; i < numChildren; i++) {
 		tmpList[i] = children[i];
 	}
-	for (int i = 0; i < dependsList.size(); i++) {
+	for (unsigned i = 0; i < dependsList.size(); i++) {
 		tmpList[i + numChildren] = new Target(dependsList[i], this);
 	}
 	numChildren +=dependsList.size();
@@ -35,27 +33,24 @@ void Target::addChildren(string dl)
 void Target::printTree()
 {
 	cout << this->getName() << " depends on " ;
-	cout << children[0]->getName();
+	cout << children[0]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
 	for (int i = 1; i < numChildren; i++) {
-		cout << " and " << children[i]->getName();
+		cout << " and " << children[i]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
 	}
 	cout << endl;
 }
 
-vector<string>& SplitString::split(char delim)
+vector<string> splitString(string s, char d)
 {
-	if (!flds.empty()) flds.clear();
-	string work = data();
+	vector<string> flds;
 	string buf = "";
-	int i = 0;
-	while (i < work.length()) {
-		if (work[i] != delim) {
-			buf += work[i];
+	for (unsigned i = 0; i < s.length(); i++) {
+		if (s[i] != d) {
+			buf += s[i];
 		} else if (buf.length() > 0) {
 			flds.push_back(buf);
 			buf = "";
 		}
-		i++;
 	}
 	if (!buf.empty()) {
 		flds.push_back(buf);
@@ -86,7 +81,9 @@ Target *parseTargets(const char *filename)
 	for (int i = 0; i < getLineListSize(lineList); i++) {
 		if (matchTargetLine(lineList[i], tName, tDepends) && numTargets == 0) {
 			root[0] = new Target(tName);
+//			cout << "made root" << endl;
 			root[0]->addChildren(tDepends);
+//			cout << "added children" << endl;
 			numTargets++;
 //			cout << "made root at line " << i + 1 << endl;
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
@@ -127,7 +124,7 @@ int getLineListSize(string *ll)
 // makefile; reads the rule into the string n, and the dependencies into d
 bool matchTargetLine(string l, string& n, string& d)
 {
-	int i = 0;
+	unsigned i = 0;
 	bool inName = true;
 	n = d = "";
 
@@ -161,6 +158,18 @@ Target *Target::findTarget(string n)
 	}
 
 	return 0;
+}
+
+// initializes the positions of a target and all of its children based on their
+// depth d in the tree, and their index ind in children with their same depth
+void Target::initPositions(int d, int ind)
+{
+	posX = d;
+	posY = ind;
+
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->initPositions(d + 1, i + ind);
+	}
 }
 
 void addTarget(Target **r, string n, string d)
