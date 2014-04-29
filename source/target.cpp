@@ -6,7 +6,7 @@ using namespace std;
 
 int numRoots = 1;
 
-Target::Target(string n, Target *p): targetName(n), children(0), posX(0), posY(0), numParents(0), numChildren(0)
+Target::Target(string n, Target *p): targetName(n), children(0), posX(0), posY(0), numParents(0), numChildren(0), posInited(0)
 {
 	parents = new Target*[1];
 	parents[0] = p;
@@ -33,11 +33,43 @@ void Target::addChildren(string dl)
 void Target::printTree()
 {
 	cout << this->getName() << " depends on " ;
-	cout << children[0]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
+	cout << children[0]->getName() << "(" << children[0]->getPosY()  << ", " << children[0]->getPosX() << ")";
 	for (int i = 1; i < numChildren; i++) {
-		cout << " and " << children[i]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
+		cout << " and " << children[i]->getName() << "(" << children[0]->getPosY()  << ", " << children[0]->getPosX() << ")";
 	}
 	cout << endl;
+}
+
+// does a depth first search for at target with name n starting at the root
+// target r
+Target *Target::findTarget(string n)
+{
+	if (targetName == n) return this;
+
+	for (int i = 0; i < numChildren; i++) {
+		if (children[i]->findTarget(n)) return children[i]->findTarget(n);
+	}
+
+	return 0;
+}
+
+// initializes the positions of a target and all of its children based on their
+// depth d in the tree, and their index ind in children with their same depth
+void Target::initPositions(int d, int ind)
+{
+//	cout << getName() << "->" << posInited << endl;
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->initPositions(d + 1, i + ind);
+	//	cout << getName() << "->" << posInited << endl;
+	}
+	cout << getName() << "->" << posInited << endl;
+
+	if (!posInited) {
+		posX = ind;
+		posY = d;
+		posInited = 1;
+//		cout << getName() << "(" << posY << ", " << posX << ")" << endl;
+	}
 }
 
 vector<string> splitString(string s, char d)
@@ -147,31 +179,6 @@ bool matchTargetLine(string l, string& n, string& d)
 	return true;
 }
 
-// does a depth first search for at target with name n starting at the root
-// target r
-Target *Target::findTarget(string n)
-{
-	if (targetName == n) return this;
-
-	for (int i = 0; i < numChildren; i++) {
-		if (children[i]->findTarget(n)) return children[i]->findTarget(n);
-	}
-
-	return 0;
-}
-
-// initializes the positions of a target and all of its children based on their
-// depth d in the tree, and their index ind in children with their same depth
-void Target::initPositions(int d, int ind)
-{
-	posX = d;
-	posY = ind;
-
-	for (int i = 0; i < numChildren; i++) {
-		children[i]->initPositions(d + 1, i + ind);
-	}
-}
-
 void addTarget(Target **r, string n, string d)
 {
 	Target **tmpRoot;
@@ -195,4 +202,3 @@ void addTarget(Target **r, string n, string d)
 		numRoots++;
 	}
 }
-

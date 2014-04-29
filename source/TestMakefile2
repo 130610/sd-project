@@ -1,0 +1,13 @@
+all: dep1 dep2
+
+dep1: dep1.o
+	some stuff
+
+dep1.o: dep1.cpp
+	some stuff
+
+dep2: dep1.o dep2.o
+	some stuff
+
+dep2.o: dep2.cpp dep.h
+	some stuff
