@@ -1,6 +1,17 @@
 #include "button.h"
 #include "text.h"
 
+Button::Button (string l, int xx, int yy, enum screenType s, int lx)
+{
+  x = xx;
+  y = yy;
+  label = l;
+  labelStartX = lx;
+  screen = s;
+
+  color = {0.5255, 0.5020, 0.5294};
+}
+
 void Button::draw() {
   // coordinates
   int x0 = min(x, x + width);

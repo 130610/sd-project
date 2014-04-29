@@ -1,9 +1,9 @@
 #include <iostream>
 #include <iomanip>
-#include <sstream>
-#include <vector>
-#include <stdlib.h>
 #include <math.h>
+#include <sstream>
+#include <stdlib.h>
+#include <vector>
 
 #ifdef MACOSX
 #include <GLUT/glut.h>
@@ -11,15 +11,14 @@
 #include <GL/glut.h>
 #endif
 
-#include "globaldefs.h"
-#include "texture.h"
 #include "button.h"
 #include "ColorPoint2.h"
+#include "globaldefs.h"
 #include "text.h"
+#include "texture.h"
+#include "start.h"
 
 using namespace std;
-
-void init_gl_window();
 
 // general state
 int WIDTH = 1024;  // width of the user window
@@ -32,14 +31,13 @@ int backgroundTexture;
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-const Color buttonColor(0.5255, 0.5020, 0.5294); // gray
 const char numButtons = 5;
 
-Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor, GAME, 464);
-Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor, LOAD, 452);
-Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor, INSTRUCTIONS, 460);
-Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, CUSTOMIZE, 420);
-Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, QUIT, 490);
+Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), GAME, 464);
+Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), LOAD, 452);
+Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), INSTRUCTIONS, 460);
+Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), CUSTOMIZE, 420);
+Button quitButton("Quit", buttonX, (bufferHeight), QUIT, 490);
 Button* Buttons[numButtons];
 
 void quitProgram()
@@ -83,7 +81,7 @@ void display()
 }
 
 // process keyboard events
-void keyboard( unsigned char c, int x, int y )
+void keyboard(unsigned char c, int x, int y)
 {
   switch(c) {
     case 'g':
@@ -142,7 +140,7 @@ void mouse(int mouseButton, int state, int x, int y)
 //mouse_motion function...called from init function
 //called when mouse is being dragged, and gives the current location
 // of the mouse
-void mouse_motion(int x,int y)
+void mouse_motion(int x, int y)
 {
   // is the mouse button currently depressed over any screen button?
   bool aButtonIsPressed = false;

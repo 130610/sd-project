@@ -7,7 +7,6 @@
 #include "ColorPoint2.h"
 #include "globaldefs.h"
 
-
 class Button {
 private:
   int x, y;
@@ -19,12 +18,10 @@ public:
   enum screenType screen;
   bool IsPressed, overButton;
 
-  Button(string l, int xx, int yy, Color c, enum screenType s, int lx=500)
-    { x = xx; y = yy; color = c; label = l; labelStartX = lx; screen = s; }
+  Button(string l, int xx, int yy, enum screenType s, int lx);
 
   void draw();
   bool onButton(int, int);
 };
 
 #endif
-

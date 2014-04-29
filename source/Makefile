@@ -12,10 +12,10 @@ endif
 start: start.o texture.o text.o button.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
-start.o: start.cpp button.h globaldefs.h
+start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
 
-button.o: button.cpp button.h globaldefs.h
+button.o: button.cpp button.h globaldefs.h ColorPoint2.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c button.cpp
 
 texture.o: texture.cpp texture.h
