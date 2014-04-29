@@ -11,6 +11,7 @@
 #include <GL/glut.h>
 #endif
 
+#include "globaldefs.h"
 #include "texture.h"
 #include "button.h"
 #include "ColorPoint2.h"
@@ -24,7 +25,7 @@ void init_gl_window();
 int WIDTH = 1024;  // width of the user window
 int HEIGHT = 768;  // height of the user window
 char programName[] = "Makefile Madness";
-enum screenType { START=1, GAME, LOAD, INSTRUCTIONS, CUSTOMIZE, QUIT } screen;
+enum screenType screen;
 int backgroundTexture;
 
 //button info
@@ -32,12 +33,14 @@ const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
 const Color buttonColor(0.5255, 0.5020, 0.5294); // gray
-Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor, 464);
-Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor, 452);
-Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor, 460);
-Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, 420);
-Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, 490);
-Button* Buttons[5];
+const char numButtons = 5;
+
+Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor, GAME, 464);
+Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor, LOAD, 452);
+Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor, INSTRUCTIONS, 460);
+Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, CUSTOMIZE, 420);
+Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, QUIT, 490);
+Button* Buttons[numButtons];
 
 void display()
 {
@@ -48,11 +51,8 @@ void display()
     case START:
       glClear(GL_COLOR_BUFFER_BIT);
       drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
-      startButton.draw();
-      loadButton.draw();
-      instructionsButton.draw();
-      customizeButton.draw();
-      quitButton.draw();
+      for (short int i=0; i<numButtons; ++i)
+        Buttons[i]->draw();
       glutSwapBuffers();
       break;
     case GAME:
@@ -120,84 +120,50 @@ void mouse(int mouseButton, int state, int x, int y)
 {
   if ( GLUT_LEFT_BUTTON == mouseButton ) {
     if ( GLUT_DOWN == state ) { // mouse press
-      if ( startButton.onButton(x,y) ) {
-        startButton.IsPressed = true;
-        screen = GAME;
-      }
-      if ( loadButton.onButton(x,y)) {
-        loadButton.IsPressed = true;
-        screen = LOAD;
-      }
-      if ( instructionsButton.onButton(x,y)) {
-        instructionsButton.IsPressed=true;
-        screen = INSTRUCTIONS;
-      }
-      if (customizeButton.onButton(x,y)) {
-        customizeButton.IsPressed=true;
-        screen = CUSTOMIZE;
-      }
-      if (quitButton.onButton(x,y)) {
-        quitButton.IsPressed = true;
-        screen = QUIT;
+      for (short int i=0; i<numButtons; ++i) {
+        if (Buttons[i]->onButton(x,y)) {
+          Buttons[i]->IsPressed = true;
+          screen = Buttons[i]->screen;
+        }
       }
     }
     else { // mouse release
-      if ( startButton.onButton(x,y) && startButton.IsPressed )
-        startButton.IsPressed = false;
-      if ( loadButton.onButton(x,y) && loadButton.IsPressed )
-        loadButton.IsPressed = false;
-      if (instructionsButton.onButton(x,y) && instructionsButton.IsPressed)
-        instructionsButton.IsPressed = false;
-      if (customizeButton.onButton(x,y) &&  customizeButton.IsPressed)
-        customizeButton.IsPressed = false;
-      if (quitButton.onButton(x,y) && quitButton.IsPressed)
-        quitButton.IsPressed = false;
+      for (short int i=0; i<numButtons; ++i) {
+        if ( Buttons[i]->onButton(x,y) && Buttons[i]->IsPressed )
+          Buttons[i]->IsPressed = false;
+      }
     }
-  }
-  else if ( GLUT_RIGHT_BUTTON == mouseButton ) { }
+  //else if ( GLUT_RIGHT_BUTTON == mouseButton ) { }
 
   glutPostRedisplay();
+  }
 }
 
 //mouse_motion function...called from init function
-//called when mouse is being dragged, ang gives the current location
+//called when mouse is being dragged, and gives the current location
 // of the mouse
 void mouse_motion(int x,int y)
 {
-  // the mouse button is pressed, and the mouse is moving....
-  if ( startButton.IsPressed ) {}
-  else if ( loadButton.IsPressed) {}
-  else if (instructionsButton.IsPressed) {}
-  else if(customizeButton.IsPressed) {}
-  else if(quitButton.IsPressed) {}
-  else {
-    if ( startButton.onButton(x,y) ) {
-      startButton.overButton = true;
+  // is the mouse button currently depressed over any screen button?
+  bool aButtonIsPressed = false;
+  for (short int i=0; i<numButtons; ++i) {
+    if (Buttons[i]->IsPressed) {
+      aButtonIsPressed = true;
+      break;
     }
-    else {
-      startButton.overButton = false;
-    }
+  }
 
-    if( loadButton.onButton(x,y))
-      loadButton.overButton = true;
-    else
-      loadButton.overButton=false;
-
-    if( instructionsButton.onButton(x,y))
-      instructionsButton.overButton =true;
-    else
-      instructionsButton.overButton=false;
-
-    if(customizeButton.onButton(x,y))
-      customizeButton.overButton=true;
-    else
-      customizeButton.overButton = false;
-    if(quitButton.onButton(x,y))
-      quitButton.overButton = true;
-    else
-      quitButton.overButton = false;
+  // if not, for each button, determine if it's moused over
+  // this is used both to set and unset this status
+  if ( !aButtonIsPressed ) {
+    for (short int i=0; i<numButtons; ++i) {
+      if ( Buttons[i]->onButton(x,y) )
+        Buttons[i]->overButton = true;
+      else
+        Buttons[i]->overButton = false;
     }
   glutPostRedisplay();
+  }
 }
 
 // the reshape function handles the case where the user changes the size
@@ -263,15 +229,23 @@ void init_gl_window()
   glutMainLoop();
 }
 
+void init_buttons()
+{
+  // to change the number of buttons, adjust numButtons global variable
+  Buttons[0] = &startButton;
+  Buttons[1] = &loadButton;
+  Buttons[2] = &instructionsButton;
+  Buttons[3] = &customizeButton;
+  Buttons[4] = &quitButton;
+  for (short int i=0; i<numButtons; ++i) {
+    Buttons[i]->IsPressed = false; Buttons[i]->overButton = false;
+  }
+}
 
 int main()
 {
   screen = START;
-  startButton.IsPressed = false; startButton.overButton=false;
-  loadButton.IsPressed = false; loadButton.overButton= false;
-  instructionsButton.IsPressed = false; instructionsButton.overButton = false;
-  customizeButton.IsPressed = false; customizeButton.overButton = false;
-  quitButton.IsPressed = false; quitButton.overButton = false;
+  init_buttons();
 
   init_gl_window();
 }

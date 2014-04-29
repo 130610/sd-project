@@ -2,9 +2,11 @@
 #define _BUTTON_
 
 #include <GL/glut.h>
+#include <string.h>
 
 #include "ColorPoint2.h"
-#include <string.h>
+#include "globaldefs.h"
+
 
 class Button {
 private:
@@ -14,10 +16,11 @@ private:
   string label;
   Color color;
 public:
+  enum screenType screen;
   bool IsPressed, overButton;
 
-  Button(string l, int xx, int yy, Color c, int lx=500)
-    { x = xx; y = yy; color = c; label = l; labelStartX = lx; }
+  Button(string l, int xx, int yy, Color c, enum screenType s, int lx=500)
+    { x = xx; y = yy; color = c; label = l; labelStartX = lx; screen = s; }
 
   void draw();
   bool onButton(int, int);
