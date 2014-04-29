@@ -42,6 +42,13 @@ Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonH
 Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, QUIT, 490);
 Button* Buttons[numButtons];
 
+void quitProgram()
+{
+  int win = glutGetWindow();
+  glutDestroyWindow(win);
+  exit(0);
+}
+
 void display()
 {
   // clear the buffer
@@ -61,10 +68,11 @@ void display()
     case LOAD:
     case INSTRUCTIONS:
     case CUSTOMIZE:
-    case QUIT:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       glutSwapBuffers();
       break;
+    case QUIT:
+      quitProgram();
     default:
       cerr << "This screen not defined yet!" << endl;
       break;
@@ -77,7 +85,6 @@ void display()
 // process keyboard events
 void keyboard( unsigned char c, int x, int y )
 {
-  int win = glutGetWindow();
   switch(c) {
     case 'g':
     case 'G':
@@ -89,10 +96,7 @@ void keyboard( unsigned char c, int x, int y )
     case 'q':
     case 'Q':
     case 27:
-      // get rid of the window (as part of shutting down)
-      glutDestroyWindow(win);
-      exit(0);
-      break;
+      quitProgram();
     case '\b':
     default:
       break;
