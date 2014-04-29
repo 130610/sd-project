@@ -37,6 +37,7 @@ Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), b
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, 420);
 Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, 490);
+Button* Buttons[5];
 
 void display()
 {
@@ -107,21 +108,9 @@ void keyboard( unsigned char c, int x, int y )
 void special_keyboard(int key,int x, int y)
 {
   switch (key) {
-    case GLUT_KEY_LEFT:
-      shape_position_x -= move_x;
+    case GLUT_KEY_F1:
+      screen = START;
       break;
-    case GLUT_KEY_RIGHT:
-      shape_position_x += move_x;
-      break;
-    case GLUT_KEY_UP:
-      shape_position_y += move_y;
-      break;
-    case GLUT_KEY_DOWN:
-      shape_position_y -= move_y;
-      break;
-  case GLUT_KEY_F1:
-    screen = START;
-    break;
   }
   glutPostRedisplay();
 }
