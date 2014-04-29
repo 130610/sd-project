@@ -65,6 +65,10 @@ void display()
       break;
     case LOAD:
     case INSTRUCTIONS:
+      drawTexture(backgroundTexture, 0.0, 768.0, 1024., -768);
+      glutSwapBuffers();
+      for(short i=0; i<
+      break;
     case CUSTOMIZE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       glutSwapBuffers();
