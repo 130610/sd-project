@@ -73,20 +73,8 @@ void display()
       glutSwapBuffers();
       break;
     case LOAD:
-      glClear(GL_COLOR_BUFFER_BIT);
-      drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
-      glutSwapBuffers();
-      break;
     case INSTRUCTIONS:
-      glClear(GL_COLOR_BUFFER_BIT);
-      drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
-      glutSwapBuffers();
-      break;
     case CUSTOMIZE:
-      glClear(GL_COLOR_BUFFER_BIT);
-      drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
-      glutSwapBuffers();
-      break;
     case QUIT:
       glClear(GL_COLOR_BUFFER_BIT);
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
