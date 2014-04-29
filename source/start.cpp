@@ -20,14 +20,12 @@ using namespace std;
 
 void init_gl_window();
 
+// general state
 int WIDTH = 1024;  // width of the user window
 int HEIGHT = 768;  // height of the user window
 char programName[] = "Makefile Madness";
-
-
-int backgroundTexture;
-
 enum screenType { START=1, GAME, LOAD, INSTRUCTIONS, CUSTOMIZE, QUIT } screen;
+int backgroundTexture;
 
 //button info
 const int buttonHeight = 118;
@@ -40,9 +38,6 @@ Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeigh
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, 420);
 Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, 490);
 
-// the display function actually does the work of drawing in the window.
-//   this function will be called every time the appearance of the window
-//   needs to be remade.
 void display()
 {
   // clear the buffer
@@ -131,60 +126,48 @@ void special_keyboard(int key,int x, int y)
   glutPostRedisplay();
 }
 
-//The mouse function is called when a mouse button is pressed down or released
+// The mouse function is called when a mouse button is pressed down or released
 void mouse(int mouseButton, int state, int x, int y)
 {
-   if ( GLUT_LEFT_BUTTON == mouseButton ) 
-     {
-       if ( GLUT_DOWN == state ) 
-	 {
-	 // the user just pressed down on the mouse-- do something
-	 if ( startButton.onButton(x,y) ) 
-	   {
-	     startButton.IsPressed = true;
-	     screen = GAME;
-	   }
-         if ( loadButton.onButton(x,y)) 
-	   {
-	     loadButton.IsPressed = true;
-	     screen = LOAD;
-	   }
-	 if ( instructionsButton.onButton(x,y)) 
-	   {
-	     instructionsButton.IsPressed=true;
-	     screen = INSTRUCTIONS;
-	   }
-	 if (customizeButton.onButton(x,y))
-	   { 
-	     customizeButton.IsPressed=true;
-	     screen = CUSTOMIZE;
-	   }
-       	 if (quitButton.onButton(x,y))
-	   {
-	     quitButton.IsPressed = true;
-	     screen = QUIT;
-	   }
-      // the user just let go the mouse-- do something
-	 }
-    
-       else
-	 {
-	   if ( startButton.onButton(x,y) && startButton.IsPressed )
-	     startButton.IsPressed = false;
-	   if ( loadButton.onButton(x,y) && loadButton.IsPressed )
-	     loadButton.IsPressed = false;
-	   if (instructionsButton.onButton(x,y) && instructionsButton.IsPressed)
-	     instructionsButton.IsPressed = false;
-	   if (customizeButton.onButton(x,y) &&  customizeButton.IsPressed)
-	     customizeButton.IsPressed = false;
-	   if (quitButton.onButton(x,y) && quitButton.IsPressed)
-	     quitButton.IsPressed = false;
-	 }
-     }
-   else if ( GLUT_RIGHT_BUTTON == mouseButton ) 
-     {
-     }
-   glutPostRedisplay();
+  if ( GLUT_LEFT_BUTTON == mouseButton ) {
+    if ( GLUT_DOWN == state ) { // mouse press
+      if ( startButton.onButton(x,y) ) {
+        startButton.IsPressed = true;
+        screen = GAME;
+      }
+      if ( loadButton.onButton(x,y)) {
+        loadButton.IsPressed = true;
+        screen = LOAD;
+      }
+      if ( instructionsButton.onButton(x,y)) {
+        instructionsButton.IsPressed=true;
+        screen = INSTRUCTIONS;
+      }
+      if (customizeButton.onButton(x,y)) {
+        customizeButton.IsPressed=true;
+        screen = CUSTOMIZE;
+      }
+      if (quitButton.onButton(x,y)) {
+        quitButton.IsPressed = true;
+        screen = QUIT;
+      }
+    }
+    else { // mouse release
+      if ( startButton.onButton(x,y) && startButton.IsPressed )
+        startButton.IsPressed = false;
+      if ( loadButton.onButton(x,y) && loadButton.IsPressed )
+        loadButton.IsPressed = false;
+      if (instructionsButton.onButton(x,y) && instructionsButton.IsPressed)
+        instructionsButton.IsPressed = false;
+      if (customizeButton.onButton(x,y) &&  customizeButton.IsPressed)
+        customizeButton.IsPressed = false;
+      if (quitButton.onButton(x,y) && quitButton.IsPressed)
+        quitButton.IsPressed = false;
+    }
+  }
+  else if ( GLUT_RIGHT_BUTTON == mouseButton ) { }
+
+  glutPostRedisplay();
 }
 
 //mouse_motion function...called from init function
@@ -193,42 +176,37 @@ void mouse(int mouseButton, int state, int x, int y)
 void mouse_motion(int x,int y)
 {
   // the mouse button is pressed, and the mouse is moving....
-  if ( startButton.IsPressed ) 
-    {
-      // do nothing
+  if ( startButton.IsPressed ) {}
+  else if ( loadButton.IsPressed) {}
+  else if (instructionsButton.IsPressed) {}
+  else if(customizeButton.IsPressed) {}
+  else if(quitButton.IsPressed) {}
+  else {
+    if ( startButton.onButton(x,y) ) {
+      startButton.overButton = true;
     }
-  else if ( loadButton.IsPressed){}
-  else if (instructionsButton.IsPressed){}
-  else if(customizeButton.IsPressed){}
-  else if(quitButton.IsPressed){}
+    else {
+      startButton.overButton = false;
+    }
 
-  else 
-    {
-      if ( startButton.onButton(x,y) )
-	{
-	  startButton.overButton = true;
-	}
-      else startButton.overButton = false;
-      if( loadButton.onButton(x,y))
-	{
-	  loadButton.overButton = true;
-	}
-      else loadButton.overButton=false;
-      if( instructionsButton.onButton(x,y))
-	{
-	  instructionsButton.overButton =true;
-	}
-      else instructionsButton.overButton=false;
-      if(customizeButton.onButton(x,y))
-	{
-	  customizeButton.overButton=true;
-	}
-      else customizeButton.overButton = false;
-      if(quitButton.onButton(x,y))
-	{
-	  quitButton.overButton = true;
-	}
-      else quitButton.overButton = false;
+    if( loadButton.onButton(x,y))
+      loadButton.overButton = true;
+    else
+      loadButton.overButton=false;
+
+    if( instructionsButton.onButton(x,y))
+      instructionsButton.overButton =true;
+    else
+      instructionsButton.overButton=false;
+
+    if(customizeButton.onButton(x,y))
+      customizeButton.overButton=true;
+    else
+      customizeButton.overButton = false;
+    if(quitButton.onButton(x,y))
+      quitButton.overButton = true;
+    else
+      quitButton.overButton = false;
     }
   glutPostRedisplay();
 }
@@ -300,16 +278,11 @@ void init_gl_window()
 int main()
 {
   screen = START;
-  
   startButton.IsPressed = false; startButton.overButton=false;
-  
   loadButton.IsPressed = false; loadButton.overButton= false;
-  
   instructionsButton.IsPressed = false; instructionsButton.overButton = false;
-  
   customizeButton.IsPressed = false; customizeButton.overButton = false;
-  
   quitButton.IsPressed = false; quitButton.overButton = false;
-  
+
   init_gl_window();
 }
