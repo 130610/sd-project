@@ -34,6 +34,16 @@ target.o: target.cpp
 target-driver.o: target-driver.cpp
 	g++ $(OPTS) -c target-driver.cpp
 
+# quitter
+quitter: quit.o quit-driver.o
+	g++ $(OPTS) -o quit-driver $^ $(LIBS)
+
+quit.o: quit.cpp quit.h
+	g++ $(OPTS) -c quit.cpp
+
+quit-driver.o: quit-driver.cpp
+	g++ $(OPTS) -c quit-driver.cpp
+
 clean:
 	rm -f *.o start
 	rm -f target-driver
