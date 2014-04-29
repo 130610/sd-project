@@ -18,9 +18,10 @@ protected:
   virtual void move() {}; // only used in subclasses
 public:
   enum screenType screen;
+  enum screenType active;
   bool IsPressed, overButton;
 
-  Button(string l, int xx, int yy, enum screenType s, int lx);
+  Button(string l, int xx, int yy, enum screenType s,enum screenType p, int lx);
 
   void draw();
   bool onButton(int, int);
@@ -28,8 +29,8 @@ public:
 
 class MovingButton: public Button {
 public:
-  MovingButton(string l, int xx, int yy, enum screenType s, int lx) :
-    Button(l, xx, yy, s, lx) {}
+  MovingButton(string l, int xx, int yy, enum screenType s, enum screenType p, int lx) :
+    Button(l, xx, yy, s, p, lx) {}
   void move();
 };
 

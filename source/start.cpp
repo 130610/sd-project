@@ -33,13 +33,14 @@ const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
 const char numButtons = 5;
 
-Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), GAME, 464);
-Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), LOAD, 452);
-Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), INSTRUCTIONS, 460);
-Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), CUSTOMIZE, 420);
-MovingButton quitButton("Quit", buttonX, (bufferHeight), QUIT, 490);
+//Start Screen Buttons//
+Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), GAME,START, 464);
+Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), LOAD,START, 452);
+Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), INSTRUCTIONS,START, 460);
+Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), CUSTOMIZE,START, 420);
+MovingButton quitButton("Quit", buttonX, (bufferHeight), QUIT,START, 490);
 Button* Buttons[numButtons];
-
+//Instruction Screen Buttons //
 void quitProgram()
 {
   int win = glutGetWindow();
@@ -55,21 +56,46 @@ void display()
   switch(screen) {
     case START:
       drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
-      for (short int i=0; i<numButtons; ++i)
-        Buttons[i]->draw();
+      for (short int i=0; i<numButtons; ++i) {
+	if (Buttons[i]->active == screen)
+	  Buttons[i]->draw();
+      }
       glutSwapBuffers();
       break;
     case GAME:
       drawTexture(backgroundTexture, 0.0, 768.0, 1024., -768.);
+      for (short int i=0; i<numButtons; ++i)
+	{
+	  if(Buttons[i]->active == screen)
+	    Buttons[i]->draw();
+	}
       glutSwapBuffers();
       break;
     case LOAD:
+      drawTexture(backgroundTexture, 0., 768., 1024., -768.);
+      for (short int i=0; i<numButtons; ++i)
+	{
+	  if(Buttons[i]->active == screen)
+	    Buttons[i] -> draw();
+	}
+      glutSwapBuffers();
+      break;
     case INSTRUCTIONS:
-      drawTexture(backgroundTexture, 0.0, 768.0, 1024., -768);
+      drawTexture(backgroundTexture, 0., 768., 1024., -768.);
+      for (short int i=0; i<numButtons; ++i)
+	{
+	  if(Buttons[i]->active == screen)
+	    Buttons[i]->draw();
+	}
       glutSwapBuffers();
       break;
     case CUSTOMIZE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
+      for (short int i=0; i<numButtons; ++i)
+	{
+	  if(Buttons[i]->active == screen)
+	    Buttons[i]->draw();
+	}
       glutSwapBuffers();
       break;
     case QUIT:
