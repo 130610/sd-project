@@ -31,7 +31,7 @@ int backgroundTexture;
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-const char numButtons = 5;
+const char numButtons = 6;
 
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), GAME,START, 464);
@@ -39,8 +39,14 @@ Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), L
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), INSTRUCTIONS,START, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), CUSTOMIZE,START, 420);
 MovingButton quitButton("Quit", buttonX, (bufferHeight), QUIT,START, 490);
-Button* Buttons[numButtons];
+
 //Instruction Screen Buttons //
+Button backButton("Go Back", buttonX,(bufferHeight*5 + buttonHeight*4),INSTRUCTIONS, INSTRUCTIONS, 464); 
+
+
+// Main Button Array//
+Button* Buttons[numButtons];
+
 void quitProgram()
 {
   int win = glutGetWindow();
@@ -269,6 +275,7 @@ void init_buttons()
   Buttons[2] = &instructionsButton;
   Buttons[3] = &customizeButton;
   Buttons[4] = &quitButton;
+  Buttons[5] = &backButton;
   for (short int i=0; i<numButtons; ++i) {
     Buttons[i]->IsPressed = false; Buttons[i]->overButton = false;
   }
