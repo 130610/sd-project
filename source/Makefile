@@ -8,29 +8,31 @@ else
 
 endif
 
+# opengl section
 start: start.o texture.o text.o button.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
-start.o: start.cpp button.h
+start.o: start.cpp button.h globaldefs.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
+
+button.o: button.cpp button.h globaldefs.h
+	g++ $(OPTS) $(MACOSX_DEFINE) -c button.cpp
 
 texture.o: texture.cpp texture.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c texture.cpp
 
-button.o: button.cpp button.h
-	g++ $(OPTS) $(MACOSX_DEFINE) -c button.cpp
-
 text.o: text.cpp text.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c text.cpp
+
+# makefile parser
+target-driver: target-driver.o target.o
+	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
 target.o: target.cpp
 	g++ $(OPTS) -c target.cpp
 
 target-driver.o: target-driver.cpp
 	g++ $(OPTS) -c target-driver.cpp
-
-target-driver: target-driver.o target.o
-	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
 clean:
 	rm -f *.o start
