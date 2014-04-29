@@ -1,9 +1,12 @@
+#define DEBUG // allows quitting with 'q' to avoid the quit sequence
+
 #include <iostream>
 #include <iomanip>
 #include <math.h>
 #include <sstream>
 #include <stdlib.h>
 #include <vector>
+#include <sys/time.h>
 
 #ifdef MACOSX
 #include <GLUT/glut.h>
@@ -21,11 +24,10 @@
 using namespace std;
 
 // general state
-int WIDTH = 1024;  // width of the user window
-int HEIGHT = 768;  // height of the user window
 char programName[] = "Makefile Madness";
 enum screenType screen;
 int backgroundTexture;
+double lastTime;
 
 //button info
 const int buttonHeight = 118;
@@ -110,7 +112,7 @@ void display()
       for (short int i=0; i<numButtons; ++i)
         Buttons[i]->draw();
       break;
-      //quitProgram();
+      // the actual quit is handled in the mouse button press
     default:
       cerr << "This screen not defined yet!" << endl;
       break;
@@ -131,10 +133,12 @@ void keyboard(unsigned char c, int x, int y)
       else if (screen == GAME)
         screen = START;
       break;
+#ifndef DEBUG
     case 'q':
     case 'Q':
     case 27:
       quitProgram();
+#endif
     case '\b':
     default:
       break;
@@ -161,7 +165,11 @@ void mouse(int mouseButton, int state, int x, int y)
       for (short int i=0; i<numButtons; ++i) {
         if (Buttons[i]->onButton(x,y)) {
           Buttons[i]->IsPressed = true;
-          screen = Buttons[i]->screen;
+          if (screen == QUIT && Buttons[i]->screen == QUIT)
+            // quit button, and already pressed once
+            quitProgram();
+          else
+            screen = Buttons[i]->screen;
         }
       }
     }
@@ -202,18 +210,6 @@ void mouse_motion(int x, int y)
     }
   glutPostRedisplay();
   }
-}
-
-// the reshape function handles the case where the user changes the size
-//   of the window.  We need to fix the coordinate
-//   system, so that the drawing area is still the unit square.
-void reshape(int w, int h)
-{
-   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-   WIDTH = w;  HEIGHT = h;
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-   glOrtho(0., WIDTH-1, 0., HEIGHT-1, -1.0, 1.0);
 }
 
 // the init function sets up the graphics card to draw properly
@@ -258,13 +254,38 @@ void init_gl_window()
   backgroundTexture = loadTexture("../images/background.pam");
 
   glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(special_keyboard);
   glutMouseFunc(mouse);
   glutMotionFunc(mouse_motion);
   glutPassiveMotionFunc(mouse_motion);
+  glutIdleFunc(idle);
   glutMainLoop();
+}
+
+double getCurrentTime()
+{
+  struct timeval tv = {0,0};
+  struct timezone tz;
+  gettimeofday(&tv, &tz);
+  // cout << "tv is " << tv.tv_sec << " micro " << tv.tv_usec << endl;
+  return tv.tv_sec + tv.tv_usec/(double)1000000.;
+}
+
+void idle()
+{
+  // figure out whether it is time to change the counter.
+  //   we want the counter to change once per second, so we want the
+  //   elapsed time (since the beginning of the program) to be 
+  //   the same as the elapsedTime (rounded down)
+  double now = getCurrentTime();
+  double elapsedTime = now - lastTime;
+  if ( elapsedTime > .05 ) {
+    lastTime = now;
+    if ( screen == QUIT ) {
+      glutPostRedisplay();
+    }
+  }
 }
 
 void init_buttons()
@@ -283,6 +304,8 @@ void init_buttons()
 
 int main()
 {
+  lastTime = getCurrentTime();
+
   screen = START;
   init_buttons();
 

@@ -14,6 +14,8 @@ void mouse_motion(int x, int y);
 void reshape(int w, int h);
 void init(void);
 void init_gl_window();
+double getCurrentTime();
+void idle();
 void init_buttons();
 
 #endif

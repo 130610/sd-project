@@ -5,6 +5,7 @@
 #endif
 
 #include "button.h"
+#include "globaldefs.h"
 #include "text.h"
 
 Button::Button (string l, int xx, int yy, enum screenType s,enum screenType p, int lx)
@@ -69,6 +70,8 @@ bool Button::onButton(int xmousepos, int ymousepos)
 
 void MovingButton::move()
 {
-  x -= 1;
-  y -= 1;
+  if (x < 20) x = WIDTH;
+  if (y < 20) y = HEIGHT;
+  x -= 4;
+  y -= 4;
 }
