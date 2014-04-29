@@ -1,3 +1,5 @@
+#define DEBUG // allows quitting with 'q' to avoid the quit sequence
+
 #include <iostream>
 #include <iomanip>
 #include <math.h>
@@ -104,7 +106,7 @@ void display()
       for (short int i=0; i<numButtons; ++i)
         Buttons[i]->draw();
       break;
-      //quitProgram();
+      // the actual quit is handled in the mouse button press
     default:
       cerr << "This screen not defined yet!" << endl;
       break;
@@ -125,10 +127,12 @@ void keyboard(unsigned char c, int x, int y)
       else if (screen == GAME)
         screen = START;
       break;
+#ifndef DEBUG
     case 'q':
     case 'Q':
     case 27:
       quitProgram();
+#endif
     case '\b':
     default:
       break;
@@ -155,7 +159,11 @@ void mouse(int mouseButton, int state, int x, int y)
       for (short int i=0; i<numButtons; ++i) {
         if (Buttons[i]->onButton(x,y)) {
           Buttons[i]->IsPressed = true;
-          screen = Buttons[i]->screen;
+          if (screen == QUIT && Buttons[i]->screen == QUIT)
+            // quit button, and already pressed once
+            quitProgram();
+          else
+            screen = Buttons[i]->screen;
         }
       }
     }

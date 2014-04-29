@@ -28,9 +28,11 @@ public:
 };
 
 class MovingButton: public Button {
+private:
+  bool wasClicked; // whether the user has already selected it once
 public:
-  MovingButton(string l, int xx, int yy, enum screenType s, enum screenType p, int lx) :
-    Button(l, xx, yy, s, p, lx) {}
+  MovingButton(string l, int xx, int yy, enum screenType s, enum screenType p,
+               int lx) : Button(l, xx, yy, s, p, lx) { wasClicked = false; }
   void move();
 };
 
