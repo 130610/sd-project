@@ -27,26 +27,18 @@ char programName[] = "Makefile Madness";
 
 int backgroundTexture;
 
-double shape_position_x = 250, shape_position_y = 200; // position of the shape
-double shape_width = 50, shape_height = 50; // size of the shape
-double move_x = 50, move_y = 40; // how far to move for each keypress
-
 enum screenType { START=1, GAME, LOAD, INSTRUCTIONS, CUSTOMIZE, QUIT } screen;
 
+//button info
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-
-//button info
-Color buttonColor(0.5255, 0.5020, 0.5294); // gray
+const Color buttonColor(0.5255, 0.5020, 0.5294); // gray
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), buttonColor, 464);
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), buttonColor, 452);
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), buttonColor, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), buttonColor, 420);
 Button quitButton("Quit", buttonX, (bufferHeight), buttonColor, 490);
-
-
-
 
 // the display function actually does the work of drawing in the window.
 //   this function will be called every time the appearance of the window
@@ -253,18 +245,6 @@ void reshape(int w, int h)
    glOrtho(0., WIDTH-1, 0., HEIGHT-1, -1.0, 1.0);
 }
 
-/*
-void reshape(int w,int h)
-{
-  glViewport(0,0,w,h);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluOrtho2D(0,w,h,0);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-}
-*/
-
 // the init function sets up the graphics card to draw properly
 void init(void)
 {
@@ -292,14 +272,6 @@ void init(void)
   cout << "To quit the entire program press the 'q' key"<<endl;
   cout << "To return to start screen press the F1 key"<<endl;
 }
-
-// init_gl_window is the function that starts the ball rolling, in
-//  terms of getting everything set up and passing control over to the
-//  glut library for event handling.  It needs to tell the glut library
-//  about all the essential functions:  what function to call if the
-//  window changes shape, what to do to redraw, handle the keyboard,
-//  etc.
-
 
 void init_gl_window()
 {
