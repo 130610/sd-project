@@ -8,10 +8,12 @@
 #include "globaldefs.h"
 #include "text.h"
 
-Button::Button (string l, int xx, int yy, enum screenType s,enum screenType p, int lx)
+Button::Button (string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx)
 {
   x = xx;
   y = yy;
+  width =w;
+  height = h;
   label = l;
   labelStartX = lx;
   screen = s;

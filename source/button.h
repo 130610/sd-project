@@ -9,7 +9,7 @@
 
 class Button {
 private:
-  const int width = 500, height = 118; // see also start.cpp
+  int width, height; // see also start.cpp
   int labelStartX;
   string label;
   Color color;
@@ -21,7 +21,7 @@ public:
   enum screenType active;
   bool IsPressed, overButton;
 
-  Button(string l, int xx, int yy, enum screenType s,enum screenType p, int lx);
+  Button(string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx);
 
   void draw();
   bool onButton(int, int);
@@ -31,8 +31,9 @@ class MovingButton: public Button {
 private:
   bool wasClicked; // whether the user has already selected it once
 public:
-  MovingButton(string l, int xx, int yy, enum screenType s, enum screenType p,
-               int lx) : Button(l, xx, yy, s, p, lx) { wasClicked = false; }
+ MovingButton(string l, int xx, int yy,int w, int h, enum screenType s, enum screenType p, int lx) :
+  Button(l, xx, yy, w, h, s, p, lx) { wasClicked = false; }
+
   void move();
 };
 
