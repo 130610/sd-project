@@ -16,9 +16,10 @@ private:
   Color color;
 public:
   enum screenType screen;
+  enum screenType active;
   bool IsPressed, overButton;
 
-  Button(string l, int xx, int yy, enum screenType s, int lx);
+  Button(string l, int xx, int yy, enum screenType s,enum screenType p, int lx);
 
   void draw();
   bool onButton(int, int);

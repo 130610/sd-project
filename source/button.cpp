@@ -1,13 +1,14 @@
 #include "button.h"
 #include "text.h"
 
-Button::Button (string l, int xx, int yy, enum screenType s, int lx)
+Button::Button (string l, int xx, int yy, enum screenType s,enum screenType p, int lx)
 {
   x = xx;
   y = yy;
   label = l;
   labelStartX = lx;
   screen = s;
+  active = p;
 
   color = {0.5255, 0.5020, 0.5294};
 }
