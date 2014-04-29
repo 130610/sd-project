@@ -9,11 +9,13 @@
 
 class Button {
 private:
-  int x, y;
   const int width = 500, height = 118; // see also start.cpp
   int labelStartX;
   string label;
   Color color;
+protected:
+  int x, y;
+  virtual void move() {}; // only used in subclasses
 public:
   enum screenType screen;
   bool IsPressed, overButton;
@@ -22,6 +24,13 @@ public:
 
   void draw();
   bool onButton(int, int);
+};
+
+class MovingButton: public Button {
+public:
+  MovingButton(string l, int xx, int yy, enum screenType s, int lx) :
+    Button(l, xx, yy, s, lx) {}
+  void move();
 };
 
 #endif

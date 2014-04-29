@@ -37,7 +37,7 @@ Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4), GAM
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3), LOAD, 452);
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2), INSTRUCTIONS, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight), CUSTOMIZE, 420);
-Button quitButton("Quit", buttonX, (bufferHeight), QUIT, 490);
+MovingButton quitButton("Quit", buttonX, (bufferHeight), QUIT, 490);
 Button* Buttons[numButtons];
 
 void quitProgram()
@@ -73,7 +73,12 @@ void display()
       glutSwapBuffers();
       break;
     case QUIT:
-      quitProgram();
+      drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
+      quitButton.move();
+      for (short int i=0; i<numButtons; ++i)
+        Buttons[i]->draw();
+      break;
+      //quitProgram();
     default:
       cerr << "This screen not defined yet!" << endl;
       break;

@@ -1,3 +1,9 @@
+#ifdef MACOSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 #include "button.h"
 #include "text.h"
 
@@ -58,4 +64,10 @@ bool Button::onButton(int xmousepos, int ymousepos)
                                        of origin */
   return xmousepos>= x && xmousepos<=(x+width) && newymousepos >=y &&
          newymousepos <= (y+height);
+}
+
+void MovingButton::move()
+{
+  x -= 1;
+  y -= 1;
 }

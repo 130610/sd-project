@@ -1,6 +1,8 @@
 #ifndef _QUITTER_
 #define _QUITTER_
 
+#include "button.h"
+
 class Date {
 private:
   unsigned month, day, year; // months start at 1
