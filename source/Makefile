@@ -47,3 +47,4 @@ quit-driver.o: quit-driver.cpp
 clean:
 	rm -f *.o start
 	rm -f target-driver
+	rm -f quit-driver
