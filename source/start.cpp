@@ -49,14 +49,12 @@ void display()
 
   switch(screen) {
     case START:
-      glClear(GL_COLOR_BUFFER_BIT);
       drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
       for (short int i=0; i<numButtons; ++i)
         Buttons[i]->draw();
       glutSwapBuffers();
       break;
     case GAME:
-      glClear(GL_COLOR_BUFFER_BIT);
       drawTexture(backgroundTexture, 0.0, 768.0, 1024., -768.);
       glutSwapBuffers();
       break;
@@ -64,12 +62,11 @@ void display()
     case INSTRUCTIONS:
     case CUSTOMIZE:
     case QUIT:
-      glClear(GL_COLOR_BUFFER_BIT);
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       glutSwapBuffers();
       break;
     default:
-      cerr << "Not defined yet!" << endl;
+      cerr << "This screen not defined yet!" << endl;
       break;
   }
 
@@ -97,15 +94,14 @@ void keyboard( unsigned char c, int x, int y )
       exit(0);
       break;
     case '\b':
-      break;
     default:
       break;
   }
   glutPostRedisplay();
 }
 
-// process "special" keyboard events (those having to do with arrow keys)
-void special_keyboard(int key,int x, int y)
+// process "special" keyboard events
+void special_keyboard(int key, int x, int y)
 {
   switch (key) {
     case GLUT_KEY_F1:
