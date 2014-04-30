@@ -40,10 +40,10 @@ Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500,
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452);
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2),500,118, INSTRUCTIONS,START, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight),500,118, CUSTOMIZE,START, 420);
-MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT,START, 235);
+MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT,RT, 235);
 
 //Instruction Screen Buttons //
-Button backButton("Go Back", 0,768,50, 768,INSTRUCTIONS, INSTRUCTIONS, 464);
+Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
 
 
 // Main Button Array//
@@ -92,6 +92,8 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
+
+      /* draw text -- Kalpit will make an image for this */
       glutSwapBuffers();
       break;
     case CUSTOMIZE:
