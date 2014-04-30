@@ -40,10 +40,10 @@ Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500,
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452);
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2),500,118, INSTRUCTIONS,START, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight),500,118, CUSTOMIZE,START, 420);
-MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT,START, 490);
+MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT,START, 235);
 
 //Instruction Screen Buttons //
-Button backButton("Go Back", 0,768,50, 768,INSTRUCTIONS, INSTRUCTIONS, 464); 
+Button backButton("Go Back", 0,768,50, 768,INSTRUCTIONS, INSTRUCTIONS, 464);
 
 
 // Main Button Array//
@@ -109,6 +109,7 @@ void display()
     case QUIT:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       quitButton.move();
+      quitButton.active = QUIT; // change to "quit screen", not just start
       for (short int i=0; i<numButtons; ++i)
         Buttons[i]->draw();
       break;
@@ -163,29 +164,27 @@ void mouse(int mouseButton, int state, int x, int y)
   if ( GLUT_LEFT_BUTTON == mouseButton ) {
     if ( GLUT_DOWN == state ) { // mouse press
       for (short int i=0; i<numButtons; ++i) {
-
-	  if(Buttons[i]->active ==screen)
-	    {
-	      if (Buttons[i]->onButton(x,y)) {
-		Buttons[i]->IsPressed = true;
-		if (screen == QUIT && Buttons[i]->screen == QUIT)
-		  // quit button, and already pressed once
-		  quitProgram();
-		else
-		  screen = Buttons[i]->screen;
-	      }
-	    }
+        if(Buttons[i]->active == screen) {
+          if (Buttons[i]->onButton(x,y)) {
+            Buttons[i]->IsPressed = true;
+            if (screen == QUIT && Buttons[i]->active == QUIT)
+              // quit button, and already pressed once
+              quitProgram();
+            else
+              screen = Buttons[i]->screen;
+          }
+        }
       }
     }
     else { // mouse release
       for (short int i=0; i<numButtons; ++i) {
-	   if ( Buttons[i]->onButton(x,y) && Buttons[i]->IsPressed )
-	      Buttons[i]->IsPressed = false;
+        if ( Buttons[i]->onButton(x,y) && Buttons[i]->IsPressed )
+          Buttons[i]->IsPressed = false;
       }
     }
-  //else if ( GLUT_RIGHT_BUTTON == mouseButton ) { }
+    //else if ( GLUT_RIGHT_BUTTON == mouseButton ) { }
 
-  glutPostRedisplay();
+    glutPostRedisplay();
   }
 }
 

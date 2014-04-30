@@ -5,24 +5,13 @@
 #endif
 
 #include "button.h"
+#include "ColorPoint2.h"
 #include "globaldefs.h"
 #include "text.h"
 
-Button::Button (string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx)
+void Button::drawButton()
 {
-  x = xx;
-  y = yy;
-  width =w;
-  height = h;
-  label = l;
-  labelStartX = lx;
-  screen = s;
-  active = p;
-
-  color = {0.5255, 0.5020, 0.5294};
-}
-
-void Button::draw() {
+  /* called from the different draw methods; the common part of the code */
   // coordinates
   int x0 = min(x, x + width);
   int x1 = max(x, x + width);
@@ -52,12 +41,42 @@ void Button::draw() {
     glVertex2f(x0, y1);
     glVertex2f(x0, y0);
   glEnd();
+}
+
+
+Button::Button (string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx)
+{
+  x = xx;
+  y = yy;
+  width =w;
+  height = h;
+  label = l;
+  labelStartX = lx;
+  screen = s;
+  active = p;
+
+  color = {0.5255, 0.5020, 0.5294};
+}
+
+void Button::draw() {
+  drawButton();
 
   //text
   char * bText = new char[label.size() + 1];
   copy(label.begin(), label.end(), bText);
   bText[label.size()] = '\0';
   drawBitmapText(bText,labelStartX, y + (height / 2) - 4,0);
+  delete[] bText;
+}
+
+void MovingButton::draw() {
+  drawButton();
+
+  //text
+  char * bText = new char[label.size() + 1];
+  copy(label.begin(), label.end(), bText);
+  bText[label.size()] = '\0';
+  drawBitmapText(bText, x + labelStartX, y + (height / 2) - 4,0);
   delete[] bText;
 }
 

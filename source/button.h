@@ -8,13 +8,12 @@
 #include "globaldefs.h"
 
 class Button {
-private:
-  int width, height; // see also start.cpp
-  int labelStartX;
-  string label;
-  Color color;
 protected:
   int x, y;
+  int width, height; // see also start.cpp
+  string label;
+  int labelStartX;
+  Color color;
   virtual void move() {}; // only used in subclasses
 public:
   enum screenType screen;
@@ -23,7 +22,8 @@ public:
 
   Button(string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx);
 
-  void draw();
+  virtual void draw();
+  void drawButton();
   bool onButton(int, int);
 };
 
@@ -34,6 +34,7 @@ public:
  MovingButton(string l, int xx, int yy,int w, int h, enum screenType s, enum screenType p, int lx) :
   Button(l, xx, yy, w, h, s, p, lx) { wasClicked = false; }
 
+  void draw();
   void move();
 };
 
