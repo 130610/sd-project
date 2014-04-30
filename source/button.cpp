@@ -9,6 +9,20 @@
 #include "globaldefs.h"
 #include "text.h"
 
+Button::Button (string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx)
+{
+  x = xx;
+  y = yy;
+  width =w;
+  height = h;
+  label = l;
+  labelStartX = lx;
+  screen = s;
+  active = p;
+
+  color = {0.5255, 0.5020, 0.5294};
+}
+
 void Button::drawButton()
 {
   /* called from the different draw methods; the common part of the code */
@@ -41,21 +55,6 @@ void Button::drawButton()
     glVertex2f(x0, y1);
     glVertex2f(x0, y0);
   glEnd();
-}
-
-
-Button::Button (string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx)
-{
-  x = xx;
-  y = yy;
-  width =w;
-  height = h;
-  label = l;
-  labelStartX = lx;
-  screen = s;
-  active = p;
-
-  color = {0.5255, 0.5020, 0.5294};
 }
 
 void Button::draw() {
