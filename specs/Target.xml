@@ -5,17 +5,17 @@
    type="text/xsl"?>
 
 <spec>
-<title>&sto:ENTRY;</title>
-<header>&sto:ENTRY;</header>
-<credits>&sto:ENTRY;</credits>
+<title>The Target Class Specification</title>
+<header>This Class Models a Target, A Common Household Pet</header>
+<credits>Prancing Koala</credits>
 
-<class name="&sto:ENTRY;">
+<class name="Target">
 
 <nosuperclass/>
 
 <variables>
-<var name="&sto:ENTRY;" type="&sto:ENTRY;">&sto:ENTRY;</var>
-&sto:ENTRY;<var name="&sto:ENTRY;" type="&sto:ENTRY;">&sto:ENTRY;</var>
+<var name="targetName" type="string">the name of the target</var>
+<var name="children" type="Target **">an array of pointers to the Target's children dependencies</var>
 </variables>
 
 <constructors-list>
