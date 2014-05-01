@@ -27,6 +27,7 @@ using namespace std;
 char programName[] = "Makefile Madness";
 enum screenType screen;
 int backgroundTexture;
+int keyboardTexture;
 double lastTime;
 
 //button info
@@ -79,7 +80,7 @@ void display()
       glutSwapBuffers();
       break;
     case LOAD:
-      drawTexture(backgroundTexture, 0., 768., 1024., -768.);
+      drawTexture(backgroundTexture, 0., 768.,1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
@@ -87,12 +88,20 @@ void display()
       glutSwapBuffers();
       break;
     case INSTRUCTIONS:
-      drawTexture(backgroundTexture, 0., 768., 1024., -768.);
+      drawTexture(backgroundTexture,0., 768., 1024., -768.);
+      drawTexture(keyboardTexture,170,700,768,-200);
+      
+      glLineWidth(2.5);
+      glColor3f(1,1,1);
+      glBegin(GL_LINES);
+      glVertex3f(200,100,0);
+      glVertex3f(170,500,0);
+      glEnd();
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-
+      
       /* draw text -- Kalpit will make an image for this */
       glutSwapBuffers();
       break;
@@ -105,11 +114,13 @@ void display()
       glutSwapBuffers();
       break;
     case QUIT:
+    
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       quitButton.move();
       quitButton.active = QUIT; // change to "quit screen", not just start
       for (short int i=0; i<numButtons; ++i)
-        Buttons[i]->draw();
+	if(Buttons[i]->active == screen)
+	  Buttons[i]->draw();
       break;
       // the actual quit is handled in the mouse button press
     default:
@@ -132,7 +143,7 @@ void keyboard(unsigned char c, int x, int y)
       else if (screen == GAME)
         screen = START;
       break;
-#ifndef DEBUG
+#ifdef DEBUG
     case 'q':
     case 'Q':
     case 27:
@@ -253,6 +264,7 @@ void init_gl_window()
   init();
 
   backgroundTexture = loadTexture("../images/background.pam");
+  keyboardTexture = loadTexture("../images/keyboard.pam");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
