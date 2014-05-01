@@ -30,7 +30,7 @@ public:
 class MovingButton: public Button {
 public:
  MovingButton(string l, int xx, int yy,int w, int h, enum screenType s, enum screenType p, int lx) :
-  Button(l, xx, yy, w, h, s, p, lx) { wasClicked = false; }
+  Button(l, xx, yy, w, h, s, p, lx) { }
 
   void draw();
   void move();
