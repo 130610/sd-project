@@ -18,11 +18,12 @@ class Target
 
 public:
 	bool posInited;
-	Target(): targetName(""), children(0), parents(0), posX(0), posY(0), numParents(0), numChildren(0), posInited(0) {}
-	Target(string n): targetName(n), children(0), parents(0), posX(0), posY(0), numParents(0), numChildren(0), posInited(0) {}
+	Target(): targetName(""), children(0), parents(0),  numParents(0), numChildren(0), posInited(0) {}
+	Target(string n): targetName(n), children(0), parents(0), numParents(0), numChildren(0), posInited(0) {}
 	Target(string n, Target *p);
 
-	void addChildren(string dl);
+	void addChildren(string dl, Target **r);
+	void addParent(Target *p);
 	void setName(string n) { targetName = n; }
 	string getName() { return targetName; }
 	int getPosY() { return posX; }
