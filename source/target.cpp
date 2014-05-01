@@ -24,8 +24,8 @@ void Target::addChildren(string dl, Target **r)
 		tmpList[i] = children[i];
 	}
 	for (unsigned i = 0; i < dependsList.size(); i++) for (int j = 0; j < numRoots; j++) {
-		if (r[i]->findTarget(dependsList[i])) {
-			tmpList[i + numChildren] = r[i]->findTarget(dependsList[i]);
+		if (r[j]->findTarget(dependsList[i])) {
+			tmpList[i + numChildren] = r[j]->findTarget(dependsList[i]);
 			tmpList[i + numChildren]->addParent(this);
 		} else {
 			tmpList[i + numChildren] = new Target(dependsList[i], this);
@@ -39,10 +39,7 @@ void Target::addChildren(string dl, Target **r)
 
 void Target::addParent(Target *p)
 {
-	cout << "Test 1" << endl;
 	Target **tmpList = new Target*[numParents + 1];
-	cout << "Test 1" << endl;
-
 	for (int i = 0; i < numParents; i++) {
 		tmpList[i] = parents[i];
 	}
@@ -56,7 +53,7 @@ void Target::printTree()
 	cout << this->getName() << " depends on " ;
 	cout << children[0]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
 	for (int i = 1; i < numChildren; i++) {
-		cout << " and " << children[i]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
+		cout << " and " << children[i]->getName() << "(" << children[i]->getPosX()  << ", " << children[i]->getPosY() << ")";
 	}
 	cout << endl;
 }
@@ -78,21 +75,16 @@ Target *Target::findTarget(string n)
 // depth d in the tree, and their index ind in children with their same depth
 void Target::initPositions(int d, int ind)
 {
-	if (posInited == false) cout << getName() << ": " << this << endl;
 	for (int i = 0; i < numChildren; i++) {
 		children[i]->initPositions(d + 1, i + ind);
-	//	cout << getName() << "->" << posInited << endl;
 	}
-//	cout << getName() << "->" << posInited << endl;
 
 	if (posInited == false) {
-		if (posInited) cout << "Gah!" << endl;
 		srand(seed++);
 		posX = (ind + 1) * (rand() % 100);
 		srand(seed++);
 		posY = (d + 1) * (rand() % 300);
 		posInited = true;
-//		cout << posX << ", " << posY << endl;
 	}
 }
 
@@ -137,18 +129,13 @@ Target *parseTargets(const char *filename)
 	for (int i = 0; i < getLineListSize(lineList); i++) {
 		if (matchTargetLine(lineList[i], tName, tDepends) && numTargets == 0) {
 			root[0] = new Target(tName);
-//			cout << "made root" << endl;
 			root[0]->addChildren(tDepends, root);
-//			cout << "added children" << endl;
 			numTargets++;
-//			cout << "made root at line " << i + 1 << endl;
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
-//			cout << "found target at line " << i + 1 << endl;
 			addTarget(root, tName, tDepends);
 			numTargets++;
 		}
 	}
-//	cout << root[0]->findTarget("cat")->getName();
 	return root[0];
 }
 
@@ -209,14 +196,12 @@ void addTarget(Target **r, string n, string d)
 	bool exists = false;
 	for (int i = 0; i < numRoots; i++) {
 		if (r[i]->findTarget(n)) {
-//			cout << "adding children to " << r[i]->findTarget(n)->getName() << endl; 
 			r[i]->findTarget(n)->addChildren(d, r);
 			exists = true;
 			break;
 		}
 	}
 	if (!exists) {
-//		cout << "adding r " << n << " at " << numRoots + 1 << endl;
 		tmpRoot = new Target *[numRoots + 1];
 		for (int i = 0; i < numRoots; i++) {
 			tmpRoot[i] = r[i];
