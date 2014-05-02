@@ -16,12 +16,11 @@ bool Date::compareDay(unsigned dayToCheck)
   unsigned century = year / 100;
 
   monthCode = monthCodes[month];
-  dayCode = day % 7;
+  dayCode = day;
   yearCode = ( (yearMinusCentury / 12) +
                (yearMinusCentury % 12) +
-               (yearMinusCentury % 12)/4
-             ) % 7;
-  centuryCode = ( (5*(century%4)) % 7 );
+               (yearMinusCentury % 12)/4 );
+  centuryCode = (5*(century%4));
   correctCode = (monthCode + dayCode + yearCode + centuryCode) % 7;
 
   cerr << correctCode << endl;
