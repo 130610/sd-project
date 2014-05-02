@@ -34,17 +34,17 @@ target.o: target.cpp
 target-driver.o: target-driver.cpp
 	g++ $(OPTS) -c target-driver.cpp
 
-# quitter
-quitter: quit-driver.o quit.o
-	g++ $(OPTS) $^ -o quit-driver $(LIBS)
+# dater
+dates: date-driver.o date.o
+	g++ $(OPTS) $^ -o date-driver $(LIBS)
 
-quit.o: quit.cpp quit.h
-	g++ $(OPTS) -c quit.cpp
+date.o: date.cpp date.h
+	g++ $(OPTS) -c date.cpp
 
-quit-driver.o: quit-driver.cpp quit.h
-	g++ $(OPTS) -c quit-driver.cpp
+date-driver.o: date-driver.cpp date.h
+	g++ $(OPTS) -c date-driver.cpp
 
 clean:
 	rm -f *.o start
 	rm -f target-driver
-	rm -f quit-driver
+	rm -f date-driver
