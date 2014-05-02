@@ -89,14 +89,57 @@ void display()
       break;
     case INSTRUCTIONS:
       drawTexture(backgroundTexture,0., 768., 1024., -768.);
-      drawTexture(keyboardTexture,170,700,768,-200);
-      
-      glLineWidth(2.5);
-      glColor3f(1,1,1);
+      drawTexture(keyboardTexture,170,548,768,-200);
+      //X and Space lines
       glBegin(GL_LINES);
-      glVertex3f(200,100,0);
-      glVertex3f(170,500,0);
+      glLineWidth(2.5);
+      glColor3f(.2,0,1);
+      glVertex3f(270,320,0);
+      glVertex3f(306,392,0);
       glEnd();
+
+      glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(.2,0,1);
+        glVertex3f(460,300,0);
+        glVertex3f(396,372,0);
+      glEnd();
+      //Arrow Key Button Line
+      glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(.2,0,1);
+        glVertex3f(732,300,0);
+        glVertex3f(732,368,0);
+      glEnd();
+      
+      glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(.2,0,1);
+        glVertex3f(630,300,0);
+        glVertex3f(696,368,0);
+      glEnd();
+
+      glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(.2,0,1);
+        glVertex3f(840,300,0);
+        glVertex3f(765,368,0);
+      glEnd();
+
+      glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(.2,0,1);
+        glVertex3f(760,600,0);
+        glVertex3f(728,392,0);
+      glEnd();
+      //F1 Button line
+      glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(.2,0,1);
+        glVertex3f(250,623,0);
+        glVertex3f(250,525,0);
+      glEnd();
+
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
@@ -203,6 +246,7 @@ void mouse(int mouseButton, int state, int x, int y)
 void mouse_motion(int x, int y)
 {
   // is the mouse button currently depressed over any screen button?
+  cerr <<"("<<x<<","<<y<<")"<<endl;
   bool aButtonIsPressed = false;
   for (short int i=0; i<numButtons; ++i) {
     if (Buttons[i]->IsPressed) {
