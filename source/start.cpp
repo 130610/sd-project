@@ -71,6 +71,7 @@ void display()
       }
       glutSwapBuffers();
       break;
+
     case GAME:
       drawTexture(backgroundTexture, 0.0, 768.0, 1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
@@ -79,6 +80,7 @@ void display()
       }
       glutSwapBuffers();
       break;
+
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
@@ -87,6 +89,7 @@ void display()
       }
       glutSwapBuffers();
       break;
+
     case INSTRUCTIONS:
       drawTexture(backgroundTexture,0., 768., 1024., -768.);
       drawTexture(keyboardTexture,170,548,768,-200);
@@ -111,7 +114,7 @@ void display()
         glVertex3f(732,300,0);
         glVertex3f(732,368,0);
       glEnd();
-      
+
       glBegin(GL_LINES);
         glLineWidth(2.5);
         glColor3f(.2,0,1);
@@ -144,10 +147,11 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-      
+
       /* draw text -- Kalpit will make an image for this */
       glutSwapBuffers();
       break;
+
     case CUSTOMIZE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
@@ -156,18 +160,19 @@ void display()
       }
       glutSwapBuffers();
       break;
+
     case QUIT:
-    
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       quitButton.move();
       quitButton.active = QUIT; // change to "quit screen", not just start
       for (short int i=0; i<numButtons; ++i)
-	if(Buttons[i]->active == screen)
-	  Buttons[i]->draw();
+        if(Buttons[i]->active == screen)
+          Buttons[i]->draw();
       break;
       // the actual quit is handled in the mouse button press
+      //
     default:
-      cerr << "This screen not defined yet!" << endl;
+      cerr << "This screen not defined (yet?)." << endl;
       break;
   }
 
@@ -245,8 +250,12 @@ void mouse(int mouseButton, int state, int x, int y)
 // of the mouse
 void mouse_motion(int x, int y)
 {
-  // is the mouse button currently depressed over any screen button?
+#ifdef DEBUG
+  // show coordinates of mouse pointer
   cerr <<"("<<x<<","<<y<<")"<<endl;
+#endif
+
+  // is the mouse button currently depressed over any screen button?
   bool aButtonIsPressed = false;
   for (short int i=0; i<numButtons; ++i) {
     if (Buttons[i]->IsPressed) {
