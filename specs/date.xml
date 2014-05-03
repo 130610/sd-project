@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>The Date Class</title>
+<header>This class stores a date and performs various related utility functions.</header>
+<credits>Written by Prancing Koala.</credits>
+
+<class name="Date">
+<nosuperclass/>
+
+<variables>
+<var name="month" type="unsigned">The month of the date represented by this object.</var>
+<var name="day" type="unsigned">The day of the date represented by this object.</var>
+<var name="year" type="unsigned">The year of the date represented by this object.</var>
+
+<var name="monthCodes[13]" type="const unsigned">An array of unsigned ints representing the offset codes for each month of the year, used in determining the day of the week that a given date falls on. The 0th element is unused for clarity.</var>
+<var name="monthDays[13]" type="const unsigned">An array of unsigned ints representing the number of days in each month (in a leap year). The 0th element is unused for clarity.</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Default constructor.</desc>
+<noarguments />
+<statechange>Generates random values for month, day, and year, and sets the month, day, and year members to these values. The values will be valid dates between Jan 1, 1900 and Dec 31, 2099.</statechange>
+</constructor>
+
+<constructor>
+<desc>Constructor for specifying a certain date numerically.</desc>
+<arguments>
+<arg name="m" type="unsigned">The month (1-12).</arg>
+<arg name="d" type="unsigned">The day (1-31).</arg>
+<arg name="y" type="unsigned">The year (0-4294967294).</arg>
+</arguments>
+<statechange>Sets the month, day, and year to the values indicated.</statechange>
+</constructor>
+
+</constructors-list>
+
+<methods-list>
+
+<method name="compareDay" returntype="bool">
+<desc>Checks if the date stored by the object falls on the same day of the week as the given one.</desc>
+<arguments>
+<arg name="dayToCheck" type="unsigned">An integer from 0 to 6 specifying the day of the week to compare. 0 is Sunday, 6 is Saturday, and the others are in between as expected.</arg>
+</arguments>
+<nostatechange />
+<return>True if the dayToCheck matches the day of the week corresponding to the date stored in the object, false otherwise.</return>
+</method>
+
+<method name="isLeapYear" returntype="bool">
+<desc>Determine if the year stored in this object is a leap year in the Gregorian calendar.</desc>
+<noarguments />
+<nostatechange />
+<return>True if it's a leap year.</return>
+</method>
+
+<method name="convertDayToNumber" returntype="unsigned">
+<desc>(NOT A METHOD, JUST A FUNCTION) Convert a day of the week given as its English name to the number representing it internally.</desc>
+<arguments>
+<arg name="s" type="string">The string to attempt to convert to an integer day of the week.</arg>
+</arguments>
+<nostatechange />
+<return>An integer 0 to 6, with 0 representing Sunday and 6 Saturday, as used elsewhere in this class, or 9 if the string did not correspond to one of the days of the week. (Case is ignored.)</return>
+</method>
+
+<method name="validateDate" returntype="bool">
+<desc>(NAMJAF) Determine if the parameters given form a valid date.</desc>
+<arguments>
+<arg name="month" type="unsigned">The month of the date to check for validity.</arg>
+<arg name="day" type="unsigned">The day.</arg>
+<arg name="year" type="unsigned">The year.</arg>
+</arguments>
+<nostatechange />
+<return>True if this is a valid date in the Gregorian calendar.</return>
+</method>
+
+<!--
+&sto:ENTRY;<method name="&sto:ENTRY;" returntype="&sto:ENTRY;">
+<desc>&sto:ENTRY;</desc>
+<arguments>
+<arg name="&sto:ENTRY;" type="&sto:ENTRY;">&sto:ENTRY;</arg>
+&sto:ENTRY;<arg name="&sto:ENTRY;" type="&sto:ENTRY;">&sto:ENTRY;</arg>
+</arguments>
+<statechange>&sto:ENTRY;</statechange>
+<return>&sto:ENTRY;</return>
+</method>
+-->
+
+
+</methods-list>
+</class>
+</spec>

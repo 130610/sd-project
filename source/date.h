@@ -5,20 +5,20 @@
 #include "button.h"
 
 class Date {
-private:
+public:
   unsigned month, day, year; // months start at 1
-  bool isLeapYear(unsigned month, unsigned day, unsigned year);
 
   // 0's are unused
-  unsigned monthCodes[13] = {0, 6,2,2,5,0,3,5,1,4,6,2,4};
-  unsigned monthDays[13] = {0, 31,29,31,30,31,30,31,31,30,31,30,31};
+  const unsigned monthCodes[13] = {0, 6,2,2,5,0,3,5,1,4,6,2,4};
+  const unsigned monthDays[13] = {0, 31,29,31,30,31,30,31,31,30,31,30,31};
 
-public:
   Date(unsigned m, unsigned d, unsigned y);
   Date(); // generates random date
   bool compareDay(unsigned dayToCheck);
+  bool isLeapYear();
 };
 
 unsigned convertDayToNumber(string s);
+bool validateDate(unsigned month, unsigned day, unsigned year);
 
 #endif

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <algorithm> // for transform()
+#include <stdlib.h>
 #include <string>
 #include "date.h"
-
 using namespace std;
 
 Date::Date(unsigned m, unsigned d, unsigned y) // given date
@@ -12,10 +12,25 @@ Date::Date(unsigned m, unsigned d, unsigned y) // given date
 
 Date::Date()
 {
-  /* find a random date -- ask Bryan how it works */
+  /* ask Bryan how to seed this properly */
+  int seed = 500;
+
+  unsigned month, day, year, century;
+  do {
+    srand(seed++);
+    month = (rand() % 12) + 1; srand(seed++);
+    day = (rand() % 31) + 1;   srand(seed++);
+    year = (rand() % 100);     srand(seed++);
+    century = 1900 + (rand() % 2);
+    year = century + year;
+  } while (!validateDate(month, day, year));
+
+  this->month = month;
+  this->day = day;
+  this->year = year;
 }
 
-bool Date::isLeapYear(unsigned month, unsigned day, unsigned year)
+bool Date::isLeapYear()
 {
   if( (month == 2) && (day == 29) && (year % 4) )
     return false;
@@ -64,4 +79,14 @@ unsigned convertDayToNumber(string s)
   if (s == "friday") return 5;
   if (s == "saturday") return 6;
   return 9;
+}
+
+bool validateDate(unsigned month, unsigned day, unsigned year)
+{
+  Date d (month, day, year);
+  if (d.month < 1 || d.month > 12) return false;
+  if (d.year < 1) return false;
+  if (d.day > d.monthDays[d.month]) return false;
+  if (d.day == 29 && !(d.isLeapYear())) return false;
+  return true;
 }
