@@ -22,6 +22,7 @@
 #include "start.h"
 #include "InstructionLines.h"
 #include "target.h"
+#include "draw.h"
 
 
 using namespace std;
@@ -37,6 +38,7 @@ int backgroundTexture;
 int keyboardTexture;
 int koalaTexture;
 double lastTime;
+int offset = 0;
 
 //button info
 const int buttonHeight = 118;
@@ -141,6 +143,9 @@ void display()
           Buttons[i]->draw();
       }
       // Drawing the target boxes
+      rootTarget[0]->drawBoxes(offset);
+      //rootTarget[0]->drawDependLines(); // this doesn't work yet
+
       // Drawing the line tracking the koala launch trajectory
 
       // cerr<<"Tracking position: ("<<trackingx<<","<<trackingy<<")"<<endl;

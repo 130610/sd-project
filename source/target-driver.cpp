@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-	Target **root = new Target*[1];
-	root[0] = parseTargets("TestMakefile2");
+	Target **root;
+	root = parseTargets("Makefile.level");
 	root[0]->initPositions();
 	root[0]->printTree();
 	root[0]->findTarget("dep1")->printTree();

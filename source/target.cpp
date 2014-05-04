@@ -3,10 +3,13 @@
 #include <string>
 #include <stdlib.h>
 #include "target.h"
+#include "draw.h"
+#ifdef MACOSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 using namespace std;
-
-#define MAX_X_FACTOR 80
-#define MAX_Y_FACTOR 250
 
 int numRoots = 1;
 int seed;
@@ -57,9 +60,29 @@ void Target::addParent(Target *p)
 	parents = tmpList;
 }
 
+void Target::drawBoxes(int offset)
+{
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->drawBoxes(offset);
+	}
+	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT);
+	drawText(posX + 3, posY + 3, targetName);
+}
+
+void Target::drawDependLines()
+{
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->drawDependLines();
+		glBegin(GL_LINES);
+			glVertex3f(posX, posY, 0);
+			glVertex3f(children[i]->getPosX(), children[i]->getPosY(), 0);
+		glEnd();
+	}
+}
+
 void Target::printTree()
 {
-	cout << this->getName() << " depends on " ;
+	cout << this->getName() << "(" << getPosX()  << ", " << getPosY() << ")" << " depends on " ;
 	cout << children[0]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
 	for (int i = 1; i < numChildren; i++) {
 		cout << " and " << children[i]->getName() << "(" << children[i]->getPosX()  << ", " << children[i]->getPosY() << ")";
@@ -90,9 +113,9 @@ void Target::initPositions(int d, int ind)
 
 	if (posInited == false) {
 		srand(seed++);
-		posX = (ind + 1) * (rand() % MAX_X_FACTOR);
+		posX = ((ind + 1) * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
 		srand(seed++);
-		posY = (d + 1) * (rand() % MAX_Y_FACTOR);
+		posY = ((d + 1) * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
 		posInited = true;
 	}
 }

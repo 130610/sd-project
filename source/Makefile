@@ -9,7 +9,7 @@ else
 endif
 
 # opengl section
-start: start.o texture.o text.o button.o InstructionLines.o target.o
+start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
 start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h
@@ -27,14 +27,18 @@ texture.o: texture.cpp texture.h
 text.o: text.cpp text.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c text.cpp
 
+draw.o: draw.cpp draw.h
+	g++ $(OPTS) $(MACOSX_DEFINE) -c draw.cpp
+	
+
 # makefile parser
-target-driver: target-driver.o target.o
+target-driver: target-driver.o target.o draw.o
 	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
-target.o: target.cpp
+target.o: target.cpp target.h draw.h
 	g++ $(OPTS) -c target.cpp
 
-target-driver.o: target-driver.cpp
+target-driver.o: target-driver.cpp target.h
 	g++ $(OPTS) -c target-driver.cpp
 
 # dater

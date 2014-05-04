@@ -5,6 +5,11 @@
 #include <vector>
 using namespace std;
 
+#define MAX_X_FACTOR 200
+#define MAX_Y_FACTOR 100
+#define BOX_WIDTH 100
+#define BOX_HEIGHT 40
+
 class Target
 {
 	string targetName;
@@ -32,6 +37,8 @@ public:
 	int getPosX() { return posY; }
 	Target* findTarget(string n);
 	void initPositions(int d = 0, int ind = 0);
+	void drawBoxes(int offset);
+	void drawDependLines();
 	void printTree();
 };
 
