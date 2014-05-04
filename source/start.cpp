@@ -187,6 +187,7 @@ void display()
 
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
+     
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
