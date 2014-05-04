@@ -78,6 +78,34 @@ float koalatargetx=koalax;
 float koalatargety=koalay;
 bool atTarget=true;
 
+
+//LoadPage TextBox
+bool overTextBox = false;
+string textInBox = "";
+double textBox1[] = {320, 30, 200,40};
+double textBox2[] = {325, 35, 190, 30 };
+const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
+
+
+void drawBox(double x, double y, double width, double height)
+{
+  glBegin(GL_POLYGON);
+    glVertex2f(x, y);  // upper left
+    glVertex2f(x, y + height);  // lower left
+    glVertex2f(x + width, y + height);  // lower right
+    glVertex2f(x + width, y);  // upper right
+  glEnd();
+}
+
+
+void writeText(float x, float y, const char *text)
+{
+  glRasterPos2f( x, y );
+  int length = strlen(text);
+  for (int i = 0; i < length; i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+}
+
 void quitProgram()
 {
   int win = glutGetWindow();
@@ -99,9 +127,9 @@ void drawInstructions()
   Text spacet3(400, 240, "power of the Koala launch");
   LegendItem spaceKey(460,396,300,372,2.5, spacet1, spacet2, spacet3);
 
-  Text darrowt1(732, 300, "Pressing the down arrow");
-  Text darrowt2(732, 280, "allows user to set");
-  Text darrowt3(732, 260, "the trajectory of the launch");
+  Text darrowt1(650, 260, "Pressing the down,left or right arrow");
+  Text darrowt2(650, 240, "allows user to set");
+  Text darrowt3(650, 220, "the trajectory of the launch");
   LegendItem darrowKey(732,732,300,368,2.5, darrowt1, darrowt2, darrowt3);
 
   Text uarrowt1(760, 640, "Pressing the up arrow");
@@ -170,6 +198,7 @@ void display()
 
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
+     
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
@@ -179,6 +208,19 @@ void display()
 
     case INSTRUCTIONS:
       drawInstructions();
+       glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(1,0,1);
+        glVertex3f(630,300,0);
+        glVertex3f(696,368,0);
+	glEnd();
+
+       glBegin(GL_LINES);
+        glLineWidth(2.5);
+        glColor3f(1,0,1);
+        glVertex3f(840,300,0);
+        glVertex3f(765,368,0);
+	glEnd();
 
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
@@ -262,6 +304,12 @@ void special_keyboard(int key, int x, int y)
   case GLUT_KEY_DOWN:
     mouseposy--;
     break;
+  case GLUT_KEY_LEFT:
+    mouseposx--;
+    break;
+  case GLUT_KEY_RIGHT:
+    mouseposx++;
+    break;
   }
   glutPostRedisplay();
 }
@@ -306,7 +354,7 @@ void mouse_motion(int x, int y)
 {
 #ifdef DEBUG
   // show coordinates of mouse pointer
-  //cerr <<"Mouse position: ("<<x<<","<<y<<")"<<endl;
+  cerr <<"Mouse position: ("<<x<<","<<y<<")"<<endl;
   mouseposx = x;
   mouseposy=768-y;
 #endif
