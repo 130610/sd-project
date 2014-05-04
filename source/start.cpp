@@ -36,12 +36,19 @@ const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
 const char numButtons = 6;
 
+// quit textbox info
+bool overQuitTextBox = false;
+string textInQuitBox = "";
+double quitTextBox1[] = { 320, 30,   200, 40 };  // outer box for text
+double quitTextBox2[] = { 325, 35,   190, 30 };  // inner box for text
+const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
+
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452);
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2),500,118, INSTRUCTIONS,START, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight),500,118, CUSTOMIZE,START, 420);
-MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT,START, 235);
+MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT_MOVE,START, 235);
 
 //Instruction Screen Buttons //
 Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
@@ -161,16 +168,22 @@ void display()
       glutSwapBuffers();
       break;
 
-    case QUIT:
+    case QUIT_MOVE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       quitButton.move();
-      quitButton.active = QUIT; // change to "quit screen", not just start
+      quitButton.active = QUIT_MOVE; // change to "quit screen", not just start
+      quitButton.screen = QUIT_DATE;
       for (short int i=0; i<numButtons; ++i)
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       break;
       // the actual quit is handled in the mouse button press
-      //
+    case QUIT_DATE:
+      {
+      cerr << "I'm on the quit date screen" << endl;
+      quitProgram();
+      break;
+      }
     default:
       cerr << "This screen not defined (yet?)." << endl;
       break;
@@ -224,9 +237,11 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen) {
           if (Buttons[i]->onButton(x,y)) {
             Buttons[i]->IsPressed = true;
-            if (screen == QUIT && Buttons[i]->active == QUIT)
-              // quit button, and already pressed once
-              quitProgram();
+            if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
+              // quit button, and already pressed once; move to date part
+              screen = QUIT_DATE;
+              Buttons[i]->active = QUIT_DATE;
+            }
             else
               screen = Buttons[i]->screen;
           }
@@ -348,7 +363,7 @@ void idle()
   double elapsedTime = now - lastTime;
   if ( elapsedTime > .05 ) {
     lastTime = now;
-    if ( screen == QUIT ) {
+    if ( screen == QUIT_MOVE ) {
       glutPostRedisplay();
     }
   }
