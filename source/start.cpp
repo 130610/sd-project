@@ -251,6 +251,12 @@ void special_keyboard(int key, int x, int y)
     case GLUT_KEY_F1:
       screen = START;
       break;
+  case GLUT_KEY_UP:
+    mouseposy++;
+    break;
+  case GLUT_KEY_DOWN:
+    mouseposy--;
+    break;
   }
   glutPostRedisplay();
 }
