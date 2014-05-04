@@ -21,6 +21,7 @@
 #include "texture.h"
 #include "start.h"
 
+
 using namespace std;
 
 // general state
@@ -28,6 +29,7 @@ char programName[] = "Makefile Madness";
 enum screenType screen;
 int backgroundTexture;
 int keyboardTexture;
+int koalaTexture;
 double lastTime;
 
 //button info
@@ -57,11 +59,28 @@ Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
 // Main Button Array//
 Button* Buttons[numButtons];
 
+
+//Koala Main screen global variables
+float koalax=10;
+float koalay=140;
+float mouseposx;
+float mouseposy;
+float theta;
+float pi = 3.14;
+
 void quitProgram()
 {
   int win = glutGetWindow();
   glutDestroyWindow(win);
   exit(0);
+}
+
+void drawText(float x, float y, const char *text)
+{
+  glRasterPos2f(x,y);
+  int length = strlen(text);
+  for (int i=0; i<length; i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 }
 
 void display()
@@ -76,6 +95,7 @@ void display()
         if (Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
+      
       glutSwapBuffers();
       break;
 
@@ -85,6 +105,32 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
+      // Drawing the line tracking the koala launch trajectory
+     
+      if(mouseposy>(koalay-40) || (mouseposx > koalax+40))
+	theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
+      else if(mouseposy<(koalay-40) || (mouseposx < (koalax+40)))
+	{
+	  theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
+	  theta+=180;
+	}
+      else if(mouseposy<(koalay-40)|| (mouseposx>koalax+40))
+        theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
+      else if(mouseposy>(koalay-40)|| (mouseposx<koalax+40))
+	theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40))); 
+      int trackingx;
+      int trackingy;
+      trackingx=cos(theta)*250;
+      trackingy=sin(theta)*250;
+      glLineStipple(1, 0xAAAA);
+      glEnable(GL_LINE_STIPPLE);
+      glBegin(GL_LINES);
+       glVertex3f(koalax+40, koalay-40, 0);
+       glVertex3f(trackingx,trackingy, 0);
+      glEnd();
+
+      //Drawing the Koala
+      drawTexture(koalaTexture,koalax,koalay,100,-100);
       glutSwapBuffers();
       break;
 
@@ -103,59 +149,78 @@ void display()
       //X and Space lines
       glBegin(GL_LINES);
       glLineWidth(2.5);
-      glColor3f(.2,0,1);
+      glColor3f(1,0,1);
       glVertex3f(270,320,0);
       glVertex3f(306,392,0);
       glEnd();
-
+      //Lines xline(270,306,320,392,2.5);
+      //xline.drawLines();
+      glColor3f(1,1,1);
+      drawText(120,310, "X button allows the");
+      drawText(120,290, "user to launch the Koala");
+   
       glBegin(GL_LINES);
         glLineWidth(2.5);
-        glColor3f(.2,0,1);
+        glColor3f(1,0,1);
         glVertex3f(460,300,0);
         glVertex3f(396,372,0);
       glEnd();
+      glColor3f(1,1,1);
+      drawText(400, 280, "Holding the space bar");
+      drawText(400, 260, "allows user to set the");
+      drawText(400, 240, "power of the Koala launch");
       //Arrow Key Button Line
-      glBegin(GL_LINES);
+       glBegin(GL_LINES);
         glLineWidth(2.5);
-        glColor3f(.2,0,1);
+        glColor3f(1,0,1);
         glVertex3f(732,300,0);
         glVertex3f(732,368,0);
-      glEnd();
+       glEnd();
+       glColor3f(1,1,1);
+       drawText(732,300, "Pressing the down arrow");
+       drawText(732, 280,"allows user to set");
+       drawText(732, 260, "the trajectory of the launch");
 
-      glBegin(GL_LINES);
+	/*glBegin(GL_LINES);
         glLineWidth(2.5);
         glColor3f(.2,0,1);
         glVertex3f(630,300,0);
         glVertex3f(696,368,0);
-      glEnd();
+	glEnd();*/
 
-      glBegin(GL_LINES);
+      /* glBegin(GL_LINES);
         glLineWidth(2.5);
         glColor3f(.2,0,1);
         glVertex3f(840,300,0);
         glVertex3f(765,368,0);
-      glEnd();
+	glEnd();*/
 
-      glBegin(GL_LINES);
+       glBegin(GL_LINES);
         glLineWidth(2.5);
-        glColor3f(.2,0,1);
+        glColor3f(1,0,1);
         glVertex3f(760,600,0);
         glVertex3f(728,392,0);
-      glEnd();
+	glEnd();
+	glColor3f(1,1,1);
+	drawText(760, 640, "pressing the up arrow");
+	drawText(760, 620, "allows user to set the");
+	drawText(760,600, "trajectory of the launch");
       //F1 Button line
       glBegin(GL_LINES);
         glLineWidth(2.5);
-        glColor3f(.2,0,1);
+        glColor3f(1,0,1);
         glVertex3f(250,623,0);
         glVertex3f(250,525,0);
       glEnd();
+      glColor3f(1,1,1);
+      drawText(230, 643, "Pressing F1 returns you");
+      drawText(230, 623, "to the start screen");
 
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
 
-      /* draw text -- Kalpit will make an image for this */
       glutSwapBuffers();
       break;
 
@@ -268,6 +333,8 @@ void mouse_motion(int x, int y)
 #ifdef DEBUG
   // show coordinates of mouse pointer
   cerr <<"("<<x<<","<<y<<")"<<endl;
+  mouseposx = x;
+  mouseposy=768-y;
 #endif
 
   // is the mouse button currently depressed over any screen button?
@@ -333,6 +400,7 @@ void init_gl_window()
 
   backgroundTexture = loadTexture("../images/background.pam");
   keyboardTexture = loadTexture("../images/keyboard.pam");
+  koalaTexture = loadTexture("../images/Koala.pam");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
