@@ -21,9 +21,14 @@
 #include "texture.h"
 #include "start.h"
 #include "InstructionLines.h"
+#include "target.h"
 
 
 using namespace std;
+
+// root target
+Target **rootTarget;
+const char *defaultMakefile = "Makefile.level";
 
 // general state
 char programName[] = "Makefile Madness";
@@ -135,6 +140,7 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
+      // Drawing the target boxes
       // Drawing the line tracking the koala launch trajectory
 
       // cerr<<"Tracking position: ("<<trackingx<<","<<trackingy<<")"<<endl;
@@ -422,12 +428,26 @@ void init_buttons()
   }
 }
 
-int main()
+void init_targets(int argc, char **argv)
+{
+  
+  string name;
+  if (argc >= 2) {
+    rootTarget = parseTargets(argv[argc]);
+  } else {
+    rootTarget = parseTargets(defaultMakefile);
+  }
+
+  rootTarget[0]->initPositions();
+}
+
+int main(int argc, char **argv)
 {
   lastTime = getCurrentTime();
 
   screen = START;
   init_buttons();
+  init_targets(argc, argv);
 
   init_gl_window();
 }

@@ -9,10 +9,10 @@ else
 endif
 
 # opengl section
-start: start.o texture.o text.o button.o InstructionLines.o
+start: start.o texture.o text.o button.o InstructionLines.o target.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
-start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o
+start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
 
 InstructionLines.o: InstructionLines.cpp InstructionLines.h

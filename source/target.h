@@ -22,6 +22,8 @@ public:
 	Target(string n): targetName(n), children(0), parents(0), numParents(0), numChildren(0), posInited(0) {}
 	Target(string n, Target *p);
 
+	~Target();
+
 	void addChildren(string dl, Target **r);
 	void addParent(Target *p);
 	void setName(string n) { targetName = n; }
@@ -40,7 +42,7 @@ public:
 //	vector<string>& split(char delim);
 //};
 
-Target *parseTargets(const char *filename);
+Target **parseTargets(const char *filename);
 vector<string> splitString(string s, char d);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);

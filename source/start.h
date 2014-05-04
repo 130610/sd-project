@@ -3,7 +3,7 @@
 
 // other functions
 void quitProgram();
-int main();
+int main(int argc, char **argv);
 
 // openGL functions
 void display();

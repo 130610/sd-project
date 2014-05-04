@@ -5,6 +5,9 @@
 #include "target.h"
 using namespace std;
 
+#define MAX_X_FACTOR 80
+#define MAX_Y_FACTOR 250
+
 int numRoots = 1;
 int seed;
 
@@ -12,6 +15,12 @@ Target::Target(string n, Target *p): targetName(n), children(0), numParents(0), 
 {
 	parents = new Target*[1];
 	parents[0] = p;
+}
+
+Target::~Target()
+{
+	if (parents) delete [] parents;
+	if (children) delete [] children;
 }
 
 void Target::addChildren(string dl, Target **r)
@@ -81,9 +90,9 @@ void Target::initPositions(int d, int ind)
 
 	if (posInited == false) {
 		srand(seed++);
-		posX = (ind + 1) * (rand() % 100);
+		posX = (ind + 1) * (rand() % MAX_X_FACTOR);
 		srand(seed++);
-		posY = (d + 1) * (rand() % 300);
+		posY = (d + 1) * (rand() % MAX_Y_FACTOR);
 		posInited = true;
 	}
 }
@@ -106,7 +115,7 @@ vector<string> splitString(string s, char d)
 	return flds;
 }
 
-Target *parseTargets(const char *filename)
+Target **parseTargets(const char *filename)
 {
 	Target **root = new Target *[1];
 	string *lineList = new string[1]; 
@@ -136,7 +145,7 @@ Target *parseTargets(const char *filename)
 			numTargets++;
 		}
 	}
-	return root[0];
+	return root;
 }
 
 void addLine(string *&ll, char *l)
