@@ -55,11 +55,13 @@ Button* Buttons[numButtons];
 
 //Koala Main screen global variables
 float koalax=10;
-float koalay=140;
+float koalay=120;
 float mouseposx;
 float mouseposy;
 float theta;
-float pi = 3.14;
+float koalatargetx=koalax;
+float koalatargety=koalay;
+bool atTarget=true;
 
 void quitProgram()
 {
@@ -99,27 +101,20 @@ void display()
           Buttons[i]->draw();
       }
       // Drawing the line tracking the koala launch trajectory
-     
-      if(mouseposy>(koalay-40) || (mouseposx > koalax+40))
-	theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
-      else if(mouseposy<(koalay-40) || (mouseposx < (koalax+40)))
-	{
-	  theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
-	  theta+=180;
-	}
-      else if(mouseposy<(koalay-40)|| (mouseposx>koalax+40))
-        theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
-      else if(mouseposy>(koalay-40)|| (mouseposx<koalax+40))
-	theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40))); 
-      int trackingx;
-      int trackingy;
-      trackingx=cos(theta)*250;
-      trackingy=sin(theta)*250;
+      // cerr<<"Tracking position: ("<<trackingx<<","<<trackingy<<")"<<endl;
+      int hypotenuse;
+      hypotenuse = sqrt(((mouseposx-(koalax+40))*(mouseposx-(koalax+40)))+((mouseposy-(koalay-40))*(mouseposy-(koalay-40))));
+      theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
+      //cerr <<hypotenuse<<endl;
+      //cerr <<theta <<endl;
+      if(hypotenuse >=100)
+	hypotenuse =100;
+      
       glLineStipple(1, 0xAAAA);
       glEnable(GL_LINE_STIPPLE);
       glBegin(GL_LINES);
        glVertex3f(koalax+40, koalay-40, 0);
-       glVertex3f(trackingx,trackingy, 0);
+       glVertex3f(mouseposx ,mouseposy,0);
       glEnd();
 
       //Drawing the Koala
@@ -249,6 +244,10 @@ void display()
 void keyboard(unsigned char c, int x, int y)
 {
   switch(c) {
+  case 'x':
+    koalatargetx=mouseposx;
+    koalatargety=mouseposy;
+    break;
     case 'g':
     case 'G':
       if (screen == START)
@@ -297,6 +296,7 @@ void mouse(int mouseButton, int state, int x, int y)
           }
         }
       }
+	
     }
     else { // mouse release
       for (short int i=0; i<numButtons; ++i) {
@@ -317,7 +317,7 @@ void mouse_motion(int x, int y)
 {
 #ifdef DEBUG
   // show coordinates of mouse pointer
-  cerr <<"("<<x<<","<<y<<")"<<endl;
+  //cerr <<"Mouse position: ("<<x<<","<<y<<")"<<endl;
   mouseposx = x;
   mouseposy=768-y;
 #endif
@@ -420,7 +420,21 @@ void idle()
       glutPostRedisplay();
     }
   }
+  if (elapsedTime > .05)
+    {
+      if( screen == GAME)
+	{
+	  if(!(koalax==koalatargetx && koalay == koalatargety))
+	    {
+	    
+	      koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
+	      koalay+=(koalatargety-koalay)/15;
+	      glutPostRedisplay();
+	    }
+	}
+    }
 }
+
 
 void init_buttons()
 {
