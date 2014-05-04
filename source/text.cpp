@@ -4,6 +4,10 @@
 #include <GL/glut.h>
 #endif
 
+#include <string>
+#include <string.h>
+using namespace std;
+
 /* Source:
  * http://stackoverflow.com/questions/11190205/opengl-display-animation-and-draw-text
  */
@@ -30,4 +34,20 @@ void drawStrokeText(char*string,int x,int y,int z)
     glutStrokeCharacter(GLUT_STROKE_ROMAN , *c);
   }
   glPopMatrix();
+}
+
+void drawText(float x, float y, const char *text)
+{
+  glRasterPos2f(x,y);
+  int length = strlen(text);
+  for (int i=0; i<length; i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+}
+
+void drawText(float x, float y, string text)
+{
+  glRasterPos2f(x,y);
+  int length = text.length();
+  for (int i=0; i<length; i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 }

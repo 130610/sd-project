@@ -20,6 +20,7 @@
 #include "text.h"
 #include "texture.h"
 #include "start.h"
+#include "InstructionLines.h"
 
 
 using namespace std;
@@ -38,12 +39,19 @@ const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
 const char numButtons = 6;
 
+// quit textbox info
+bool overQuitTextBox = false;
+string textInQuitBox = "";
+double quitTextBox1[] = { 320, 30,   200, 40 };  // outer box for text
+double quitTextBox2[] = { 325, 35,   190, 30 };  // inner box for text
+const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
+
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452);
 Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2),500,118, INSTRUCTIONS,START, 460);
 Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight),500,118, CUSTOMIZE,START, 420);
-MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT,START, 235);
+MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT_MOVE,START, 235);
 
 //Instruction Screen Buttons //
 Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
@@ -70,12 +78,39 @@ void quitProgram()
   exit(0);
 }
 
-void drawText(float x, float y, const char *text)
+void drawInstructions()
 {
-  glRasterPos2f(x,y);
-  int length = strlen(text);
-  for (int i=0; i<length; i++)
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+  drawTexture(backgroundTexture,0., 768., 1024., -768.);
+  drawTexture(keyboardTexture,170,548,768,-200);
+
+  Text xt1(120,310,"X button allows the");
+  Text xt2(120,290,"user to launch the Koala");
+  LegendItem xKey(270,306,320,392,2.5,xt1,xt2);
+
+  Text spacet1(400, 280, "Holding the space bar");
+  Text spacet2(400, 260, "allows user to set the");
+  Text spacet3(400, 240, "power of the Koala launch");
+  LegendItem spaceKey(460,396,300,372,2.5, spacet1, spacet2, spacet3);
+
+  Text darrowt1(732, 300, "Pressing the down arrow");
+  Text darrowt2(732, 280, "allows user to set");
+  Text darrowt3(732, 260, "the trajectory of the launch");
+  LegendItem darrowKey(732,732,300,368,2.5, darrowt1, darrowt2, darrowt3);
+
+  Text uarrowt1(760, 640, "Pressing the up arrow");
+  Text uarrowt2(760, 620, "allows user to set");
+  Text uarrowt3(760, 600, "the trajectory of the launch");
+  LegendItem uarrowKey(760,728,600,392,2.5, uarrowt1, uarrowt2, uarrowt3);
+
+  Text f1t1(230, 643, "Pressing F1 returns you");
+  Text f1t2(230, 623, "to the start screen");
+  LegendItem f1Key(250,250,632,525,2.5, f1t1, f1t2, uarrowt3);
+
+  xKey.draw();
+  spaceKey.draw();
+  darrowKey.draw();
+  uarrowKey.draw();
+  f1Key.draw();
 }
 
 void display()
@@ -90,7 +125,7 @@ void display()
         if (Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-      
+
       glutSwapBuffers();
       break;
 
@@ -101,6 +136,7 @@ void display()
           Buttons[i]->draw();
       }
       // Drawing the line tracking the koala launch trajectory
+
       // cerr<<"Tracking position: ("<<trackingx<<","<<trackingy<<")"<<endl;
       int hypotenuse;
       hypotenuse = sqrt(((mouseposx-(koalax+40))*(mouseposx-(koalax+40)))+((mouseposy-(koalay-40))*(mouseposy-(koalay-40))));
@@ -109,7 +145,6 @@ void display()
       //cerr <<theta <<endl;
       if(hypotenuse >=100)
 	hypotenuse =100;
-      
       glLineStipple(1, 0xAAAA);
       glEnable(GL_LINE_STIPPLE);
       glBegin(GL_LINES);
@@ -132,77 +167,7 @@ void display()
       break;
 
     case INSTRUCTIONS:
-      drawTexture(backgroundTexture,0., 768., 1024., -768.);
-      drawTexture(keyboardTexture,170,548,768,-200);
-      //X and Space lines
-      glBegin(GL_LINES);
-      glLineWidth(2.5);
-      glColor3f(1,0,1);
-      glVertex3f(270,320,0);
-      glVertex3f(306,392,0);
-      glEnd();
-      //Lines xline(270,306,320,392,2.5);
-      //xline.drawLines();
-      glColor3f(1,1,1);
-      drawText(120,310, "X button allows the");
-      drawText(120,290, "user to launch the Koala");
-   
-      glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(1,0,1);
-        glVertex3f(460,300,0);
-        glVertex3f(396,372,0);
-      glEnd();
-      glColor3f(1,1,1);
-      drawText(400, 280, "Holding the space bar");
-      drawText(400, 260, "allows user to set the");
-      drawText(400, 240, "power of the Koala launch");
-      //Arrow Key Button Line
-       glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(1,0,1);
-        glVertex3f(732,300,0);
-        glVertex3f(732,368,0);
-       glEnd();
-       glColor3f(1,1,1);
-       drawText(732,300, "Pressing the down arrow");
-       drawText(732, 280,"allows user to set");
-       drawText(732, 260, "the trajectory of the launch");
-
-	/*glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(.2,0,1);
-        glVertex3f(630,300,0);
-        glVertex3f(696,368,0);
-	glEnd();*/
-
-      /* glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(.2,0,1);
-        glVertex3f(840,300,0);
-        glVertex3f(765,368,0);
-	glEnd();*/
-
-       glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(1,0,1);
-        glVertex3f(760,600,0);
-        glVertex3f(728,392,0);
-	glEnd();
-	glColor3f(1,1,1);
-	drawText(760, 640, "pressing the up arrow");
-	drawText(760, 620, "allows user to set the");
-	drawText(760,600, "trajectory of the launch");
-      //F1 Button line
-      glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(1,0,1);
-        glVertex3f(250,623,0);
-        glVertex3f(250,525,0);
-      glEnd();
-      glColor3f(1,1,1);
-      drawText(230, 643, "Pressing F1 returns you");
-      drawText(230, 623, "to the start screen");
+      drawInstructions();
 
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
@@ -211,7 +176,6 @@ void display()
 
       glutSwapBuffers();
       break;
-
     case CUSTOMIZE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
@@ -221,16 +185,22 @@ void display()
       glutSwapBuffers();
       break;
 
-    case QUIT:
+    case QUIT_MOVE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       quitButton.move();
-      quitButton.active = QUIT; // change to "quit screen", not just start
+      quitButton.active = QUIT_MOVE; // change to "quit screen", not just start
+      quitButton.screen = QUIT_DATE;
       for (short int i=0; i<numButtons; ++i)
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       break;
       // the actual quit is handled in the mouse button press
-      //
+    case QUIT_DATE:
+      {
+      cerr << "I'm on the quit date screen" << endl;
+      quitProgram();
+      break;
+      }
     default:
       cerr << "This screen not defined (yet?)." << endl;
       break;
@@ -288,9 +258,11 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen) {
           if (Buttons[i]->onButton(x,y)) {
             Buttons[i]->IsPressed = true;
-            if (screen == QUIT && Buttons[i]->active == QUIT)
-              // quit button, and already pressed once
-              quitProgram();
+            if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
+              // quit button, and already pressed once; move to date part
+              screen = QUIT_DATE;
+              Buttons[i]->active = QUIT_DATE;
+            }
             else
               screen = Buttons[i]->screen;
           }
@@ -416,7 +388,7 @@ void idle()
   double elapsedTime = now - lastTime;
   if ( elapsedTime > .05 ) {
     lastTime = now;
-    if ( screen == QUIT ) {
+    if ( screen == QUIT_MOVE ) {
       glutPostRedisplay();
     }
   }

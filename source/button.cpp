@@ -61,6 +61,7 @@ void Button::draw() {
   drawButton();
 
   //text
+  
   char * bText = new char[label.size() + 1];
   copy(label.begin(), label.end(), bText);
   bText[label.size()] = '\0';
@@ -72,6 +73,7 @@ void MovingButton::draw() {
   drawButton();
 
   //text
+  
   char * bText = new char[label.size() + 1];
   copy(label.begin(), label.end(), bText);
   bText[label.size()] = '\0';
