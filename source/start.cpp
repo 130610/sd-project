@@ -31,7 +31,7 @@ using namespace std;
 Target **rootTarget;
 const char *defaultMakefile = "Makefile.level";
 
-// general state
+// general state of program
 char programName[] = "Makefile Madness";
 enum screenType screen;
 int backgroundTexture;
