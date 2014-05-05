@@ -3,6 +3,12 @@
 #include <string>
 #include <stdlib.h>
 #include "target.h"
+#include "draw.h"
+#ifdef MACOSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 using namespace std;
 
 int numRoots = 1;
@@ -12,6 +18,12 @@ Target::Target(string n, Target *p): targetName(n), children(0), numParents(0), 
 {
 	parents = new Target*[1];
 	parents[0] = p;
+}
+
+Target::~Target()
+{
+	if (parents) delete [] parents;
+	if (children) delete [] children;
 }
 
 void Target::addChildren(string dl, Target **r)
@@ -48,9 +60,29 @@ void Target::addParent(Target *p)
 	parents = tmpList;
 }
 
+void Target::drawBoxes(int offset)
+{
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->drawBoxes(offset);
+	}
+	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT);
+	drawText(posX + 3, posY + 3, targetName);
+}
+
+void Target::drawDependLines()
+{
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->drawDependLines();
+		glBegin(GL_LINES);
+			glVertex3f(posX, posY, 0);
+			glVertex3f(children[i]->getPosX(), children[i]->getPosY(), 0);
+		glEnd();
+	}
+}
+
 void Target::printTree()
 {
-	cout << this->getName() << " depends on " ;
+	cout << this->getName() << "(" << getPosX()  << ", " << getPosY() << ")" << " depends on " ;
 	cout << children[0]->getName() << "(" << children[0]->getPosX()  << ", " << children[0]->getPosY() << ")";
 	for (int i = 1; i < numChildren; i++) {
 		cout << " and " << children[i]->getName() << "(" << children[i]->getPosX()  << ", " << children[i]->getPosY() << ")";
@@ -81,9 +113,9 @@ void Target::initPositions(int d, int ind)
 
 	if (posInited == false) {
 		srand(seed++);
-		posX = (ind + 1) * (rand() % 100);
+		posX = ((ind + 1) * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
 		srand(seed++);
-		posY = (d + 1) * (rand() % 300);
+		posY = ((d + 1) * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
 		posInited = true;
 	}
 }
@@ -106,7 +138,7 @@ vector<string> splitString(string s, char d)
 	return flds;
 }
 
-Target *parseTargets(const char *filename)
+Target **parseTargets(const char *filename)
 {
 	Target **root = new Target *[1];
 	string *lineList = new string[1]; 
@@ -136,7 +168,7 @@ Target *parseTargets(const char *filename)
 			numTargets++;
 		}
 	}
-	return root[0];
+	return root;
 }
 
 void addLine(string *&ll, char *l)

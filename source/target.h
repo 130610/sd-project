@@ -5,6 +5,11 @@
 #include <vector>
 using namespace std;
 
+#define MAX_X_FACTOR 200
+#define MAX_Y_FACTOR 100
+#define BOX_WIDTH 100
+#define BOX_HEIGHT 40
+
 class Target
 {
 	string targetName;
@@ -22,6 +27,8 @@ public:
 	Target(string n): targetName(n), children(0), parents(0), numParents(0), numChildren(0), posInited(0) {}
 	Target(string n, Target *p);
 
+	~Target();
+
 	void addChildren(string dl, Target **r);
 	void addParent(Target *p);
 	void setName(string n) { targetName = n; }
@@ -30,6 +37,8 @@ public:
 	int getPosX() { return posY; }
 	Target* findTarget(string n);
 	void initPositions(int d = 0, int ind = 0);
+	void drawBoxes(int offset);
+	void drawDependLines();
 	void printTree();
 };
 
@@ -40,7 +49,7 @@ public:
 //	vector<string>& split(char delim);
 //};
 
-Target *parseTargets(const char *filename);
+Target **parseTargets(const char *filename);
 vector<string> splitString(string s, char d);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);

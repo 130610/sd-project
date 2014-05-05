@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>The Target Class Specification</title>
+<header>This Class Models a Target, A Common Household Pet</header>
+<credits>Prancing Koala</credits>
+
+<class name="Target">
+
+<nosuperclass/>
+
+<variables>
+<var name="targetName" type="string">the name of the target</var>
+<var name="children" type="Target **">an array of pointers to the Target's children dependencies</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Default Constructor</desc>
+<noarguments/>
+<statechange>initialize children, parents, numParents, numChildren, and posInited to 0 and targetName to an empty string
+</statechange>
+</constructor>
+
+<constructor>
+<desc/>
+<arguments>
+<arg name="n" type="string">the name of the target</arg>
+</arguments>
+<statechange>initializes the same values as the default constructor, but sets targetName to n</statechange>
+</constructor>
+
+<constructor>
+<desc/>
+<arguments>
+<arg name="n" type="string">the name of the target</arg>
+<arg name="p" type="Target *">a pointer to the target's parent</arg>
+</arguments>
+<statechange>same as previous constructor, but adds the parent p to the list of parent targets</statechange>
+</constructor>
+
+</constructors-list>
+
+<destructor>
+<desc/>
+<statechange>if memory was allocated at children or parents, it is deallocated</statechange>
+</destructor>
+
+<methods-list>
+
+<method name="addChildren" returntype="void">
+<desc>searches for children named in dl in all trees, and add the pointer(s) to the children list, otherwise, newly construct a target with the name(s)</desc>
+<arguments>
+<arg name="dl" type="string">a list of target names separated by spaces in one string</arg>
+<arg name="r" type="Target **">a pointer to the array of root targets</arg>
+</arguments>
+<statechange>the array stored at children in the calling target is copied to a new array which is expanded to the correct size to hold the pointers, and new targets are constructed as necessary (if they could not be found in any existing trees)</statechange>
+<return/>
+</method>
+
+<method name="addParent" returntype="void">
+<desc>adds the pointer to target p to the list of parents in the calling object</desc>
+<arguments>
+<arg name="p" type="Target *">pointer to a Target</arg>
+</arguments>
+<statechange>the array pointed to by parents is deleted if it exists, and replaced by an array one larger with the same contents, but the final element being the pointer p</statechange>
+<return/>
+</method>
+
+<method name="setName" returntype="void">
+<desc>changes the targetName string in the calling object</desc>
+<arguments>
+<arg name="n" type="string">a string containting the new name</arg>
+</arguments>
+<statechange>targetName is set to n in the calling object</statechange>
+<return/>
+</method>
+
+<method name="getName" returntype="string">
+<desc>returns the name of the target</desc>
+<noarguments/>
+<statechange>None.</statechange>
+<return>the value of targetName</return>
+</method>
+
+<method name="getPosX/getPosY" returntype="int">
+<desc>returns the x/y position of the calling object</desc>
+<noarguments/>
+<statechange>None.</statechange>
+<return>the value of posX/posY</return>
+</method>
+
+<method name="findTarget" returntype="Target *">
+<desc>searches all children of calling Target, as well as calling object for the name n, and returns one that does</desc>
+<arguments>
+<arg name="n" type="string">a string containting the name</arg>
+</arguments>
+<statechange>None.</statechange>
+<return>a pointer to a target which is the calling target, or one of its children with a name matching n</return>
+</method>
+
+<method name="initPositions" returntype="void">
+<desc>recursive function which generates x and y positions for targets in the callers tree based on their depth, and a random number between 1 and 100</desc>
+<arguments>
+<arg name="d" type="int">the current depth in the tree (default 0)</arg>
+<arg name="ind" type="int">the horizantal index in the tree (default 0)</arg>
+</arguments>
+<statechange>posX and posY of caller and all of its children are initialized based on their depth, horizantal index in the search, and random numbers between 1 and 100</statechange>
+</method>
+
+<method name="printTree" returntype="void">
+<desc>convenient way to debug the positions and dependencies of tree</desc>
+<noarguments/>
+<statechange>None.</statechange>
+<return/>
+</method>
+
+</methods-list>
+
+</class>
+
+</spec>

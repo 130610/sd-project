@@ -21,9 +21,15 @@
 #include "texture.h"
 #include "start.h"
 #include "InstructionLines.h"
+#include "target.h"
+#include "draw.h"
 
 
 using namespace std;
+
+// root target
+Target **rootTarget;
+const char *defaultMakefile = "Makefile.level";
 
 // general state of program
 char programName[] = "Makefile Madness";
@@ -32,6 +38,7 @@ int backgroundTexture;
 int keyboardTexture;
 int koalaTexture;
 double lastTime;
+int offset = 0;
 
 //button info
 const int buttonHeight = 118;
@@ -79,18 +86,6 @@ string textInBox = "";
 double textBox1[] = {320, 30, 200,40};
 double textBox2[] = {325, 35, 190, 30 };
 const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
-
-
-void drawBox(double x, double y, double width, double height)
-{
-  glBegin(GL_POLYGON);
-    glVertex2f(x, y);  // upper left
-    glVertex2f(x, y + height);  // lower left
-    glVertex2f(x + width, y + height);  // lower right
-    glVertex2f(x + width, y);  // upper right
-  glEnd();
-}
-
 
 void writeText(float x, float y, const char *text)
 {
@@ -164,6 +159,10 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
+      // Drawing the target boxes
+      rootTarget[0]->drawBoxes(offset);
+      //rootTarget[0]->drawDependLines(); // this doesn't work yet
+
       // Drawing the line tracking the koala launch trajectory
 
       // cerr<<"Tracking position: ("<<trackingx<<","<<trackingy<<")"<<endl;
@@ -456,19 +455,15 @@ void idle()
       glutPostRedisplay();
     }
   }
-  if (elapsedTime > .05)
+  if (elapsedTime > .05 && screen == GAME
+  {
+    if (koalax >=
+    if (!(koalax==koalatargetx && koalay == koalatargety))
     {
-      if( screen == GAME)
-	{
-	  if(!(koalax==koalatargetx && koalay == koalatargety))
-	    {
-	    
-	      koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
-	      koalay+=(koalatargety-koalay)/15;
-	      glutPostRedisplay();
-	    }
-	}
-    }
+    koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
+    koalay+=(koalatargety-koalay)/15;
+    glutPostRedisplay();
+  }
 }
 
 
@@ -486,12 +481,26 @@ void init_buttons()
   }
 }
 
-int main()
+void init_targets(int argc, char **argv)
+{
+  
+  string name;
+  if (argc >= 2) {
+    rootTarget = parseTargets(argv[argc]);
+  } else {
+    rootTarget = parseTargets(defaultMakefile);
+  }
+
+  rootTarget[0]->initPositions();
+}
+
+int main(int argc, char **argv)
 {
   lastTime = getCurrentTime();
 
   screen = START;
   init_buttons();
+  init_targets(argc, argv);
 
   init_gl_window();
 }
