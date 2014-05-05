@@ -70,6 +70,7 @@ float theta;
 float koalatargetx=koalax;
 float koalatargety=koalay;
 bool atTarget=true;
+bool koalaatthebottom=true;
 
 
 //LoadPage TextBox
@@ -182,9 +183,17 @@ void display()
 
       //Drawing the Koala
       drawTexture(koalaTexture,koalax,koalay,100,-100);
+      //Draw the base box
+      if(koalaatthebottom)
+	glColor3f(1,1,1);
+      else
+	glColor3f(0,0,1);
+      drawBox(0,0,1024,20);
+      if(koalay==20)
+	quitProgram();
       glutSwapBuffers();
       break;
-
+      
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
      
@@ -257,6 +266,7 @@ void keyboard(unsigned char c, int x, int y)
 {
   switch(c) {
   case 'x':
+    koalaatthebottom=false;
     koalatargetx=mouseposx;
     koalatargety=mouseposy;
     break;
