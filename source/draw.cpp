@@ -6,9 +6,9 @@
 #include <string>
 using namespace std;
 
-void drawBox(double x, double y, double width, double height)
+void drawBox(double x, double y, double width, double height,float a, float b, float c)
 {
-  glColor3f(1, 1, 1);
+  glColor3f(a, b, c);
   glBegin(GL_POLYGON);
     glVertex2f(x, y);  // upper left
     glVertex2f(x, y + height);  // lower left

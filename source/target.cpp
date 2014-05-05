@@ -65,7 +65,7 @@ void Target::drawBoxes(int offset)
 	for (int i = 0; i < numChildren; i++) {
 		children[i]->drawBoxes(offset);
 	}
-	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT);
+	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT, 1, 1, 1);
 	drawText(posX + 3, posY + 3, targetName);
 }
 
