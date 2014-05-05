@@ -47,13 +47,6 @@ const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
 const char numButtons = 7;
 
-// quit textbox info
-bool overQuitTextBox = false;
-string textInQuitBox = "";
-double quitTextBox1[] = { 320, 30,   200, 40 };  // outer box for text
-double quitTextBox2[] = { 325, 35,   190, 30 };  // inner box for text
-const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
-
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
 Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452);
@@ -70,19 +63,25 @@ Button loadMakefileButton("Load", 0,0,80,768, LOAD, LOAD, 4);
 // Main Button Array//
 Button* Buttons[numButtons];
 
-
 //Koala Main screen global variables
-float koalax=10;
-float koalay=120;
-float mouseposx;
-float mouseposy;
+int koalax=10;
+int koalay=120;
+int mouseposx;
+int mouseposy;
+int koalatargetx=koalax;
+int koalatargety=koalay;
+
 float theta;
-float pi = 3.14;
-float koalatargetx=koalax;
-float koalatargety=koalay;
+
 bool atTarget=true;
 bool koalaatthebottom=true;
 
+// quit textbox info
+bool overQuitTextBox = false;
+string textInQuitBox = "";
+double quitTextBox1[] = { 320, 30,   200, 40 };  // outer box for text
+double quitTextBox2[] = { 325, 35,   190, 30 };  // inner box for text
+const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
 
 //LoadPage TextBox
 bool overTextBox = false;
@@ -140,10 +139,12 @@ void drawInstructions()
   Text spacet3(400, 240, "power of the Koala launch");
   LegendItem spaceKey(460,396,300,372,2.5, spacet1, spacet2, spacet3);
 
-  Text darrowt1(650, 260, "Pressing the down,left or right arrow");
+  Text darrowt1(650, 260, "Pressing the down, left or right arrow");
   Text darrowt2(650, 240, "allows user to set");
   Text darrowt3(650, 220, "the trajectory of the launch");
   LegendItem darrowKey(732,732,300,368,2.5, darrowt1, darrowt2, darrowt3);
+  Line darrowl1(630,696,300,368,2.5);
+  Line darrowl2(840,765,300,368,2.5);
 
   Text uarrowt1(760, 640, "Pressing the up arrow");
   Text uarrowt2(760, 620, "allows user to set");
@@ -157,6 +158,8 @@ void drawInstructions()
   xKey.draw();
   spaceKey.draw();
   darrowKey.draw();
+    darrowl1.draw();
+    darrowl2.draw();
   uarrowKey.draw();
   f1Key.draw();
 }
@@ -180,50 +183,52 @@ void display()
         if (Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-
-      glutSwapBuffers();
       break;
 
     case GAME:
+    {
       drawTexture(backgroundTexture, 0.0, 768.0, 1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-      // Drawing the target boxes
+      // draw the target boxes
       rootTarget[0]->drawTargetBoxes(offset);
       //rootTarget[0]->drawDependLines(); // this doesn't work yet
 
-      // Drawing the line tracking the koala launch trajectory
+      // draw the line tracking the koala launch trajectory
+      int hypotenuse = sqrt(((mouseposx-(koalax+40))*(mouseposx-(koalax+40))) +
+                            ((mouseposy-(koalay-40))*(mouseposy-(koalay-40))));
+      if ( !(mouseposx == koalax+40)) // divide by 0
+        theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
+      else
+        theta = 0;
 
-      // cerr<<"Tracking position: ("<<trackingx<<","<<trackingy<<")"<<endl;
-      int hypotenuse;
-      hypotenuse = sqrt(((mouseposx-(koalax+40))*(mouseposx-(koalax+40)))+((mouseposy-(koalay-40))*(mouseposy-(koalay-40))));
-      theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
-      //cerr <<hypotenuse<<endl;
-      //cerr <<theta <<endl;
-      if(hypotenuse >=100)
-	hypotenuse =100;
+      if(hypotenuse > 100)
+        hypotenuse = 100;
       glColor3f(1,1,1);
-      glLineStipple(1, 0xAAAA);
-      glEnable(GL_LINE_STIPPLE);
-      glBegin(GL_LINES);
-       glVertex3f(koalax+40, koalay-40, 0);
-       glVertex3f(mouseposx ,mouseposy,0);
+        glLineStipple(1, 0xAAAA);
+        glEnable(GL_LINE_STIPPLE);
+        glBegin(GL_LINES);
+        glVertex3f(koalax+40, koalay-40, 0);
+        glVertex3f(mouseposx ,mouseposy,0);
       glEnd();
 
-      //Drawing the Koala
+      // drawing koala
       if(mouseposx>koalax)
-	drawTexture(koalaTexture,koalax,koalay,100,-100);
+        drawTexture(koalaTexture,koalax,koalay,100,-100);
       else if (mouseposx<koalax)
-	drawTexture(koalaTexture, koalax, koalay, 100,-100, 1.0,pi);
-      //Draw the base box
+        drawTexture(koalaTexture, koalax, koalay, 100,-100, 1.0,M_PI);
+
+      // draw base box
       if(koalaatthebottom)
-	drawBox(0,0,1024,20,1,1,1);
+        drawBox(0,0,1024,20,1,1,1);
       else
-	drawBox(0,0,1024,20,0,0,1);
+        drawBox(0,0,1024,20,0,0,1);
+
       break;
-      
+    }
+
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
       writeText(100,100, "Please input the Makefile using the Terminal!");
@@ -245,38 +250,24 @@ void display()
 	writeText( textBox2[0]+5, textBox2[1]+textBox2[3]-20, withCursor.c_str() );
       } else writeText( textBox2[0]+5, textBox2[1]+textBox2[3]-20, textInBox.c_str() );
       glutSwapBuffers();
+
       break;
 
     case INSTRUCTIONS:
       drawInstructions();
-       glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(1,0,1);
-        glVertex3f(630,300,0);
-        glVertex3f(696,368,0);
-	glEnd();
-
-       glBegin(GL_LINES);
-        glLineWidth(2.5);
-        glColor3f(1,0,1);
-        glVertex3f(840,300,0);
-        glVertex3f(765,368,0);
-	glEnd();
 
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-
-      glutSwapBuffers();
       break;
+
     case CUSTOMIZE:
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
-      glutSwapBuffers();
       break;
 
     case QUIT_MOVE:
@@ -289,18 +280,16 @@ void display()
           Buttons[i]->draw();
       break;
       // the actual quit is handled in the mouse button press
+
     case QUIT_DATE:
-      {
-      cerr << "I'm on the quit date screen" << endl;
-      quitProgram();
-      break;
-      }
+        cerr << "I'm on the quit date screen" << endl;
+        quitProgram();
+        break;
+
     default:
       cerr << "This screen not defined (yet?)." << endl;
       break;
   }
-
-  // tell the graphics card that we're done-- go ahead and draw!
   glutSwapBuffers();
 }
 
@@ -323,11 +312,12 @@ void keyboard(unsigned char c, int x, int y)
   else {
 
   switch(c) {
-  case 'x':
-    koalaatthebottom=false;
-    koalatargetx=mouseposx-100;
-    koalatargety=mouseposy;
-    break;
+    case 'x':
+      koalaatthebottom=false;
+      koalatargetx=mouseposx-100;
+      koalatargety=mouseposy;
+      break;
+
     case 'g':
     case 'G':
       if (screen == START)
@@ -335,12 +325,14 @@ void keyboard(unsigned char c, int x, int y)
       else if (screen == GAME)
         screen = START;
       break;
+
 #ifdef DEBUG
     case 'q':
     case 'Q':
     case 27:
       quitProgram();
 #endif
+
     case '\b':
     default:
       break;
@@ -357,18 +349,18 @@ void special_keyboard(int key, int x, int y)
       offset=0;
       screen = START;
       break;
-  case GLUT_KEY_UP:
-    mouseposy++;
-    break;
-  case GLUT_KEY_DOWN:
-    mouseposy--;
-    break;
-  case GLUT_KEY_LEFT:
-    mouseposx--;
-    break;
-  case GLUT_KEY_RIGHT:
-    mouseposx++;
-    break;
+    case GLUT_KEY_UP:
+      mouseposy++;
+      break;
+    case GLUT_KEY_DOWN:
+      mouseposy--;
+      break;
+    case GLUT_KEY_LEFT:
+      mouseposx--;
+      break;
+    case GLUT_KEY_RIGHT:
+      mouseposx++;
+      break;
   }
   glutPostRedisplay();
 }
@@ -392,7 +384,6 @@ void mouse(int mouseButton, int state, int x, int y)
           }
         }
       }
-	
     }
     else { // mouse release
       for (short int i=0; i<numButtons; ++i) {
@@ -400,8 +391,6 @@ void mouse(int mouseButton, int state, int x, int y)
           Buttons[i]->IsPressed = false;
       }
     }
-    //else if ( GLUT_RIGHT_BUTTON == mouseButton ) { }
-
     glutPostRedisplay();
   }
 }
@@ -456,7 +445,7 @@ void init(void)
   glOrtho(0., WIDTH-1, 0., HEIGHT-1, -1.0, 1.0);
 
   // set up how points and lines will be drawn.  The following
-  //  commands make points and lines look nice and smooth.
+  // commands make points and lines look nice and smooth.
   glPointSize(3);
   glLineWidth(1.5);
   glEnable(GL_POINT_SMOOTH);
@@ -467,8 +456,8 @@ void init(void)
 
   // welcome message
   cout << "Welcome to " << programName << "." << endl;
-  cout << "To quit the entire program press the 'q' key"<<endl;
-  cout << "To return to start screen press the F1 key"<<endl;
+  cout << "To quit the entire program press the 'q' key" <<endl;
+  cout << "To return to start screen press the F1 key" <<endl;
 }
 
 void init_gl_window()
@@ -507,37 +496,34 @@ double getCurrentTime()
 
 void idle()
 {
-  // figure out whether it is time to change the counter.
-  //   we want the counter to change once per second, so we want the
-  //   elapsed time (since the beginning of the program) to be 
-  //   the same as the elapsedTime (rounded down)
+  // do things only if a certain amount of time has passed
   double now = getCurrentTime();
   double elapsedTime = now - lastTime;
+
   if ( elapsedTime > .05 ) {
-    lastTime = now;
-    if ( screen == QUIT_MOVE ) {
-      glutPostRedisplay();
-    }
-  }
-  if (elapsedTime > .05 && screen == GAME)
-  {
-    if (koalay >= SCREEN_Y - 200)
-    {
-      offset += SCREEN_Y - 200 - koalay;
-      koalatargety += SCREEN_Y - 200 - koalay;
-      koalay = SCREEN_Y - 200;
-    }
-    if (koalay <= 100)
-    {
-      offset += 100 - koalay;
-      koalatargety += 100 - koalay;
-      koalay = 100;
-    }
-    if (!(koalax==koalatargetx && koalay == koalatargety))
-    {
-      koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
-      koalay+=(koalatargety-koalay)/15;
-      glutPostRedisplay();
+    lastTime = now; // note that we've run this
+
+    switch(screen) {
+      case QUIT_MOVE:
+        glutPostRedisplay();
+        break;
+      case GAME:
+        if (koalay >= SCREEN_Y - 200) {
+          offset += SCREEN_Y - 200 - koalay;
+          koalatargety += SCREEN_Y - 200 - koalay;
+          koalay = SCREEN_Y - 200;
+        } else if (koalay <= 100) {
+          offset += 100 - koalay;
+          koalatargety += 100 - koalay;
+          koalay = 100;
+        }
+
+        if ( !(koalax==koalatargetx && koalay == koalatargety) ) {
+          koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
+          koalay+=(koalatargety-koalay)/15;
+          glutPostRedisplay();
+        }
+        break;
     }
   }
 }
@@ -554,13 +540,13 @@ void init_buttons()
   Buttons[5] = &backButton;
   Buttons[6] = &loadMakefileButton;
   for (short int i=0; i<numButtons; ++i) {
-    Buttons[i]->IsPressed = false; Buttons[i]->overButton = false;
+    Buttons[i]->IsPressed = false;
+    Buttons[i]->overButton = false;
   }
 }
 
 void init_targets(int argc, char **argv)
 {
-  
   string name;
   if (argc >= 2) {
     rootTarget = parseTargets(argv[argc]);
