@@ -86,18 +86,6 @@ double textBox1[] = {320, 30, 200,40};
 double textBox2[] = {325, 35, 190, 30 };
 const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
 
-
-void drawBox(double x, double y, double width, double height)
-{
-  glBegin(GL_POLYGON);
-    glVertex2f(x, y);  // upper left
-    glVertex2f(x, y + height);  // lower left
-    glVertex2f(x + width, y + height);  // lower right
-    glVertex2f(x + width, y);  // upper right
-  glEnd();
-}
-
-
 void writeText(float x, float y, const char *text)
 {
   glRasterPos2f( x, y );
@@ -457,19 +445,15 @@ void idle()
       glutPostRedisplay();
     }
   }
-  if (elapsedTime > .05)
+  if (elapsedTime > .05 && screen == GAME
+  {
+    if (koalax >=
+    if (!(koalax==koalatargetx && koalay == koalatargety))
     {
-      if( screen == GAME)
-	{
-	  if(!(koalax==koalatargetx && koalay == koalatargety))
-	    {
-	    
-	      koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
-	      koalay+=(koalatargety-koalay)/15;
-	      glutPostRedisplay();
-	    }
-	}
-    }
+    koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
+    koalay+=(koalatargety-koalay)/15;
+    glutPostRedisplay();
+  }
 }
 
 
