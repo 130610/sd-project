@@ -43,7 +43,7 @@ int offset = 0;
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-const char numButtons = 6;
+const char numButtons = 7;
 
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
@@ -54,6 +54,9 @@ MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT_MOVE,STAR
 
 //Instruction Screen Buttons //
 Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
+
+//Load Screen Button
+Button loadMakefileButton("Load", 0,0,80,768, LOAD, LOAD, 4);
 
 // Main Button Array//
 Button* Buttons[numButtons];
@@ -79,8 +82,8 @@ const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
 //LoadPage TextBox
 bool overTextBox = false;
 string textInBox = "";
-double textBox1[] = {320, 30, 200,40};
-double textBox2[] = {325, 35, 190, 30 };
+double textBox1[] = {182, 350, 600,40};
+double textBox2[] = {188, 355, 590, 30 };
 const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
 
 void writeText(float x, float y, const char *text)
@@ -92,6 +95,26 @@ void writeText(float x, float y, const char *text)
 }
 
 void quitProgram()
+{
+  int win = glutGetWindow();
+  glutDestroyWindow(win);
+  exit(0);
+}
+void drawBox(double x, double y, double width, double height)
+{
+  glBegin(GL_POLYGON);
+    glVertex2f(x, y);  // upper left
+    glVertex2f(x, y + height);  // lower left
+    glVertex2f(x + width, y + height);  // lower right
+    glVertex2f(x + width, y);  // upper right
+  glEnd();
+}
+void drawBox(double *pos)
+{
+  drawBox(pos[0], pos[1], pos[2], pos[3]);
+}
+
+void exitAll()
 {
   int win = glutGetWindow();
   glutDestroyWindow(win);
@@ -135,6 +158,13 @@ void drawInstructions()
     darrowl2.draw();
   uarrowKey.draw();
   f1Key.draw();
+}
+
+bool onTextBox(int x, int y)
+{
+  return x >= textBox1[0] && y >= textBox1[1] &&
+         x <= textBox1[0]+textBox1[2] &&
+         y <= textBox1[1]+textBox1[3];
 }
 
 void display()
@@ -182,6 +212,21 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
       }
+
+      // draw the textbox
+      glColor3f(.25, .25, .25);  // dark gray
+      drawBox(textBox1);
+      if ( overTextBox ) glColor3f(1,1,1);  // white
+      else glColor3f(.75, .75, .75);  // light gray
+      drawBox(textBox2);
+      glColor3f(0, 0, 0);  // black
+      if ( overTextBox ) { // draw with a cursor
+	string withCursor(textInBox);
+	withCursor += '|';
+	writeText( textBox2[0]+5, textBox2[1]+textBox2[3]-20, withCursor.c_str() );
+      } else writeText( textBox2[0]+5, textBox2[1]+textBox2[3]-20, textInBox.c_str() );
+      glutSwapBuffers();
+
       break;
 
     case INSTRUCTIONS:
@@ -227,6 +272,21 @@ void display()
 // process keyboard events
 void keyboard(unsigned char c, int x, int y)
 {
+  if ( overTextBox ) { // intercept keyboard press, to place in text box
+    if ( 27==c ) exitAll();  // escape terminates the program, even in textbox
+    if ( 13==c ) {
+      cout <<"The text in box is: "<<textInBox << endl;
+      textInBox = "";
+    } else if ( '\b'==c || 127==c ) { // handle backspace
+      if ( textInBox.length() > 0 ) textInBox.erase(textInBox.end()-1);
+    } else if ( c >= 32 && c <= 126 ) { // check for printable character
+      // check that we don't overflow the box
+      if ( textInBox.length() < MAX_NUM_CHARS_IN_TEXTBOX ) textInBox += c;
+    }
+  } 
+
+  else {
+
   switch(c) {
     case 'x':
       koalaatthebottom=false;
@@ -252,6 +312,7 @@ void keyboard(unsigned char c, int x, int y)
     case '\b':
     default:
       break;
+  }
   }
   glutPostRedisplay();
 }
@@ -340,8 +401,11 @@ void mouse_motion(int x, int y)
       else
         Buttons[i]->overButton = false;
     }
-    glutPostRedisplay();
   }
+  if ( onTextBox(x,768-y) ) overTextBox = true;
+  else overTextBox = false;
+  //cerr<<"overTextBox"<<overTextBox<<endl;
+  glutPostRedisplay();
 }
 
 // the init function sets up the graphics card to draw properly
@@ -451,6 +515,7 @@ void init_buttons()
   Buttons[3] = &customizeButton;
   Buttons[4] = &quitButton;
   Buttons[5] = &backButton;
+  Buttons[6] = &loadMakefileButton;
   for (short int i=0; i<numButtons; ++i) {
     Buttons[i]->IsPressed = false;
     Buttons[i]->overButton = false;
