@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include <time.h>
 #include "target.h"
 #include "draw.h"
 #ifdef MACOSX
@@ -12,7 +13,7 @@
 using namespace std;
 
 int numRoots = 1;
-int seed;
+int seed = (int) time(NULL);
 
 Target::Target(string n, Target *p): targetName(n), children(0), numParents(0), numChildren(0), posInited(0)
 {
@@ -113,9 +114,9 @@ void Target::initPositions(int d, int ind)
 
 	if (posInited == false) {
 		srand(seed++);
-		posX = ((ind + 1) * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
+		posX = (ind * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
 		srand(seed++);
-		posY = ((d + 1) * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
+		posY = (d * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
 		posInited = true;
 	}
 }
