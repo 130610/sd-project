@@ -23,9 +23,10 @@
 #include "InstructionLines.h"
 #include "target.h"
 #include "draw.h"
-
-
 using namespace std;
+
+#define SCREEN_Y 768
+#define SCREEN_X 1024
 
 // root target
 Target **rootTarget;
@@ -160,7 +161,7 @@ void display()
           Buttons[i]->draw();
       }
       // Drawing the target boxes
-      rootTarget[0]->drawBoxes(offset);
+      rootTarget[0]->drawTargetBoxes(offset);
       //rootTarget[0]->drawDependLines(); // this doesn't work yet
 
       // Drawing the line tracking the koala launch trajectory
@@ -454,11 +455,23 @@ void idle()
   }
   if (elapsedTime > .05 && screen == GAME)
   {
+    if (koalay >= SCREEN_Y - 200)
+    {
+      offset += SCREEN_Y - 200 - koalay;
+      koalatargety += SCREEN_Y - 200 - koalay;
+      koalay = SCREEN_Y - 200;
+    }
+    if (koalay <= 100)
+    {
+      offset += 100 - koalay;
+      koalatargety += 100 - koalay;
+      koalay = 100;
+    }
     if (!(koalax==koalatargetx && koalay == koalatargety))
     {
-    koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
-    koalay+=(koalatargety-koalay)/15;
-    glutPostRedisplay();
+      koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
+      koalay+=(koalatargety-koalay)/15;
+      glutPostRedisplay();
     }
   }
 }

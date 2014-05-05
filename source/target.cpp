@@ -60,13 +60,15 @@ void Target::addParent(Target *p)
 	parents = tmpList;
 }
 
-void Target::drawBoxes(int offset)
+void Target::drawTargetBoxes(int offset)
 {
 	for (int i = 0; i < numChildren; i++) {
-		children[i]->drawBoxes(offset);
+		children[i]->drawTargetBoxes(offset);
 	}
+
 	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT, 1, 1, 1);
-	drawText(posX + 3, posY + 3, targetName);
+	drawText(posX + 3, posY + 3+offset, targetName);
+
 }
 
 void Target::drawDependLines()

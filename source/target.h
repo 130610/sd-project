@@ -37,7 +37,7 @@ public:
 	int getPosX() { return posY; }
 	Target* findTarget(string n);
 	void initPositions(int d = 0, int ind = 0);
-	void drawBoxes(int offset);
+	void drawTargetBoxes(int offset);
 	void drawDependLines();
 	void printTree();
 };
