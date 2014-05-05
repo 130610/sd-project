@@ -59,17 +59,15 @@ Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
 Button* Buttons[numButtons];
 
 //Koala Main screen global variables
-int koalax=10;
-int koalay=120;
+int koalax=10; //cfd
+int koalay=120; //cfd
 int mouseposx;
 int mouseposy;
-int koalatargetx=koalax;
-int koalatargety=koalay;
+int koalatargetx=koalax;//cfd
+int koalatargety=koalay;//cfd
 
-float theta;
-
-bool atTarget=true;
-bool koalaatthebottom=true;
+bool atTarget=true; //cfd
+bool koalaatthebottom=true; //cfd
 
 // quit textbox info
 bool overQuitTextBox = false;
@@ -164,29 +162,9 @@ void display()
       rootTarget[0]->drawTargetBoxes(offset);
       //rootTarget[0]->drawDependLines(); // this doesn't work yet
 
-      // draw the line tracking the koala launch trajectory
-      int hypotenuse = sqrt(((mouseposx-(koalax+40))*(mouseposx-(koalax+40))) +
-                            ((mouseposy-(koalay-40))*(mouseposy-(koalay-40))));
-      if ( !(mouseposx == koalax+40)) // divide by 0
-        theta = atan((mouseposy-(koalay-40))/(mouseposx-(koalax+40)));
-      else
-        theta = 0;
+      /* drawTrajectory() in koala */
 
-      if(hypotenuse > 100)
-        hypotenuse = 100;
-      glColor3f(1,1,1);
-        glLineStipple(1, 0xAAAA);
-        glEnable(GL_LINE_STIPPLE);
-        glBegin(GL_LINES);
-        glVertex3f(koalax+40, koalay-40, 0);
-        glVertex3f(mouseposx ,mouseposy,0);
-      glEnd();
-
-      // drawing koala
-      if(mouseposx>koalax)
-        drawTexture(koalaTexture,koalax,koalay,100,-100);
-      else if (mouseposx<koalax)
-        drawTexture(koalaTexture, koalax, koalay, 100,-100, 1.0,M_PI);
+      /* drawKoala() */
 
       // draw base box
       if(koalaatthebottom)
@@ -407,7 +385,6 @@ void init_gl_window()
 
   backgroundTexture = loadTexture("../images/background.pam");
   keyboardTexture = loadTexture("../images/keyboard.pam");
-  koalaTexture = loadTexture("../images/Koala.pam");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);

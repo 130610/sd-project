@@ -29,7 +29,10 @@ text.o: text.cpp text.h
 
 draw.o: draw.cpp draw.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c draw.cpp
-	
+
+koala.o: koala.cpp koala.h
+	g++ $(OPTS) $(MACOSX_DEFINE) -c koala.cpp
+
 
 # makefile parser
 target-driver: target-driver.o target.o draw.o
