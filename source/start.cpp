@@ -174,27 +174,27 @@ void display()
       //cerr <<hypotenuse<<endl;
       //cerr <<theta <<endl;
       if(hypotenuse >=100)
-	hypotenuse =100;
+        hypotenuse =100;
       glColor3f(1,1,1);
-      glLineStipple(1, 0xAAAA);
-      glEnable(GL_LINE_STIPPLE);
-      glBegin(GL_LINES);
-       glVertex3f(koalax+40, koalay-40, 0);
-       glVertex3f(mouseposx ,mouseposy,0);
+        glLineStipple(1, 0xAAAA);
+        glEnable(GL_LINE_STIPPLE);
+        glBegin(GL_LINES);
+        glVertex3f(koalax+40, koalay-40, 0);
+        glVertex3f(mouseposx ,mouseposy,0);
       glEnd();
 
       //Drawing the Koala
       if(mouseposx>koalax)
-	drawTexture(koalaTexture,koalax,koalay,100,-100);
+        drawTexture(koalaTexture,koalax,koalay,100,-100);
       else if (mouseposx<koalax)
-	drawTexture(koalaTexture, koalax, koalay, 100,-100, 1.0,pi);
+        drawTexture(koalaTexture, koalax, koalay, 100,-100, 1.0,pi);
       //Draw the base box
       if(koalaatthebottom)
-	drawBox(0,0,1024,20,1,1,1);
+        drawBox(0,0,1024,20,1,1,1);
       else
-	drawBox(0,0,1024,20,0,0,1);
+        drawBox(0,0,1024,20,0,0,1);
       break;
-      
+
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
       writeText(100,100, "Please input the Makefile using the Terminal!");
@@ -207,19 +207,19 @@ void display()
 
     case INSTRUCTIONS:
       drawInstructions();
-       glBegin(GL_LINES);
+      glBegin(GL_LINES);
         glLineWidth(2.5);
         glColor3f(1,0,1);
         glVertex3f(630,300,0);
         glVertex3f(696,368,0);
-	glEnd();
+      glEnd();
 
-       glBegin(GL_LINES);
+      glBegin(GL_LINES);
         glLineWidth(2.5);
         glColor3f(1,0,1);
         glVertex3f(840,300,0);
         glVertex3f(765,368,0);
-	glEnd();
+      glEnd();
 
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
@@ -249,9 +249,9 @@ void display()
       // the actual quit is handled in the mouse button press
     case QUIT_DATE:
       {
-      cerr << "I'm on the quit date screen" << endl;
-      quitProgram();
-      break;
+        cerr << "I'm on the quit date screen" << endl;
+        quitProgram();
+        break;
       }
     default:
       cerr << "This screen not defined (yet?)." << endl;
@@ -266,11 +266,11 @@ void display()
 void keyboard(unsigned char c, int x, int y)
 {
   switch(c) {
-  case 'x':
-    koalaatthebottom=false;
-    koalatargetx=mouseposx-100;
-    koalatargety=mouseposy;
-    break;
+    case 'x':
+      koalaatthebottom=false;
+      koalatargetx=mouseposx-100;
+      koalatargety=mouseposy;
+      break;
     case 'g':
     case 'G':
       if (screen == START)
@@ -299,18 +299,18 @@ void special_keyboard(int key, int x, int y)
       offset=0;
       screen = START;
       break;
-  case GLUT_KEY_UP:
-    mouseposy++;
-    break;
-  case GLUT_KEY_DOWN:
-    mouseposy--;
-    break;
-  case GLUT_KEY_LEFT:
-    mouseposx--;
-    break;
-  case GLUT_KEY_RIGHT:
-    mouseposx++;
-    break;
+    case GLUT_KEY_UP:
+      mouseposy++;
+      break;
+    case GLUT_KEY_DOWN:
+      mouseposy--;
+      break;
+    case GLUT_KEY_LEFT:
+      mouseposx--;
+      break;
+    case GLUT_KEY_RIGHT:
+      mouseposx++;
+      break;
   }
   glutPostRedisplay();
 }
@@ -334,7 +334,7 @@ void mouse(int mouseButton, int state, int x, int y)
           }
         }
       }
-	
+
     }
     else { // mouse release
       for (short int i=0; i<numButtons; ++i) {
@@ -378,7 +378,7 @@ void mouse_motion(int x, int y)
       else
         Buttons[i]->overButton = false;
     }
-  glutPostRedisplay();
+    glutPostRedisplay();
   }
 }
 
@@ -498,7 +498,7 @@ void init_buttons()
 
 void init_targets(int argc, char **argv)
 {
-  
+
   string name;
   if (argc >= 2) {
     rootTarget = parseTargets(argv[argc]);
