@@ -43,7 +43,7 @@ int offset = 0;
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-const char numButtons = 7;
+const char numButtons = 9;
 
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
@@ -54,9 +54,10 @@ MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT_MOVE,STAR
 
 //Instruction Screen Buttons //
 Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
-
+Button backButton2("Go Back", 0,0,80,768, START, LOAD,4);
+Button backButton3("Go Back", 0,0,80,768, START, CUSTOMIZE, 4);
 //Load Screen Button
-Button loadMakefileButton("Load", 0,0,80,768, LOAD, LOAD, 4);
+Button loadMakefileButton("Load", 360,250,200,40, LOAD, LOAD, 442);
 
 // Main Button Array//
 Button* Buttons[numButtons];
@@ -100,25 +101,12 @@ void quitProgram()
   glutDestroyWindow(win);
   exit(0);
 }
-void drawBox(double x, double y, double width, double height)
-{
-  glBegin(GL_POLYGON);
-    glVertex2f(x, y);  // upper left
-    glVertex2f(x, y + height);  // lower left
-    glVertex2f(x + width, y + height);  // lower right
-    glVertex2f(x + width, y);  // upper right
-  glEnd();
-}
-void drawBox(double *pos)
-{
-  drawBox(pos[0], pos[1], pos[2], pos[3]);
-}
 
-void exitAll()
+bool onTextBox(int x, int y)
 {
-  int win = glutGetWindow();
-  glutDestroyWindow(win);
-  exit(0);
+  return x >= textBox1[0] && y >= textBox1[1] &&
+         x <= textBox1[0]+textBox1[2] &&
+         y <= textBox1[1]+textBox1[3];
 }
 
 void drawInstructions()
@@ -160,12 +148,6 @@ void drawInstructions()
   f1Key.draw();
 }
 
-bool onTextBox(int x, int y)
-{
-  return x >= textBox1[0] && y >= textBox1[1] &&
-         x <= textBox1[0]+textBox1[2] &&
-         y <= textBox1[1]+textBox1[3];
-}
 
 void display()
 {
@@ -207,7 +189,7 @@ void display()
 
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
-      writeText(100,100, "Please input the Makefile using the Terminal!");
+      writeText(200,400, "Please type the name of the Makefile you want to use below!");
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
@@ -516,6 +498,8 @@ void init_buttons()
   Buttons[4] = &quitButton;
   Buttons[5] = &backButton;
   Buttons[6] = &loadMakefileButton;
+  Buttons[7] = &backButton2;
+  Buttons[8] = &backButton3;
   for (short int i=0; i<numButtons; ++i) {
     Buttons[i]->IsPressed = false;
     Buttons[i]->overButton = false;
