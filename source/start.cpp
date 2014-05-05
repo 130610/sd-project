@@ -174,6 +174,7 @@ void display()
       //cerr <<theta <<endl;
       if(hypotenuse >=100)
 	hypotenuse =100;
+      glColor3f(1,1,1);
       glLineStipple(1, 0xAAAA);
       glEnable(GL_LINE_STIPPLE);
       glBegin(GL_LINES);
@@ -185,18 +186,14 @@ void display()
       drawTexture(koalaTexture,koalax,koalay,100,-100);
       //Draw the base box
       if(koalaatthebottom)
-	glColor3f(1,1,1);
+	drawBox(0,0,1024,20,1,1,1);
       else
-	glColor3f(0,0,1);
-      drawBox(0,0,1024,20);
-      if(koalay==20)
-	quitProgram();
-      glutSwapBuffers();
+	drawBox(0,0,1024,20,0,0,1);
       break;
       
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
-     
+      writeText(100,100, "Please input the Makefile using the Terminal!");
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
@@ -267,7 +264,7 @@ void keyboard(unsigned char c, int x, int y)
   switch(c) {
   case 'x':
     koalaatthebottom=false;
-    koalatargetx=mouseposx;
+    koalatargetx=mouseposx-100;
     koalatargety=mouseposy;
     break;
     case 'g':

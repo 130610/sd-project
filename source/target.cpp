@@ -66,8 +66,10 @@ void Target::drawTargetBoxes(int offset)
 	for (int i = 0; i < numChildren; i++) {
 		children[i]->drawTargetBoxes(offset);
 	}
-	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT);
-	drawText(posX + 3, posY + 3 + offset, targetName);
+
+	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT, 1, 1, 1);
+	drawText(posX + 3, posY + 3+offset, targetName);
+
 }
 
 void Target::drawDependLines()
