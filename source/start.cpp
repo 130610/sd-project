@@ -160,7 +160,7 @@ void display()
           Buttons[i]->draw();
       }
       // Drawing the target boxes
-      rootTarget[0]->drawBoxes(offset);
+      rootTarget[0]->drawTargetBoxes(offset);
       //rootTarget[0]->drawDependLines(); // this doesn't work yet
 
       // Drawing the line tracking the koala launch trajectory
