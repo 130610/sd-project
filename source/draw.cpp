@@ -21,6 +21,6 @@ void drawText(int x, int y, string text)
 {
   glColor3f(0, 0, 0);
   glRasterPos2f((float) x, (float) y);
-  for (int i = 0; i < text.length(); i++)
+  for (unsigned i = 0; i < text.length(); i++)
     glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
 }
