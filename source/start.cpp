@@ -75,6 +75,7 @@ float koalay=120;
 float mouseposx;
 float mouseposy;
 float theta;
+float pi = 3.14;
 float koalatargetx=koalax;
 float koalatargety=koalay;
 bool atTarget=true;
@@ -183,7 +184,10 @@ void display()
       glEnd();
 
       //Drawing the Koala
-      drawTexture(koalaTexture,koalax,koalay,100,-100);
+      if(mouseposx>koalax)
+	drawTexture(koalaTexture,koalax,koalay,100,-100);
+      else if (mouseposx<koalax)
+	drawTexture(koalaTexture, koalax, koalay, 100,-100, 1.0,pi);
       //Draw the base box
       if(koalaatthebottom)
 	drawBox(0,0,1024,20,1,1,1);
@@ -292,6 +296,7 @@ void special_keyboard(int key, int x, int y)
 {
   switch (key) {
     case GLUT_KEY_F1:
+      offset=0;
       screen = START;
       break;
   case GLUT_KEY_UP:

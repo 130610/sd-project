@@ -6,9 +6,9 @@
 using namespace std;
 
 #define MAX_X_FACTOR 200
-#define MAX_Y_FACTOR 100
-#define BOX_WIDTH 100
-#define BOX_HEIGHT 40
+#define MAX_Y_FACTOR 500
+#define BOX_WIDTH 150
+#define BOX_HEIGHT 250
 
 class Target
 {
