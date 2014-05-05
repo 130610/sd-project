@@ -23,10 +23,8 @@
 #include "InstructionLines.h"
 #include "target.h"
 #include "draw.h"
+#include "koala.h"
 using namespace std;
-
-#define SCREEN_Y 768
-#define SCREEN_X 1024
 
 // root target
 Target **rootTarget;
@@ -444,10 +442,10 @@ void idle()
         glutPostRedisplay();
         break;
       case GAME:
-        if (koalay >= SCREEN_Y - 200) {
-          offset += SCREEN_Y - 200 - koalay;
-          koalatargety += SCREEN_Y - 200 - koalay;
-          koalay = SCREEN_Y - 200;
+        if (koalay >= HEIGHT - 200) {
+          offset += HEIGHT - 200 - koalay;
+          koalatargety += HEIGHT - 200 - koalay;
+          koalay = HEIGHT - 200;
         } else if (koalay <= 100) {
           offset += 100 - koalay;
           koalatargety += 100 - koalay;
@@ -459,6 +457,8 @@ void idle()
           koalay+=(koalatargety-koalay)/15;
           glutPostRedisplay();
         }
+        break;
+      default:
         break;
     }
   }
