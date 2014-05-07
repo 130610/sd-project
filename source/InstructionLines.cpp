@@ -31,7 +31,8 @@ Text::Text(int xpos, int ypos, string text)
 void Text::draw()
 {
   glColor3f(1,1,1);
-  drawText(xpos, ypos, text);
+  drawWhiteText(xpos, ypos, text);
+  glColor3f(0,0,0);
 }
 
 

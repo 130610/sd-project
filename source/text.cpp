@@ -36,7 +36,7 @@ void drawStrokeText(char*string,int x,int y,int z)
   glPopMatrix();
 }
 
-void drawText(float x, float y, const char *text)
+void drawWhiteText(float x, float y, const char *text)
 {
   glRasterPos2f(x,y);
   int length = strlen(text);
@@ -44,7 +44,7 @@ void drawText(float x, float y, const char *text)
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 }
 
-void drawText(float x, float y, string text)
+void drawWhiteText(float x, float y, string text)
 {
   glRasterPos2f(x,y);
   int length = text.length();

@@ -24,7 +24,7 @@ button.o: button.cpp button.h globaldefs.h ColorPoint2.h
 texture.o: texture.cpp texture.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c texture.cpp
 
-text.o: text.cpp text.h
+text.o: text.cpp text.h draw.o
 	g++ $(OPTS) $(MACOSX_DEFINE) -c text.cpp
 
 draw.o: draw.cpp draw.h

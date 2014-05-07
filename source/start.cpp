@@ -77,12 +77,17 @@ double quitTextBox2[] = { 325, 35,   190, 30 };  // inner box for text
 const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
 
 //LoadPage TextBox
-bool overTextBox = false;
+/*bool overTextBox = false;
 string textInBox = "";
-double textBox1[] = {182, 350, 600,40};
-double textBox2[] = {188, 355, 590, 30 };
+int textBox1[] = {182, 350, 600,40};
+int textBox2[] = {188, 355, 590, 30 };
 const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
+*/
 
+int boxText1[] = {182, 350, 600,40};
+int boxText2[] = {188, 355, 590, 30 };
+textBox loadBox{false, boxText1, boxText2};
+/*
 void writeText(float x, float y, const char *text)
 {
   glRasterPos2f( x, y );
@@ -90,21 +95,21 @@ void writeText(float x, float y, const char *text)
   for (int i = 0; i < length; i++)
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 }
-
+*/
 void quitProgram()
 {
   int win = glutGetWindow();
   glutDestroyWindow(win);
   exit(0);
 }
-
+/*
 bool onTextBox(int x, int y)
 {
   return x >= textBox1[0] && y >= textBox1[1] &&
          x <= textBox1[0]+textBox1[2] &&
          y <= textBox1[1]+textBox1[3];
 }
-
+*/
 void drawInstructions()
 {
   drawTexture(backgroundTexture,0., 768., 1024., -768.);
@@ -184,24 +189,16 @@ void display()
 
     case LOAD:
       drawTexture(backgroundTexture, 0., 768.,1024., -768.);
-      writeText(200,400, "Please type the name of the Makefile you want to use below!");
+      glColor3f(1,1,1);
+      drawWhiteText(200,400,(string)"Please type the name of the Makefile you want to use below!");
       for (short int i=0; i<numButtons; ++i) {
         if(Buttons[i]->active == screen)
           Buttons[i] -> draw();
       }
 
       // draw the textbox
-      glColor3f(.25, .25, .25);  // dark gray
-      drawBox(textBox1);
-      if ( overTextBox ) glColor3f(1,1,1);  // white
-      else glColor3f(.75, .75, .75);  // light gray
-      drawBox(textBox2);
-      glColor3f(0, 0, 0);  // black
-      if ( overTextBox ) { // draw with a cursor
-	string withCursor(textInBox);
-	withCursor += '|';
-	writeText( textBox2[0]+5, textBox2[1]+textBox2[3]-20, withCursor.c_str() );
-      } else writeText( textBox2[0]+5, textBox2[1]+textBox2[3]-20, textInBox.c_str() );
+      loadBox.drawTextBox();
+      loadBox.writeTextinBox();
       glutSwapBuffers();
 
       break;
@@ -248,20 +245,21 @@ void display()
 // process keyboard events
 void keyboard(unsigned char c, int x, int y)
 {
-  if ( overTextBox ) { // intercept keyboard press, to place in text box
+  /*
+  if ( loadBox.getoverTextBox() ) { // intercept keyboard press, to place in text box
     if ( 27==c ) exitAll();  // escape terminates the program, even in textbox
     if ( 13==c ) {
-      cout <<"The text in box is: "<<textInBox << endl;
-      textInBox = "";
+      cout <<"The text in box is: "<<loadBox.getTextInBox() << endl;
+      loadBox.changeTextInBox();
     } else if ( '\b'==c || 127==c ) { // handle backspace
-      if ( textInBox.length() > 0 ) textInBox.erase(textInBox.end()-1);
+      if ( loadBox.getTextInBox().length() > 0 ) loadBox.getTextInBox.erase(loadBox.getTextInBox().end()-1);
     } else if ( c >= 32 && c <= 126 ) { // check for printable character
       // check that we don't overflow the box
-      if ( textInBox.length() < MAX_NUM_CHARS_IN_TEXTBOX ) textInBox += c;
+      if ( loadBox.getTextInBox.length() < MAX_NUM_CHARS_IN_TEXTBOX ) loadBox.getTextInBox() += c;
     }
   }
-
-  else {
+  */
+  loadBox.keyboardfunction(c,x,y);
     switch(c) {
       case 'x':
         if ( koala.isAtBottom() )
@@ -288,7 +286,6 @@ void keyboard(unsigned char c, int x, int y)
       default:
         break;
     }
-  }
   glutPostRedisplay();
 }
 
@@ -376,8 +373,8 @@ void mouse_motion(int x, int y)
         Buttons[i]->overButton = false;
     }
   }
-  if ( onTextBox(x,768-y) ) overTextBox = true;
-  else overTextBox = false;
+  if ( loadBox.onTextBox(x,768-y) ) loadBox.changeoverTextBox(true);
+  else loadBox.changeoverTextBox(false);
   //cerr<<"overTextBox"<<overTextBox<<endl;
   glutPostRedisplay();
 }

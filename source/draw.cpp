@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #endif
 #include <string>
+#include "draw.h"
 using namespace std;
 
 void drawBox(double x, double y, double width, double height,float a, float b, float c)
@@ -35,7 +36,7 @@ void drawBox(double x, double y, double width, double height)
     glVertex2f(x + width, y);  // upper right
   glEnd();
 }
-void drawBox(double *pos)
+void drawBox(int *pos)
 {
   drawBox(pos[0], pos[1], pos[2], pos[3]);
 }
