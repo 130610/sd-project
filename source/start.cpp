@@ -71,47 +71,18 @@ int mouseposy;
 
 Koala koala {};
 
-// quit textbox info
-bool overQuitTextBox = false;
-string textInQuitBox = "";
-double quitTextBox1[] = { 320, 30,   200, 40 };  // outer box for text
-double quitTextBox2[] = { 325, 35,   190, 30 };  // inner box for text
-const unsigned int MAX_NUM_CHARS_IN_QUIT_TEXTBOX = 20;
-
 //LoadPage TextBox
-/*bool overTextBox = false;
-string textInBox = "";
-int textBox1[] = {182, 350, 600,40};
-int textBox2[] = {188, 355, 590, 30 };
-const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
-*/
-
 int boxText1[] = {182, 350, 600,40};
 int boxText2[] = {188, 355, 590, 30 };
 textBox loadBox{false, boxText1, boxText2};
-/*
-void writeText(float x, float y, const char *text)
-{
-  glRasterPos2f( x, y );
-  int length = strlen(text);
-  for (int i = 0; i < length; i++)
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
-}
-*/
+
 void quitProgram()
 {
   int win = glutGetWindow();
   glutDestroyWindow(win);
   exit(0);
 }
-/*
-bool onTextBox(int x, int y)
-{
-  return x >= textBox1[0] && y >= textBox1[1] &&
-         x <= textBox1[0]+textBox1[2] &&
-         y <= textBox1[1]+textBox1[3];
-}
-*/
+
 void drawInstructions()
 {
   drawTexture(backgroundTexture,0., 768., 1024., -768.);
@@ -138,8 +109,8 @@ void drawInstructions()
   Text uarrowt3(760, 600, "the trajectory of the launch");
   LegendItem uarrowKey(760,728,600,392,2.5, uarrowt1, uarrowt2, uarrowt3);
 
-  Text f1t1(230, 643, "Pressing F1 returns you");
-  Text f1t2(230, 623, "to the start screen");
+  Text f1t1(230, 663, "Pressing F1 returns you");
+  Text f1t2(230, 643, "to the start screen");
   LegendItem f1Key(250,250,632,525,2.5, f1t1, f1t2, uarrowt3);
 
   xKey.draw();
@@ -262,21 +233,7 @@ void display()
 // process keyboard events
 void keyboard(unsigned char c, int x, int y)
 {
-  /*
-  if ( loadBox.getoverTextBox() ) { // intercept keyboard press, to place in text box
-    if ( 27==c ) exitAll();  // escape terminates the program, even in textbox
-    if ( 13==c ) {
-      cout <<"The text in box is: "<<loadBox.getTextInBox() << endl;
-      loadBox.changeTextInBox();
-    } else if ( '\b'==c || 127==c ) { // handle backspace
-      if ( loadBox.getTextInBox().length() > 0 ) loadBox.getTextInBox.erase(loadBox.getTextInBox().end()-1);
-    } else if ( c >= 32 && c <= 126 ) { // check for printable character
-      // check that we don't overflow the box
-      if ( loadBox.getTextInBox.length() < MAX_NUM_CHARS_IN_TEXTBOX ) loadBox.getTextInBox() += c;
-    }
-  }
-  */
-  loadBox.keyboardfunction(c,x,y);
+  loadBox.keyboardfunction(c,x,y); //uses the textbox file
     switch(c) {
       case 'x':
         if ( koala.isAtBottom() )
