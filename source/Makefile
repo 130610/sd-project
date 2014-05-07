@@ -9,7 +9,7 @@ else
 endif
 
 # opengl section
-start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o
+start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
 start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h

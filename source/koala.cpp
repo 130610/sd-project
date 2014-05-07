@@ -5,16 +5,29 @@
 #endif
 
 #include <math.h>
+#include <iostream>
+using namespace std;
 
 #include "globaldefs.h"
 #include "koala.h"
 #include "texture.h"
 
-Koala::Koala() : x(10), y(120), atTarget(true), atBottom(true)
+Koala::Koala() : x(10), y(120), atBottom(true)
 {
   targetx = x;
   targety = y;
-  texture = loadTexture("../images/Koala.pam");
+}
+
+bool Koala::isAtTarget()
+{
+  return !(x==targetx && y==targety);
+}
+
+void Koala::approachTarget()
+{
+  cerr << "approaching" << endl;
+  x += (targetx - x) / 15;
+  y += (targety - y) / 15;
 }
 
 void Koala::scrollKoalaUp()
@@ -53,6 +66,6 @@ void Koala::drawKoala(int mouseposx)
 {
   if(mouseposx > x)
     drawTexture(texture,x,y,100,-100);
-  else if (mouseposx < x)
+  else
     drawTexture(texture, x, y, 100,-100, 1.0,M_PI);
 }

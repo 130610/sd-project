@@ -1,4 +1,5 @@
 #define DEBUG // allows quitting with 'q' to avoid the quit sequence
+//#define MOUSECOORDS // display current mouse posn in terminal
 
 #include <iostream>
 #include <iomanip>
@@ -61,16 +62,11 @@ Button loadMakefileButton("Load", 0,0,80,768, LOAD, LOAD, 4);
 // Main Button Array//
 Button* Buttons[numButtons];
 
-//Koala Main screen global variables
-int koalax=10; //cfd
-int koalay=120; //cfd
+// game screen global variables
 int mouseposx;
 int mouseposy;
-int koalatargetx=koalax;//cfd
-int koalatargety=koalay;//cfd
 
-bool atTarget=true; //cfd
-bool koalaatthebottom=true; //cfd
+Koala koala {};
 
 // quit textbox info
 bool overQuitTextBox = false;
@@ -192,12 +188,11 @@ void display()
       rootTarget[0]->drawTargetBoxes(offset);
       //rootTarget[0]->drawDependLines(); // this doesn't work yet
 
-      /* drawTrajectory() in koala */
-
-      /* drawKoala() */
+      koala.drawTrajectory(mouseposx, mouseposy);
+      koala.drawKoala(mouseposx);
 
       // draw base box
-      if(koalaatthebottom)
+      if(koala.isAtBottom())
         drawBox(0,0,1024,20,1,1,1);
       else
         drawBox(0,0,1024,20,0,0,1);
@@ -258,7 +253,6 @@ void display()
       // the actual quit is handled in the mouse button press
 
     case QUIT_DATE:
-        cerr << "I'm on the quit date screen" << endl;
         quitProgram();
         break;
 
@@ -283,36 +277,35 @@ void keyboard(unsigned char c, int x, int y)
       // check that we don't overflow the box
       if ( textInBox.length() < MAX_NUM_CHARS_IN_TEXTBOX ) textInBox += c;
     }
-  } 
+  }
 
   else {
+    switch(c) {
+      case 'x':
+        if ( koala.isAtBottom() )
+          koala.leaveBottom();
+        koala.setTarget(mouseposx-100, mouseposy);
+        break;
 
-  switch(c) {
-    case 'x':
-      koalaatthebottom=false;
-      koalatargetx=mouseposx-100;
-      koalatargety=mouseposy;
-      break;
-
-    case 'g':
-    case 'G':
-      if (screen == START)
-        screen = GAME;
-      else if (screen == GAME)
-        screen = START;
-      break;
+      case 'g':
+      case 'G':
+        if (screen == START)
+          screen = GAME;
+        else if (screen == GAME)
+          screen = START;
+        break;
 
 #ifdef DEBUG
-    case 'q':
-    case 'Q':
-    case 27:
-      quitProgram();
+      case 'q':
+      case 'Q':
+      case 27:
+        quitProgram();
 #endif
 
-    case '\b':
-    default:
-      break;
-  }
+      case '\b':
+      default:
+        break;
+    }
   }
   glutPostRedisplay();
 }
@@ -376,12 +369,11 @@ void mouse(int mouseButton, int state, int x, int y)
 // of the mouse
 void mouse_motion(int x, int y)
 {
-#ifdef DEBUG
-  // show coordinates of mouse pointer
+#ifdef MOUSECOORDS
   cerr <<"Mouse position: ("<<x<<","<<y<<")"<<endl;
+#endif
   mouseposx = x;
   mouseposy=768-y;
-#endif
 
   // is the mouse button currently depressed over any screen button?
   bool aButtonIsPressed = false;
@@ -449,6 +441,8 @@ void init_gl_window()
 
   backgroundTexture = loadTexture("../images/background.pam");
   keyboardTexture = loadTexture("../images/keyboard.pam");
+  koalaTexture = loadTexture("../images/Koala.pam");
+  koala.loadTexture(koalaTexture);
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
@@ -483,22 +477,18 @@ void idle()
         glutPostRedisplay();
         break;
       case GAME:
-        if (koalay >= HEIGHT - 200) {
-          offset += HEIGHT - 200 - koalay;
-          koalatargety += HEIGHT - 200 - koalay;
-          koalay = HEIGHT - 200;
-        } else if (koalay <= 100) {
-          offset += 100 - koalay;
-          koalatargety += 100 - koalay;
-          koalay = 100;
+        if (koala.getY() >= HEIGHT - 200) {
+          offset += HEIGHT - 200 - koala.getY();
+          koala.scrollKoalaUp();
+        } else if (koala.getY() <= 100) {
+          offset += 100 - koala.getY();
+          koala.scrollKoalaDown();
         }
 
-        if ( !(koalax==koalatargetx && koalay == koalatargety) ) {
-          koalax+=(koalatargetx-koalax)/15; //It's never really stopping...but since it's integer division it's going essentially to zero.
-          koalay+=(koalatargety-koalay)/15;
-          glutPostRedisplay();
-        }
+        koala.approachTarget();
+        glutPostRedisplay();
         break;
+
       default:
         break;
     }
@@ -541,6 +531,5 @@ int main(int argc, char **argv)
   screen = START;
   init_buttons();
   init_targets(argc, argv);
-
   init_gl_window();
 }
