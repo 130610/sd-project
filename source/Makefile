@@ -1,4 +1,4 @@
-OPTS = -Wall -Wno-write-strings -g -std=c++11
+OPTS = -Wall -g -std=c++11
 LIBS = -lGL -lglut -lm
 ARCH := $(shell uname)
 ifeq ($(ARCH), Linux)
@@ -12,7 +12,7 @@ endif
 start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
-start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h
+start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
 
 InstructionLines.o: InstructionLines.cpp InstructionLines.h

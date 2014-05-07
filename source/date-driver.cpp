@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
   Date date(5,5,2024);
-  string s = "Foosball";
+  string s = "Sunday";
   int i = convertDayToNumber(s);
   cerr << "day #: " << i << endl;
   bool isTrue = date.compareDay(0);

@@ -2,6 +2,8 @@
 #include <algorithm> // for transform()
 #include <stdlib.h>
 #include <string>
+#include <time.h>
+
 #include "date.h"
 using namespace std;
 
@@ -12,8 +14,7 @@ Date::Date(unsigned m, unsigned d, unsigned y) // given date
 
 Date::Date()
 {
-  /* ask Bryan how to seed this properly */
-  int seed = 500;
+  int seed = time(0);
 
   unsigned month, day, year, century;
   do {
