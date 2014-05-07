@@ -20,7 +20,8 @@ public:
   enum screenType active;
   bool IsPressed, overButton;
 
-  Button(string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx);
+  Button (string label, int x, int y, int w, int h,
+      enum screenType screen, enum screenType active, int labelStartX);
 
   virtual void draw();
   void drawButton();

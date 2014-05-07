@@ -9,16 +9,18 @@
 #include "globaldefs.h"
 #include "text.h"
 
-Button::Button (string l, int xx, int yy,int w, int h, enum screenType s,enum screenType p, int lx)
+Button::Button (string label, int x, int y, int w, int h, enum screenType screen, enum screenType active, int labelStartX)
 {
-  x = xx;
-  y = yy;
-  width =w;
+  this->label = label;
+  this->labelStartX = labelStartX;
+
+  this->x = x;
+  this->y = y;
+  width = w;
   height = h;
-  label = l;
-  labelStartX = lx;
-  screen = s;
-  active = p;
+
+  this->screen = screen;
+  this->active = active;
 
   color = {0.5255, 0.5020, 0.5294};
 }
@@ -61,7 +63,6 @@ void Button::draw() {
   drawButton();
 
   //text
-  
   char * bText = new char[label.size() + 1];
   copy(label.begin(), label.end(), bText);
   bText[label.size()] = '\0';
@@ -73,7 +74,6 @@ void MovingButton::draw() {
   drawButton();
 
   //text
-  
   char * bText = new char[label.size() + 1];
   copy(label.begin(), label.end(), bText);
   bText[label.size()] = '\0';

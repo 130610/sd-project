@@ -25,6 +25,7 @@
 #include "target.h"
 #include "draw.h"
 #include "koala.h"
+#include "date.h"
 using namespace std;
 
 // root target
@@ -39,6 +40,7 @@ int keyboardTexture;
 int koalaTexture;
 double lastTime;
 int offset = 0;
+bool dateIsGenerated = false;
 
 //button info
 const int buttonHeight = 118;
@@ -234,10 +236,25 @@ void display()
       break;
       // the actual quit is handled in the mouse button press
 
+#ifdef THIS_IS_NOT_DEFINED
     case QUIT_DATE:
-        quitProgram();
-        break;
+    {
+      if (!dateIsGenerated)
+        Date randomDate;
 
+      /* get entry in a text box; when button is pressed... */
+      string userDateName = "Sunday"; // obviously actually set this
+      unsigned userDateNum = convertDayToNumber(userDateName);
+      if ( randomDate.compareDay(userDateNum) )
+        quitProgram();
+      else {
+        dateIsGenerated = false;
+        /* clear textbox */
+      }
+      break;
+
+    }
+#endif
     default:
       cerr << "This screen not defined (yet?)." << endl;
       break;

@@ -1,4 +1,4 @@
-OPTS = -Wall -Wno-write-strings -g -std=c++11
+OPTS = -Wall -g -std=c++11
 LIBS = -lGL -lglut -lm
 ARCH := $(shell uname)
 ifeq ($(ARCH), Linux)
