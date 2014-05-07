@@ -13,7 +13,9 @@ public:
   const unsigned monthDays[13] = {0, 31,29,31,30,31,30,31,31,30,31,30,31};
 
   Date(unsigned m, unsigned d, unsigned y);
-  Date(); // generates random date
+  Date(); // uses random valid values
+  void randomize(); // re-randomizes values
+
   bool compareDay(unsigned dayToCheck);
   bool isLeapYear();
 };

@@ -14,6 +14,11 @@ Date::Date(unsigned m, unsigned d, unsigned y) // given date
 
 Date::Date()
 {
+  randomize();
+}
+
+void Date::randomize()
+{
   int seed = time(0);
 
   unsigned month, day, year, century;
@@ -56,8 +61,6 @@ bool Date::compareDay(unsigned dayToCheck)
                (yearMinusCentury % 12)/4 );
   centuryCode = (5*(century%4));
   correctCode = (monthCode + dayCode + yearCode + centuryCode) % 7;
-
-  cerr << correctCode << endl;
 
   if ( correctCode == dayToCheck )
     return true;

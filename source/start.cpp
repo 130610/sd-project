@@ -46,7 +46,7 @@ bool dateIsGenerated = false;
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-const char numButtons = 9;
+const char numButtons = 10;
 
 //Start Screen Buttons//
 Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
@@ -61,6 +61,8 @@ Button backButton2("Go Back", 0,0,80,768, START, LOAD,4);
 Button backButton3("Go Back", 0,0,80,768, START, CUSTOMIZE, 4);
 //Load Screen Button
 Button loadMakefileButton("Load", 360,250,200,40, LOAD, LOAD, 442);
+//Quit Screen Button
+Button submitDateButton("Submit", 360,250,200,40, QUIT_DATE, QUIT_DATE, 442);
 
 // Main Button Array//
 Button* Buttons[numButtons];
@@ -71,10 +73,15 @@ int mouseposy;
 
 Koala koala {};
 
+//QUIT_DATE TextBox
+int quitBoxText1[] = {182, 350, 600, 40};
+int quitBoxText2[] = {188, 355, 590, 30};
+textBox dateBox{false, quitBoxText1, quitBoxText2};
+
 //LoadPage TextBox
-int boxText1[] = {182, 350, 600,40};
-int boxText2[] = {188, 355, 590, 30 };
-textBox loadBox{false, boxText1, boxText2};
+int loadBoxText1[] = {182, 350, 600,40};
+int loadBoxText2[] = {188, 355, 590, 30 };
+textBox loadBox{false, loadBoxText1, loadBoxText2};
 
 void quitProgram()
 {
@@ -204,25 +211,30 @@ void display()
       break;
       // the actual quit is handled in the mouse button press
 
-#ifdef THIS_IS_NOT_DEFINED
     case QUIT_DATE:
     {
-      if (!dateIsGenerated)
-        Date randomDate;
+      Date randomDate;
+      if (!dateIsGenerated) {
+        randomDate.randomize();
+        dateIsGenerated = true;
+      }
 
-      /* get entry in a text box; when button is pressed... */
+      // get entry in a text box; when button is pressed...
+      dateBox.drawTextBox();
+      loadBox.writeTextinBox();
+      glutSwapBuffers();
+
       string userDateName = "Sunday"; // obviously actually set this
       unsigned userDateNum = convertDayToNumber(userDateName);
       if ( randomDate.compareDay(userDateNum) )
         quitProgram();
       else {
         dateIsGenerated = false;
-        /* clear textbox */
+        // clear the textbox
       }
       break;
 
     }
-#endif
     default:
       cerr << "This screen not defined (yet?)." << endl;
       break;
@@ -233,33 +245,27 @@ void display()
 // process keyboard events
 void keyboard(unsigned char c, int x, int y)
 {
-  loadBox.keyboardfunction(c,x,y); //uses the textbox file
-    switch(c) {
-      case 'x':
-        if ( koala.isAtBottom() )
-          koala.leaveBottom();
-        koala.setTarget(mouseposx-100, mouseposy);
-        break;
-
-      case 'g':
-      case 'G':
-        if (screen == START)
-          screen = GAME;
-        else if (screen == GAME)
-          screen = START;
-        break;
+  // if we're in a text box, type as normal there
+  loadBox.keyboardfunction(c,x,y);
+  dateBox.keyboardfunction(c,x,y);
+  switch(c) {
+    case 'x':
+      if ( koala.isAtBottom() )
+        koala.leaveBottom();
+      koala.setTarget(mouseposx-100, mouseposy);
+      break;
 
 #ifdef DEBUG
-      case 'q':
-      case 'Q':
-      case 27:
-        quitProgram();
+    case 'q':
+    case 'Q':
+    case 27:
+      quitProgram();
 #endif
 
-      case '\b':
-      default:
-        break;
-    }
+    case '\b':
+    default:
+      break;
+  }
   glutPostRedisplay();
 }
 
@@ -347,9 +353,13 @@ void mouse_motion(int x, int y)
         Buttons[i]->overButton = false;
     }
   }
+
+  // focus on any text boxes
   if ( loadBox.onTextBox(x,768-y) ) loadBox.changeoverTextBox(true);
   else loadBox.changeoverTextBox(false);
-  //cerr<<"overTextBox"<<overTextBox<<endl;
+
+  if ( dateBox.onTextBox(x,768-y) ) dateBox.changeoverTextBox(true);
+  else dateBox.changeoverTextBox(false);
   glutPostRedisplay();
 }
 
@@ -461,6 +471,7 @@ void init_buttons()
   Buttons[6] = &loadMakefileButton;
   Buttons[7] = &backButton2;
   Buttons[8] = &backButton3;
+  Buttons[9] = &submitDateButton;
   for (short int i=0; i<numButtons; ++i) {
     Buttons[i]->IsPressed = false;
     Buttons[i]->overButton = false;
