@@ -24,3 +24,27 @@ void drawText(int x, int y, string text)
   for (unsigned i = 0; i < text.length(); i++)
     glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
 }
+
+
+void drawBox(double x, double y, double width, double height)
+{
+  glBegin(GL_POLYGON);
+    glVertex2f(x, y);  // upper left
+    glVertex2f(x, y + height);  // lower left
+    glVertex2f(x + width, y + height);  // lower right
+    glVertex2f(x + width, y);  // upper right
+  glEnd();
+}
+void drawBox(double *pos)
+{
+  drawBox(pos[0], pos[1], pos[2], pos[3]);
+}
+
+void exitAll()
+{
+  int win = glutGetWindow();
+  glutDestroyWindow(win);
+  exit(0);
+}
+
+
