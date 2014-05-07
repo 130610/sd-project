@@ -12,34 +12,29 @@ using namespace std;
 #include "koala.h"
 #include "texture.h"
 
-Koala::Koala() : x(10), y(120), atBottom(true)
+Koala::Koala()
 {
-  targetx = x;
-  targety = y;
-}
-
-bool Koala::isAtTarget()
-{
-  return !(x==targetx && y==targety);
+  posn.x = 10, posn.y = 120;
+  target = posn;
+  atBottom = true;
 }
 
 void Koala::approachTarget()
 {
-  cerr << "approaching" << endl;
-  x += (targetx - x) / 15;
-  y += (targety - y) / 15;
+  posn.x += (target.x - posn.x) / 15;
+  posn.y += (target.y - posn.y) / 15;
 }
 
 void Koala::scrollKoalaUp()
 {
-  targety += HEIGHT - 200 - y;
-  y = HEIGHT - 200;
+  target.y += HEIGHT - 200 - posn.y;
+  posn.y = HEIGHT - 200;
 }
 
 void Koala::scrollKoalaDown()
 {
-  targety += 100 - y;
-  y = 100;
+  target.y += 100 - posn.y;
+  posn.y = 100;
 }
 
 void Koala::drawTrajectory(int mouseposx, int mouseposy)
@@ -64,8 +59,8 @@ void Koala::drawTrajectory(int mouseposx, int mouseposy)
 
 void Koala::drawKoala(int mouseposx)
 {
-  if(mouseposx > x)
-    drawTexture(texture,x,y,100,-100);
+  if(mouseposx > posn.x)
+    drawTexture(texture,posn.x,posn.y,100,-100);
   else
-    drawTexture(texture, x, y, 100,-100, 1.0,M_PI);
+    drawTexture(texture, posn.x, posn.y, 100,-100, 1.0,M_PI);
 }

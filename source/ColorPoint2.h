@@ -17,6 +17,7 @@ struct Point2 {
   int x;
   int y;
   void display() { cout << x << ' ' << y << "  "; }
+  bool operator== (Point2 p) { return (x==p.x && y==p.y); }
 };
 
 int distance(int x, int y, Point2 p);
