@@ -14,6 +14,7 @@ public:
 	void set(Point2 start, Point2 end, double time);
 	void move(Point2 &p);
 	void gravity(int meter);
+	void friction(int factor);
 	void show() { cout << "velx: " << velX << "   vely: " << velY << endl; }
 };
 

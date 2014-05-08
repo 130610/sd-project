@@ -8,5 +8,6 @@ const int HEIGHT = 768;
 const int FPS = 20;
 const int METER_LENGTH = 125;
 const bool GRAVITY = false;
+const bool FRICTION = true;
 
 #endif
