@@ -316,7 +316,7 @@ void mouse(int mouseButton, int state, int x, int y)
 		}
 	      else
 		{
-		 drawWhiteText(200,200,(string)"Makefile is Already Loaded!!!!!");
+		  cout<<"Makefile is Already Loaded!!!!!"<<endl;
 		}
 		}
            if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
