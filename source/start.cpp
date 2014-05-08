@@ -223,6 +223,7 @@ void display()
       quitButton.active = START; // get it out of the way
 
       if (!dateIsGenerated) {
+        dateBox.erase();
         randomDate.randomize();
         dateIsGenerated = true;
       }
@@ -259,7 +260,6 @@ void display()
         dateIsGenerated = false;
         hasFailedDate = true;
         screen = QUIT_DATE;
-        dateBox.erase();
         break;
       }
     }
@@ -337,7 +337,7 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen && Buttons[i]->onButton(x,y))
         {
           Buttons[i]->IsPressed = true;
-          Buttons[i]->getLabel() == "Load")
+          if (Buttons[i]->getLabel() == "Load")
           {
             if((!innitted))
             {
