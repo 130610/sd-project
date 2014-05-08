@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <sys/time.h>
+#include <sys/stat.h>
 
 #ifdef MACOSX
 #include <GLUT/glut.h>
@@ -550,13 +551,23 @@ void init_buttons()
   }
 }
 
+bool file_exists (const char *name)
+{
+  /* from http://stackoverflow.com/questions/12774207/
+   * fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c */
+  struct stat buffer;   
+  return (stat (name, &buffer) == 0); 
+}
+
 void init_targets(const char *filename)
 {
   string name;
-  if(*filename) {
+  if(*filename && file_exists(filename)) {
     delete [] rootTarget;
     rootTarget = parseTargets(filename);
     rootTarget[0]->initPositions();
+  } else {
+    cerr << "That file does not exist!" << endl;
   }
 }
 
