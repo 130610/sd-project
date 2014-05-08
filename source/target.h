@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "physics.h"
 using namespace std;
 
 #define MAX_X_FACTOR 200
@@ -15,11 +16,10 @@ class Target
 	string targetName;
 	Target **children;
 	Target **parents;
-	int posX;
-	int posY;
 	int numParents;
 	int numChildren;
-
+	Point2 pos;
+	Hitbox *hitbox;
 
 public:
 	bool posInited;
@@ -33,21 +33,14 @@ public:
 	void addParent(Target *p);
 	void setName(string n) { targetName = n; }
 	string getName() { return targetName; }
-	int getPosY() { return posX; }
-	int getPosX() { return posY; }
+	int getPosY() { return pos.x; }
+	int getPosX() { return pos.y; }
 	Target* findTarget(string n);
 	void initPositions(int d = 0, int ind = 0);
 	void drawTargetBoxes(int offset);
 	void drawDependLines();
 	void printTree();
 };
-
-//class SplitString : public string {
-//	vector<string> flds;
-//public:
-//	SplitString(string s) : string(s) { };
-//	vector<string>& split(char delim);
-//};
 
 Target **parseTargets(const char *filename);
 vector<string> splitString(string s, char d);

@@ -58,3 +58,13 @@ clean:
 	rm -f *.o start
 	rm -f target-driver
 	rm -f date-driver
+
+# physics
+physics-driver: physics-driver.o physics.o
+	g++ $(OPTS) -o physics-driver $^ $(LIBS)
+
+physics.o: physics.cpp physics.h
+	g++ $(OPTS) -c physics.cpp
+
+physics-driver.o: physics-driver.cpp
+	g++ $(OPTS) -c physics-driver.cpp
