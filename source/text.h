@@ -100,7 +100,8 @@ class textBox
 	}
 #endif
 	if('\b'==c || 127==c){
-	  if(textInBox.length()>=0) textInBox.erase(textInBox.end()-1);
+	  cerr<<"Does this happen!"<<endl;
+	  if(textInBox.length()>=1) textInBox.erase(textInBox.end()-1);
 	}else if ( c >= 32 && c <= 126 ) { // check for printable character
       // check that we don't overflow the box
       if (textInBox.length() < MAX_NUM_CHARS_IN_TEXTBOX ) textInBox += c;

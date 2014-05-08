@@ -76,6 +76,9 @@ int boxText1[] = {182, 350, 600,40};
 int boxText2[] = {188, 355, 590, 30 };
 textBox loadBox{false, boxText1, boxText2};
 
+
+bool innitted = false;
+
 void quitProgram()
 {
   int win = glutGetWindow();
@@ -296,7 +299,18 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen) {
           if (Buttons[i]->onButton(x,y)) {
             Buttons[i]->IsPressed = true;
-            if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
+	    if(screen == LOAD)
+	      {
+	      if(!innitted)
+		{
+		init_targets(loadBox.getTextInBox().c_str());
+		}
+	      else
+		{
+		 drawWhiteText(200,200,(string)"Makefile is Already Loaded!!!!!");
+		}
+		}
+           if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
               // quit button, and already pressed once; move to date part
               screen = QUIT_DATE;
               Buttons[i]->active = QUIT_DATE;
@@ -467,24 +481,23 @@ void init_buttons()
   }
 }
 
-void init_targets(int argc, char **argv)
+void init_targets(const char *filename)
 {
+
   string name;
-  if (argc >= 2) {
-    rootTarget = parseTargets(argv[argc]);
-  } else {
-    rootTarget = parseTargets(defaultMakefile);
-  }
+   rootTarget = parseTargets(filename);
+   //rootTarget = parseTargets(defaultMakefile);
+
 
   rootTarget[0]->initPositions();
 }
 
-int main(int argc, char **argv)
+int main()
 {
   lastTime = getCurrentTime();
 
   screen = START;
   init_buttons();
-  init_targets(argc, argv);
+  //init_targets();
   init_gl_window();
 }
