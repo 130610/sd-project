@@ -62,6 +62,7 @@ bool Date::compareDay(unsigned dayToCheck)
   centuryCode = (5*(century%4));
   correctCode = (monthCode + dayCode + yearCode + centuryCode) % 7;
 
+  cerr << "correct date code: " << correctCode << endl;
   if ( correctCode == dayToCheck )
     return true;
   else
@@ -93,4 +94,12 @@ bool validateDate(unsigned month, unsigned day, unsigned year)
   if (d.day > d.monthDays[d.month]) return false;
   if (d.day == 29 && !(d.isLeapYear())) return false;
   return true;
+}
+
+string Date::getStringRepr()
+{
+  string dateRepr;
+  dateRepr = to_string(month) + "/" + to_string(day) + "/" +
+             to_string(year);
+  return dateRepr;
 }

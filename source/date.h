@@ -18,6 +18,7 @@ public:
 
   bool compareDay(unsigned dayToCheck);
   bool isLeapYear();
+  string getStringRepr();
 };
 
 unsigned convertDayToNumber(string s);
