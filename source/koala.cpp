@@ -51,7 +51,7 @@ void Koala::drawTrajectory(int mouseposx, int mouseposy)
   if(hypotenuse > 100)
     hypotenuse = 100;
   */
-
+  
   glColor3f(1,1,1);
     glLineStipple(1, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);

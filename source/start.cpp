@@ -223,6 +223,7 @@ void display()
       quitButton.active = START; // get it out of the way
 
       if (!dateIsGenerated) {
+        dateBox.erase();
         randomDate.randomize();
         dateIsGenerated = true;
       }
@@ -232,7 +233,7 @@ void display()
 
       string dateMessage = ( hasFailedDate ? "Nope! " : "" );
       dateMessage += "Please enter the day of the week that " +
-          randomDate.getStringRepr() + " fell on:";
+          randomDate.getStringRepr() + " falls on:";
       drawWhiteText( (hasFailedDate ? 240 : 257),400,dateMessage );
 
       for (short int i=0; i<numButtons; ++i) {
@@ -259,7 +260,6 @@ void display()
         dateIsGenerated = false;
         hasFailedDate = true;
         screen = QUIT_DATE;
-        dateBox.erase();
         break;
       }
     }
@@ -337,9 +337,9 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen && Buttons[i]->onButton(x,y))
         {
           Buttons[i]->IsPressed = true;
-          if(screen == LOAD)
+          if (Buttons[i]->getLabel() == "Load")
           {
-            if(!innitted)
+            if((!innitted))
             {
               init_targets(loadBox.getTextInBox().c_str());
               loadBox.erase();
@@ -348,6 +348,7 @@ void mouse(int mouseButton, int state, int x, int y)
             {
               cout<<"Makefile is Already Loaded!!!!!"<<endl;
             }
+            screen = Buttons[i]->screen;
           }
           else if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE)
           {
@@ -532,11 +533,11 @@ void init_buttons()
 void init_targets(const char *filename)
 {
   string name;
-
-  delete [] rootTarget;
-
-  rootTarget = parseTargets(filename);
-  rootTarget[0]->initPositions();
+  if(*filename) {
+    delete [] rootTarget;
+    rootTarget = parseTargets(filename);
+    rootTarget[0]->initPositions();
+  }
 }
 
 int main()
