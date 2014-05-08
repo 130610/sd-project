@@ -85,6 +85,9 @@ int loadBoxText1[] = {182, 350, 600,40};
 int loadBoxText2[] = {188, 355, 590, 30 };
 textBox loadBox{false, loadBoxText1, loadBoxText2};
 
+
+bool innitted = false;
+
 void quitProgram()
 {
   cout << "You're good to go back to the real world! Quitting." << endl;
@@ -276,10 +279,13 @@ void keyboard(unsigned char c, int x, int y)
   dateBox.keyboardfunction(c,x,y);
   switch(c) {
     case 'x':
+    {
       if ( koala.isAtBottom() )
         koala.leaveBottom();
-      koala.setTarget(mouseposx-100, mouseposy);
+      Point2 tmppos(mouseposx - 100, mouseposy);
+      koala.setTarget(tmppos, 100);
       break;
+    }
 
 #ifdef DEBUG
     case 'q':
@@ -328,7 +334,18 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen) {
           if (Buttons[i]->onButton(x,y)) {
             Buttons[i]->IsPressed = true;
-            if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
+	    if(screen == LOAD)
+	      {
+	      if(!innitted)
+		{
+		init_targets(loadBox.getTextInBox().c_str());
+		}
+	      else
+		{
+		 drawWhiteText(200,200,(string)"Makefile is Already Loaded!!!!!");
+		}
+		}
+           if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
               // quit button, and already pressed once; move to date part
               screen = QUIT_DATE;
               Buttons[i]->active = QUIT_DATE;
@@ -468,13 +485,13 @@ void idle()
       case GAME:
         if (koala.getY() >= HEIGHT - 200) {
           offset += HEIGHT - 200 - koala.getY();
-          koala.scrollKoalaUp();
+//          koala.scrollKoalaUp();
         } else if (koala.getY() <= 100) {
           offset += 100 - koala.getY();
-          koala.scrollKoalaDown();
+//          koala.scrollKoalaDown();
         }
 
-        koala.approachTarget();
+        koala.move();
         glutPostRedisplay();
         break;
 
@@ -504,24 +521,23 @@ void init_buttons()
   }
 }
 
-void init_targets(int argc, char **argv)
+void init_targets(const char *filename)
 {
+
   string name;
-  if (argc >= 2) {
-    rootTarget = parseTargets(argv[argc]);
-  } else {
-    rootTarget = parseTargets(defaultMakefile);
-  }
+   rootTarget = parseTargets(filename);
+   //rootTarget = parseTargets(defaultMakefile);
+
 
   rootTarget[0]->initPositions();
 }
 
-int main(int argc, char **argv)
+int main()
 {
   lastTime = getCurrentTime();
 
   screen = START;
   init_buttons();
-  init_targets(argc, argv);
+  //init_targets();
   init_gl_window();
 }

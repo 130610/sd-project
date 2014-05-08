@@ -15,27 +15,31 @@ using namespace std;
 Koala::Koala()
 {
   posn.x = 10, posn.y = 120;
-  target = posn;
   atBottom = true;
 }
 
-void Koala::approachTarget()
+void Koala::move()
 {
-  posn.x += (target.x - posn.x) / 15;
-  posn.y += (target.y - posn.y) / 15;
+	vel.move(posn);
 }
 
-void Koala::scrollKoalaUp()
-{
-  target.y += HEIGHT - 200 - posn.y;
-  posn.y = HEIGHT - 200;
-}
+//void Koala::approachTarget()
+//{
+//  posn.x += (target.x - posn.x) / 15;
+//  posn.y += (target.y - posn.y) / 15;
+//}
 
-void Koala::scrollKoalaDown()
-{
-  target.y += 100 - posn.y;
-  posn.y = 100;
-}
+//void Koala::scrollKoalaUp()
+//{
+//  target.y += HEIGHT - 200 - posn.y;
+//  posn.y = HEIGHT - 200;
+//}
+
+//void Koala::scrollKoalaDown()
+//{
+//  target.y += 100 - posn.y;
+//  posn.y = 100;
+//}
 
 void Koala::drawTrajectory(int mouseposx, int mouseposy)
 {
