@@ -15,7 +15,7 @@ void Velocity::move(Point2 &p)
 {
 	p.x += velX;
 	p.y += velY;
-	gravity(125);
+	if (GRAVITY) gravity(METER_LENGTH);
 }
 
 void Velocity::gravity(int meter)
