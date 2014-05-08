@@ -25,6 +25,7 @@ public:
 
   virtual void draw();
   void drawButton();
+  string getLabel() { return label; }
   bool onButton(int, int);
 };
 

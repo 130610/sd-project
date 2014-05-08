@@ -337,7 +337,7 @@ void mouse(int mouseButton, int state, int x, int y)
         if(Buttons[i]->active == screen && Buttons[i]->onButton(x,y))
         {
           Buttons[i]->IsPressed = true;
-          if(screen == LOAD)
+          Buttons[i]->getLabel() == "Load")
           {
             if((!innitted))
             {
@@ -348,7 +348,7 @@ void mouse(int mouseButton, int state, int x, int y)
             {
               cout<<"Makefile is Already Loaded!!!!!"<<endl;
             }
-	    screen = Buttons[i]->screen;
+            screen = Buttons[i]->screen;
           }
           else if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE)
           {
@@ -356,11 +356,11 @@ void mouse(int mouseButton, int state, int x, int y)
             screen = QUIT_DATE;
             Buttons[i]->active = QUIT_DATE;
           }
-	  else
+          else
           {
             screen = Buttons[i]->screen;
           }
-	}
+        }
       }
     }
     else
@@ -533,11 +533,11 @@ void init_buttons()
 void init_targets(const char *filename)
 {
   string name;
-  if(*filename){
+  if(*filename) {
     delete [] rootTarget;
     rootTarget = parseTargets(filename);
     rootTarget[0]->initPositions();
-    }
+  }
 }
 
 int main()
