@@ -5,6 +5,7 @@
 #include <time.h>
 #include "target.h"
 #include "draw.h"
+#include "physics.h"
 #ifdef MACOSX
 #include <GLUT/glut.h>
 #else
@@ -67,8 +68,8 @@ void Target::drawTargetBoxes(int offset)
 		children[i]->drawTargetBoxes(offset);
 	}
 
-	drawBox(posX, posY + offset, BOX_WIDTH, BOX_HEIGHT, 1, 1, 1);
-	drawText(posX + 3, posY + 3+offset, targetName);
+	drawBox(pos.x, pos.y + offset, BOX_WIDTH, BOX_HEIGHT, 1, 1, 1);
+	drawText(pos.x + 3, pos.y + 3+offset, targetName);
 
 }
 
@@ -77,7 +78,7 @@ void Target::drawDependLines()
 	for (int i = 0; i < numChildren; i++) {
 		children[i]->drawDependLines();
 		glBegin(GL_LINES);
-			glVertex3f(posX, posY, 0);
+			glVertex3f(pos.x, pos.y, 0);
 			glVertex3f(children[i]->getPosX(), children[i]->getPosY(), 0);
 		glEnd();
 	}
@@ -114,11 +115,12 @@ void Target::initPositions(int d, int ind)
 		children[i]->initPositions(d + 1, i + ind);
 	}
 
-	if (posInited == false) {
+	if (!posInited) {
 		srand(seed++);
-		posX = (ind * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
+		pos.x = (ind * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
 		srand(seed++);
-		posY = (d * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
+		pos.y = (d * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
+		hitbox = new Hitbox(pos, BOX_WIDTH, BOX_HEIGHT);
 		posInited = true;
 	}
 }
