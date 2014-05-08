@@ -3,7 +3,7 @@
 
 // other functions
 void quitProgram();
-int main(int argc, char **argv);
+
 
 // openGL functions
 void display();
@@ -17,5 +17,6 @@ void init_gl_window();
 double getCurrentTime();
 void idle();
 void init_buttons();
+void init_targets(const char *filename);
 
 #endif
