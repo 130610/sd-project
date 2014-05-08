@@ -1,19 +1,26 @@
 #include <cmath>
 #include "physics.h"
+#include "globaldefs.h"
 using namespace std;
 
 #define MIN(a, b)  (abs(a) < abs(b)?a:b)
 
-void Velocity::set(Point2 start, Point2 end, int frames)
+void Velocity::set(Point2 start, Point2 end, double time)
 {
-	velX = (double) (end.x - start.x) / (double) frames;
-	velY = (double) (end.y - start.y) / (double) frames;
+	velX = (double) (end.x - start.x) / (FPS * time);
+	velY = (double) (end.y - start.y) / (FPS * time);
 }
 
 void Velocity::move(Point2 &p)
 {
 	p.x += velX;
 	p.y += velY;
+	gravity(125);
+}
+
+void Velocity::gravity(int meter)
+{
+	velY -= (int) ((double) meter / FPS);
 }
 
 bool Hitbox::detect(Point2 &p, int w, int h)

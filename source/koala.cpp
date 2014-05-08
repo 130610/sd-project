@@ -29,17 +29,17 @@ void Koala::move()
 //  posn.y += (target.y - posn.y) / 15;
 //}
 
-//void Koala::scrollKoalaUp()
-//{
+void Koala::scrollKoalaUp()
+{
 //  target.y += HEIGHT - 200 - posn.y;
-//  posn.y = HEIGHT - 200;
-//}
+  posn.y = HEIGHT - 200;
+}
 
-//void Koala::scrollKoalaDown()
-//{
+void Koala::scrollKoalaDown()
+{
 //  target.y += 100 - posn.y;
-//  posn.y = 100;
-//}
+  posn.y = 100;
+}
 
 void Koala::drawTrajectory(int mouseposx, int mouseposy)
 {

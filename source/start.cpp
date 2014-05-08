@@ -257,7 +257,7 @@ void keyboard(unsigned char c, int x, int y)
       if ( koala.isAtBottom() )
         koala.leaveBottom();
       Point2 tmppos(mouseposx - 100, mouseposy);
-      koala.setTarget(tmppos, 100);
+      koala.setTarget(tmppos, 1);
       break;
     }
 
@@ -459,10 +459,10 @@ void idle()
       case GAME:
         if (koala.getY() >= HEIGHT - 200) {
           offset += HEIGHT - 200 - koala.getY();
-//          koala.scrollKoalaUp();
+          koala.scrollKoalaUp();
         } else if (koala.getY() <= 100) {
           offset += 100 - koala.getY();
-//          koala.scrollKoalaDown();
+          koala.scrollKoalaDown();
         }
 
         koala.move();
@@ -497,17 +497,18 @@ void init_buttons()
 
 void init_targets(const char *filename)
 {
-
   string name;
-   rootTarget = parseTargets(filename);
-   //rootTarget = parseTargets(defaultMakefile);
 
+  delete [] rootTarget;
 
+  rootTarget = parseTargets(filename);
   rootTarget[0]->initPositions();
 }
 
 int main()
 {
+  rootTarget = parseTargets(defaultMakefile);
+  rootTarget[0]->initPositions();
   lastTime = getCurrentTime();
 
   screen = START;
