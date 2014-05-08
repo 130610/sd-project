@@ -27,7 +27,7 @@ void Date::randomize()
     month = (rand() % 12) + 1; srand(seed++);
     day = (rand() % 31) + 1;   srand(seed++);
     year = (rand() % 100);     srand(seed++);
-    century = 1900 + (rand() % 2);
+    century = 1900 + 100*(rand() % 2);
     year = century + year;
   } while (!validateDate(month, day, year));
 

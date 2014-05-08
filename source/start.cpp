@@ -233,7 +233,7 @@ void display()
 
       string dateMessage = ( hasFailedDate ? "Nope! " : "" );
       dateMessage += "Please enter the day of the week that " +
-          randomDate.getStringRepr() + " fell on:";
+          randomDate.getStringRepr() + " falls on:";
       drawWhiteText( (hasFailedDate ? 240 : 257),400,dateMessage );
 
       for (short int i=0; i<numButtons; ++i) {
