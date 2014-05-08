@@ -217,6 +217,8 @@ void display()
     case QUIT_DATE:
     {
       /* The second stage of quitting: Get the right date! */
+      quitButton.active = START; // get it out of the way
+
       if (!dateIsGenerated) {
         randomDate.randomize();
         dateIsGenerated = true;
