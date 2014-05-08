@@ -11,3 +11,25 @@ dep2: dep1.o dep2.o
 
 dep2.o: dep2.cpp dep.h
 	some stuff
+
+dep1.cpp: other
+
+other: tar1 tar2 cat
+
+tar1: tar1.o
+	g++ -std=c++11 -o tar1 tar1.o
+
+tar2: tar2.o tar1.o
+	g++ -std=c++11 -o tar2 tar1.o tar2.o
+
+cat: cat.o
+	echo cat
+
+tar1.o: tar1.cpp tar1.h
+	g++ -std=c++11 -c tar1.cpp
+
+tar2.o: tar2.cpp tar1.h
+	g++ -std=c++11 -c tar2.cpp
+
+cat.o: cat.cpp
+	g++ -std=c++11 -c cat.cpp

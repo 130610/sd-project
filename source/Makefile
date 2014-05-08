@@ -36,7 +36,7 @@ koala.o: koala.cpp koala.h physics.o
 
 
 # makefile parser
-target-driver: target-driver.o target.o draw.o
+target-driver: target-driver.o target.o draw.o physics.o
 	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
 target.o: target.cpp target.h draw.o physics.o

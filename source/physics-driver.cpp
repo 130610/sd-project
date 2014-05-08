@@ -6,8 +6,8 @@ int main()
 {
 	Velocity v;
 	Hitbox h(100, 100, 50, 80);
-	Point2 pos2;
-	Point2 pos3;
+	Point2d pos2;
+	Point2d pos3;
 	pos2.x = 10; pos2.y = 110;
 	pos3.x = 110; pos3.y = 110;
 	v.set(pos2, pos3, 15);

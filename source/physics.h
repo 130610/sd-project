@@ -7,15 +7,17 @@ using namespace std;
 
 class Velocity
 {
+	bool gravity;
+public:
 	double velX;
 	double velY;
-public:
-	Velocity(): velX(0), velY(0) {};
+	Velocity(): gravity(false), velX(0), velY(0) {};
 	void set(Point2d start, Point2d end);//, double time);
 	void move(Point2d &p);
-	void gravity(double meter);
+	void applyGravity(double meter);
 	void friction(double factor);
 	void show() { cout << "velx: " << velX << "   vely: " << velY << endl; }
+	void toggleGravity(bool g) { gravity = g; }
 };
 
 class Hitbox
@@ -24,7 +26,7 @@ class Hitbox
 	int width;
 	int height;
 public:
-	Hitbox(int x, int y, int w, int h): width(w), height(h) { pos.x = x; pos.y = y; }
+	Hitbox(int x, int y, int w, int h): pos(x, y), width(w), height(h) {}
 	bool detect(Point2 &p, int w, int h);
 };
 

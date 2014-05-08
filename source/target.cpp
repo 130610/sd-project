@@ -73,6 +73,19 @@ void Target::drawTargetBoxes(int offset)
 
 }
 
+bool Target::checkCollisions(Point2d &pos, int w, int h, int offset)
+{
+	bool ret;
+	for (int i = 0; i < numChildren; i++) {
+		if (children[i]->checkCollisions(pos, w, h, offset)) return true;
+	}
+	Point2 tmppos(pos.x, pos.y - offset - 100);
+
+	ret = hitbox->detect(tmppos, w, h);
+	pos.x = tmppos.x; pos.y = tmppos.y + offset + 100;
+	return ret;
+}
+
 void Target::drawDependLines()
 {
 	for (int i = 0; i < numChildren; i++) {

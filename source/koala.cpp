@@ -14,8 +14,9 @@ using namespace std;
 
 Koala::Koala()
 {
-  posn.x = 10, posn.y = 120;
+  posn.x = 10, posn.y = 200;
   atBottom = true;
+  jumps = 1;
 }
 
 void Koala::move()
@@ -38,7 +39,7 @@ void Koala::scrollKoalaUp()
 void Koala::scrollKoalaDown()
 {
 //  target.y += 100 - posn.y;
-  posn.y = 100;
+  posn.y = 200;
 }
 
 void Koala::drawTrajectory(int mouseposx, int mouseposy)
