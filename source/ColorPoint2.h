@@ -22,6 +22,15 @@ struct Point2 {
   Point2() {}
 };
 
+struct Point2d {
+  double x;
+  double y;
+  void display() { cout << x << ' ' << y << "  "; }
+  bool operator== (Point2d p) { return (x==p.x && y==p.y); }
+  Point2d(double posx, double posy): x(posx), y(posy) {}
+  Point2d() {}
+};
+
 int distance(int x, int y, Point2 p);
 
 #endif //__COLORPT__

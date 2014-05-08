@@ -15,12 +15,29 @@ void Velocity::move(Point2 &p)
 {
 	p.x += velX;
 	p.y += velY;
-	gravity(125);
+	if (GRAVITY) gravity(METER_LENGTH);
+	if (FRICTION) friction(1);
 }
 
 void Velocity::gravity(int meter)
 {
 	velY -= (int) ((double) meter / FPS);
+}
+
+void Velocity::friction(int factor)
+{
+	if (velX > 0) {
+		velX -= factor;
+	}
+	if (velY > 0) {
+		velY -= factor;
+	}
+	if (velX < 0) {
+		velX += factor;
+	}
+	if (velY < 0) {
+		velY += factor;
+	}
 }
 
 bool Hitbox::detect(Point2 &p, int w, int h)

@@ -6,5 +6,8 @@ enum screenType { START=1,GAME, LOAD, INSTRUCTIONS, CUSTOMIZE, QUIT_MOVE, QUIT_D
 const int WIDTH = 1024;
 const int HEIGHT = 768;
 const int FPS = 20;
+const int METER_LENGTH = 125;
+const bool GRAVITY = true;
+const bool FRICTION = true;
 
 #endif

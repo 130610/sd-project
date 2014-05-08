@@ -64,7 +64,7 @@ clean:
 physics-driver: physics-driver.o physics.o
 	g++ $(OPTS) -o physics-driver $^ $(LIBS)
 
-physics.o: physics.cpp physics.h
+physics.o: physics.cpp physics.h globaldefs.h
 	g++ $(OPTS) -c physics.cpp
 
 physics-driver.o: physics-driver.cpp
