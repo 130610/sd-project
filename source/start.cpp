@@ -259,7 +259,7 @@ void display()
         dateIsGenerated = false;
         hasFailedDate = true;
         screen = QUIT_DATE;
-        // clear the textbox
+        dateBox.erase();
         break;
       }
     }
@@ -328,36 +328,44 @@ void special_keyboard(int key, int x, int y)
 // The mouse function is called when a mouse button is pressed down or released
 void mouse(int mouseButton, int state, int x, int y)
 {
-  if ( GLUT_LEFT_BUTTON == mouseButton ) {
-    if ( GLUT_DOWN == state ) { // mouse press
-      for (short int i=0; i<numButtons; ++i) {
-        if(Buttons[i]->active == screen) {
-          if (Buttons[i]->onButton(x,y)) {
-            Buttons[i]->IsPressed = true;
-	    if(screen == LOAD)
-	      {
-	      if(!innitted)
-		{
-		init_targets(loadBox.getTextInBox().c_str());
-		}
-	      else
-		{
-		  cout<<"Makefile is Already Loaded!!!!!"<<endl;
-		}
-		}
-           if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE) {
-              // quit button, and already pressed once; move to date part
-              screen = QUIT_DATE;
-              Buttons[i]->active = QUIT_DATE;
+  if ( GLUT_LEFT_BUTTON == mouseButton )
+  {
+    if ( GLUT_DOWN == state ) // mouse press
+    {
+      for (short int i=0; i<numButtons; ++i)
+      {
+        if(Buttons[i]->active == screen && Buttons[i]->onButton(x,y))
+        {
+          Buttons[i]->IsPressed = true;
+          if(screen == LOAD)
+          {
+            if(!innitted)
+            {
+              init_targets(loadBox.getTextInBox().c_str());
+              loadBox.erase();
             }
             else
-              screen = Buttons[i]->screen;
+            {
+              cout<<"Makefile is Already Loaded!!!!!"<<endl;
+            }
+          }
+          else if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE)
+          {
+            // quit button, and already pressed once; move to date part
+            screen = QUIT_DATE;
+            Buttons[i]->active = QUIT_DATE;
+          }
+          else
+          {
+            screen = Buttons[i]->screen;
           }
         }
       }
     }
-    else { // mouse release
-      for (short int i=0; i<numButtons; ++i) {
+    else
+    { // mouse release
+      for (short int i=0; i<numButtons; ++i)
+      {
         if ( Buttons[i]->onButton(x,y) && Buttons[i]->IsPressed )
           Buttons[i]->IsPressed = false;
       }
