@@ -59,6 +59,7 @@ clean:
 	rm -f *.o start
 	rm -f target-driver
 	rm -f date-driver
+	rm -f physics-driver
 
 # physics
 physics-driver: physics-driver.o physics.o

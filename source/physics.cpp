@@ -5,26 +5,27 @@ using namespace std;
 
 #define MIN(a, b)  (abs(a) < abs(b)?a:b)
 
-void Velocity::set(Point2 start, Point2 end, double time)
+void Velocity::set(Point2d start, Point2d end)//, double time)
 {
-	velX = (double) (end.x - start.x) / (FPS * time);
-	velY = (double) (end.y - start.y) / (FPS * time);
+	velX = (double) (end.x - start.x) / (FPS * POWER_TIME);
+	velY = (double) (end.y - start.y) / (FPS * POWER_TIME);
+	cout << velX << "     " << velY << endl;
 }
 
-void Velocity::move(Point2 &p)
+void Velocity::move(Point2d &p)
 {
 	p.x += velX;
 	p.y += velY;
 	if (GRAVITY) gravity(METER_LENGTH);
-	if (FRICTION) friction(1);
+	if (FRICTION) friction(FRICTION_FACTOR);
 }
 
-void Velocity::gravity(int meter)
+void Velocity::gravity(double meter)
 {
-	velY -= (int) ((double) meter / FPS);
+	velY -= meter / FPS;
 }
 
-void Velocity::friction(int factor)
+void Velocity::friction(double factor)
 {
 	if (velX > 0) {
 		velX -= factor;

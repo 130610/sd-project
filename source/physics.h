@@ -7,14 +7,14 @@ using namespace std;
 
 class Velocity
 {
-	int velX;
-	int velY;
+	double velX;
+	double velY;
 public:
 	Velocity(): velX(0), velY(0) {};
-	void set(Point2 start, Point2 end, double time);
-	void move(Point2 &p);
-	void gravity(int meter);
-	void friction(int factor);
+	void set(Point2d start, Point2d end);//, double time);
+	void move(Point2d &p);
+	void gravity(double meter);
+	void friction(double factor);
 	void show() { cout << "velx: " << velX << "   vely: " << velY << endl; }
 };
 

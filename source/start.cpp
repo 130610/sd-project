@@ -282,8 +282,8 @@ void keyboard(unsigned char c, int x, int y)
     {
       if ( koala.isAtBottom() )
         koala.leaveBottom();
-      Point2 tmppos(mouseposx - 100, mouseposy);
-      koala.setTarget(tmppos, 1);
+      Point2d tmppos(mouseposx - 100, mouseposy);
+      koala.setTarget(tmppos);//, (double).5);
       break;
     }
 
