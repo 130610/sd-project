@@ -250,10 +250,13 @@ void keyboard(unsigned char c, int x, int y)
   dateBox.keyboardfunction(c,x,y);
   switch(c) {
     case 'x':
+    {
       if ( koala.isAtBottom() )
         koala.leaveBottom();
-      koala.setTarget(mouseposx-100, mouseposy);
+      Point2 tmppos(mouseposx - 100, mouseposy);
+      koala.setTarget(tmppos, 100);
       break;
+    }
 
 #ifdef DEBUG
     case 'q':
@@ -442,13 +445,13 @@ void idle()
       case GAME:
         if (koala.getY() >= HEIGHT - 200) {
           offset += HEIGHT - 200 - koala.getY();
-          koala.scrollKoalaUp();
+//          koala.scrollKoalaUp();
         } else if (koala.getY() <= 100) {
           offset += 100 - koala.getY();
-          koala.scrollKoalaDown();
+//          koala.scrollKoalaDown();
         }
 
-        koala.approachTarget();
+        koala.move();
         glutPostRedisplay();
         break;
 

@@ -18,6 +18,8 @@ struct Point2 {
   int y;
   void display() { cout << x << ' ' << y << "  "; }
   bool operator== (Point2 p) { return (x==p.x && y==p.y); }
+  Point2(int posx, int posy): x(posx), y(posy) {}
+  Point2() {}
 };
 
 int distance(int x, int y, Point2 p);

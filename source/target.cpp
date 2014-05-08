@@ -120,7 +120,7 @@ void Target::initPositions(int d, int ind)
 		pos.x = (ind * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
 		srand(seed++);
 		pos.y = (d * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
-		hitbox = new Hitbox(pos, BOX_WIDTH, BOX_HEIGHT);
+		hitbox = new Hitbox(pos.x, pos.y , BOX_WIDTH, BOX_HEIGHT);
 		posInited = true;
 	}
 }

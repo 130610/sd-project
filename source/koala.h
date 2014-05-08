@@ -1,14 +1,16 @@
 #ifndef _KOALA_
 #define _KOALA_
 
+#include "physics.h"
 #include "ColorPoint2.h"
 
 class Koala {
 private:
   Point2 posn; // location of upper-left corner
-  Point2 target; // location we're moving the koala towards
+  //Point2 target; // location we're moving the koala towards
   bool atBottom; // true at start, false after (if false, bottom is water)
   int texture;
+  Velocity vel;
 
 public:
   Koala();
@@ -18,13 +20,14 @@ public:
   int getCtrX() { return posn.x+40; } // visual center of koala for
   int getCtrY() { return posn.y-40; } // trajectory display, etc.
   bool isAtBottom() { return atBottom; }
-  bool isAtTarget() { return !(posn == target); } // why is this '!'?
+  //bool isAtTarget() { return !(posn == target); } // why is this '!'?
 
   void loadTexture(int texture) { this->texture = texture; }
 
   void leaveBottom() { atBottom = false; }
-  void setTarget(int x, int y) { target.x = x; target.y = y; }
+  void setTarget(Point2 target, int frames) { vel.set(posn, target, frames); }
   void approachTarget();
+  void move();
   void scrollKoalaUp();
   void scrollKoalaDown();
 

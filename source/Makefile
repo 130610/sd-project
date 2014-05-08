@@ -9,7 +9,7 @@ else
 endif
 
 # opengl section
-start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o
+start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
 start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o date.o
@@ -30,7 +30,7 @@ text.o: text.cpp text.h draw.o
 draw.o: draw.cpp draw.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c draw.cpp
 
-koala.o: koala.cpp koala.h
+koala.o: koala.cpp koala.h physics.o
 	g++ $(OPTS) $(MACOSX_DEFINE) -c koala.cpp
 
 
@@ -38,7 +38,7 @@ koala.o: koala.cpp koala.h
 target-driver: target-driver.o target.o draw.o
 	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
-target.o: target.cpp target.h draw.h
+target.o: target.cpp target.h draw.o physics.o
 	g++ $(OPTS) -c target.cpp
 
 target-driver.o: target-driver.cpp target.h
