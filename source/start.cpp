@@ -41,6 +41,8 @@ int koalaTexture;
 double lastTime;
 int offset = 0;
 bool dateIsGenerated = false;
+bool hasFailedDate = false;
+Date randomDate;
 
 //button info
 const int buttonHeight = 118;
@@ -62,7 +64,7 @@ Button backButton3("Go Back", 0,0,80,768, START, CUSTOMIZE, 4);
 //Load Screen Button
 Button loadMakefileButton("Load", 360,250,200,40, LOAD, LOAD, 442);
 //Quit Screen Button
-Button submitDateButton("Submit", 360,250,200,40, QUIT_DATE, QUIT_DATE, 442);
+Button submitDateButton("Submit", 380,290,200,40, CHECK_QUIT_DATE, QUIT_DATE, 450);
 
 // Main Button Array//
 Button* Buttons[numButtons];
@@ -88,6 +90,7 @@ bool innitted = false;
 
 void quitProgram()
 {
+  cout << "You're good to go back to the real world! Quitting." << endl;
   int win = glutGetWindow();
   glutDestroyWindow(win);
   exit(0);
@@ -204,40 +207,63 @@ void display()
       break;
 
     case QUIT_MOVE:
+      /* The first stage of quitting: Catch the quit button! */
       drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
       quitButton.move();
-      quitButton.active = QUIT_MOVE; // change to "quit screen", not just start
-      quitButton.screen = QUIT_DATE;
+      quitButton.active = QUIT_MOVE; // move quit button to the moving
+      quitButton.screen = QUIT_DATE; // screen
       for (short int i=0; i<numButtons; ++i)
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       break;
-      // the actual quit is handled in the mouse button press
 
     case QUIT_DATE:
     {
-      Date randomDate;
+      /* The second stage of quitting: Get the right date! */
+      quitButton.active = START; // get it out of the way
+
       if (!dateIsGenerated) {
         randomDate.randomize();
         dateIsGenerated = true;
       }
 
-      // get entry in a text box; when button is pressed...
-      dateBox.drawTextBox();
-      loadBox.writeTextinBox();
-      glutSwapBuffers();
+      drawTexture(backgroundTexture, 0.0, 768.0,1024., -768.);
+      glColor3f(1,1,1);
 
-      string userDateName = "Sunday"; // obviously actually set this
+      string dateMessage = ( hasFailedDate ? "Nope! " : "" );
+      dateMessage += "Please enter the day of the week that " +
+          randomDate.getStringRepr() + " fell on:";
+      drawWhiteText( (hasFailedDate ? 240 : 257),400,dateMessage );
+
+      for (short int i=0; i<numButtons; ++i) {
+        if(Buttons[i]->active == screen)
+          Buttons[i]->draw();
+      }
+
+      dateBox.drawTextBox();
+      dateBox.writeTextinBox();
+      glutSwapBuffers();
+      break;
+    }
+
+    case CHECK_QUIT_DATE:
+    {
+      /* Run when the user presses "submit" on the quit screen; either
+       * quit or return control to the normal QUIT_DATE screen. */
+
+      string userDateName = dateBox.getTextInBox();
       unsigned userDateNum = convertDayToNumber(userDateName);
       if ( randomDate.compareDay(userDateNum) )
         quitProgram();
       else {
         dateIsGenerated = false;
+        hasFailedDate = true;
+        screen = QUIT_DATE;
         // clear the textbox
+        break;
       }
-      break;
-
     }
+
     default:
       cerr << "This screen not defined (yet?)." << endl;
       break;
