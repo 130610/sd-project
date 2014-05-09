@@ -1,2 +1,14 @@
-1. Make the Instructions screen and include images and text that describe the gampelay.
-2. Finish quitter.
+GAMEPLAY:
+  - fix crooked trajectory
+  - add g++ sorcerer
+  - fix the water
+
+AESTHETICS:
+  - colorful makefile platforms
+  - dependency lines
+  - water texture
+  - fix instructions screen and/or implement that feature
+
+ADDITIONAL FEATURES:
+  - customize character options
+  - sound
