@@ -102,18 +102,13 @@ void drawInstructions()
   drawTexture(backgroundTexture,0., 768., 1024., -768.);
   drawTexture(keyboardTexture,170,548,768,-200);
 
-  Text xt1(120,310,"X button allows the");
-  Text xt2(120,290,"user to launch the Koala");
-  LegendItem xKey(270,306,320,392,2.5,xt1,xt2);
+  Text spacet1(300, 275, "Spacebar allows the user to");
+  Text spacet2(300, 255, "launch the koala");
+  LegendItem spaceKey(360,396,300,372,2.5, spacet1, spacet2);
 
-  Text spacet1(400, 280, "Holding the space bar");
-  Text spacet2(400, 260, "allows user to set the");
-  Text spacet3(400, 240, "power of the Koala launch");
-  LegendItem spaceKey(460,396,300,372,2.5, spacet1, spacet2, spacet3);
-
-  Text darrowt1(650, 260, "Pressing the down, left or right arrow");
-  Text darrowt2(650, 240, "allows user to set");
-  Text darrowt3(650, 220, "the trajectory of the launch");
+  Text darrowt1(600, 275, "Pressing the down, left or right arrow");
+  Text darrowt2(600, 255, "allows user to set");
+  Text darrowt3(600, 235, "the trajectory of the launch");
   LegendItem darrowKey(732,732,300,368,2.5, darrowt1, darrowt2, darrowt3);
   Line darrowl1(630,696,300,368,2.5);
   Line darrowl2(840,765,300,368,2.5);
@@ -127,7 +122,6 @@ void drawInstructions()
   Text f1t2(230, 643, "to the start screen");
   LegendItem f1Key(250,250,632,525,2.5, f1t1, f1t2, uarrowt3);
 
-  xKey.draw();
   spaceKey.draw();
   darrowKey.draw();
     darrowl1.draw();
@@ -281,14 +275,16 @@ void keyboard(unsigned char c, int x, int y)
   loadBox.keyboardfunction(c,x,y);
   dateBox.keyboardfunction(c,x,y);
   switch(c) {
-    case 'x':
+    case ' ':
     {
-      if ( koala.isAtBottom() )
-        koala.leaveBottom();
-      Point2d tmppos(mouseposx - 100, mouseposy);
-      if (koala.jumps) {
-        koala.setTarget(tmppos);//, (double).5);
-        koala.jumps = false;
+      if ( screen == GAME ) {
+        if ( koala.isAtBottom() )
+          koala.leaveBottom();
+        Point2d tmppos(mouseposx - 100, mouseposy);
+        if (koala.jumps) {
+          koala.setTarget(tmppos);//, (double).5);
+          koala.jumps = false;
+        }
       }
       break;
     }

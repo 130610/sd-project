@@ -7,7 +7,6 @@ AESTHETICS:
   - colorful makefile platforms
   - dependency lines
   - water texture
-  - fix instructions screen and/or implement that feature
   - green laser pointer for trajectory
 
 ADDITIONAL FEATURES:
