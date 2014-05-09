@@ -2,6 +2,7 @@ GAMEPLAY:
   - fix crooked trajectory
   - add g++ sorcerer
   - fix the water
+  - prevent boxes from generating off the screen
 
 AESTHETICS:
   - colorful makefile platforms
