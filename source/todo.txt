@@ -12,3 +12,7 @@ AESTHETICS:
 ADDITIONAL FEATURES:
   - customize character options
   - sound
+
+CODE:
+  - see if all variables need to be private?
+  - delete junk comments and other dead code

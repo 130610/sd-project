@@ -261,3 +261,17 @@ void addTarget(Target **r, string n, string d)
 		numRoots++;
 	}
 }
+
+unsigned Target::getNumTargets()
+{
+  unsigned maxN = 0;
+  unsigned thisN = 0;
+
+	for (int i = 0; i < numChildren; i++) {
+		thisN = children[i]->getNumTargets();
+    ++thisN;
+    if (thisN > maxN)
+      maxN = thisN;
+	}
+  return maxN;
+}
