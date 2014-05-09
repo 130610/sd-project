@@ -169,8 +169,8 @@ void display()
       if(koala.isAtBottom())
         drawBox(0,0 + offset,1024,100,1,1,1);
       else {
-	koala.vel.toggleGravity(true);
-        drawBox(0,0 + offset,1024,100,0,0,1);
+        koala.vel.toggleGravity(true);
+        drawBox(0,-900 + offset,1024,1000,0,0,1);
       }
 
       break;
@@ -499,21 +499,19 @@ void idle()
         break;
       case GAME:
         koala.move();
-//	cout << "move: " << koala.getX() << "   " << koala.getY() << endl;
-        cout << koala.jumps << endl;
-	if (rootTarget[0]->checkCollisions(koala.posn, 100, 100, offset)) {
-		koala.velocityZero();
-                koala.jumps = true;
-	}
-	if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
-		koala.makeAtBottom();
-		koala.vel.toggleGravity(false);
-		koala.setPosition(10, 200);
-		koala.vel.set(koala.posn, koala.posn);
-                koala.jumps = true;
-		offset = 0;
-		screen = START;
-	}
+        if (rootTarget[0]->checkCollisions(koala.posn, 100, 100, offset)) {
+          koala.velocityZero();
+                      koala.jumps = true;
+        }
+        if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
+          koala.makeAtBottom();
+          koala.vel.toggleGravity(false);
+          koala.setPosition(10, 200);
+          koala.vel.set(koala.posn, koala.posn);
+                      koala.jumps = true;
+          offset = 0;
+          screen = START;
+        }
         if (koala.getY() >= HEIGHT - 200) {
           offset += HEIGHT - 200 - koala.getY();
           koala.scrollKoalaUp();

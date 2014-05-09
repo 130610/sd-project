@@ -18,15 +18,6 @@ void drawBox(double x, double y, double width, double height,float a, float b, f
   glEnd();
 }
 
-void drawText(int x, int y, string text)
-{
-  glColor3f(0, 0, 0);
-  glRasterPos2f((float) x, (float) y);
-  for (unsigned i = 0; i < text.length(); i++)
-    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
-}
-
-
 void drawBox(double x, double y, double width, double height)
 {
   glBegin(GL_POLYGON);
@@ -36,9 +27,18 @@ void drawBox(double x, double y, double width, double height)
     glVertex2f(x + width, y);  // upper right
   glEnd();
 }
+
 void drawBox(int *pos)
 {
   drawBox(pos[0], pos[1], pos[2], pos[3]);
+}
+
+void drawText(int x, int y, string text)
+{
+  glColor3f(0, 0, 0);
+  glRasterPos2f((float) x, (float) y);
+  for (unsigned i = 0; i < text.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
 }
 
 void exitAll()

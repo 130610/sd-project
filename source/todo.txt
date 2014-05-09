@@ -1,7 +1,6 @@
 GAMEPLAY:
   - fix crooked trajectory
   - add g++ sorcerer
-  - fix the water
   - prevent boxes from generating off the screen
 
 AESTHETICS:
@@ -9,6 +8,7 @@ AESTHETICS:
   - dependency lines
   - water texture
   - fix instructions screen and/or implement that feature
+  - green laser pointer for trajectory
 
 ADDITIONAL FEATURES:
   - customize character options
