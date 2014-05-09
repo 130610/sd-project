@@ -39,6 +39,9 @@ enum screenType screen;
 int backgroundTexture;
 int keyboardTexture;
 int koalaTexture;
+int waterTexture;
+int brickTexture;
+
 double lastTime;
 int offset = 0;
 bool dateIsGenerated = false;
@@ -167,10 +170,12 @@ void display()
 
       // draw base box
       if(koala.isAtBottom())
-        drawBox(0,0 + offset,1024,100,1,1,1);
+      drawTexture(brickTexture,0,100,1024,-100);
+      // drawBox(0,0 + offset,1024,100,1,1,1);
       else {
 	koala.vel.toggleGravity(true);
-        drawBox(0,0 + offset,1024,100,0,0,1);
+	drawTexture(waterTexture,0,100,1024,-100);
+	//drawBox(0,0 + offset,1024,100,0,0,1);
       }
 
       break;
@@ -389,7 +394,7 @@ void mouse_motion(int x, int y)
 #ifdef MOUSECOORDS
   cerr <<"Mouse position: ("<<x<<","<<y<<")"<<endl;
 #endif
-  mouseposx = x;
+  mouseposx = x+54;
   mouseposy=768-y;
 
   // is the mouse button currently depressed over any screen button?
@@ -464,7 +469,8 @@ void init_gl_window()
   keyboardTexture = loadTexture("../images/keyboard.pam");
   koalaTexture = loadTexture("../images/Koala.pam");
   koala.loadTexture(koalaTexture);
-
+  brickTexture = loadTexture("../images/brickwall.pam");
+  waterTexture = loadTexture("../images/waterTexture.pam");
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(special_keyboard);
