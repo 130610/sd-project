@@ -1,6 +1,5 @@
 GAMEPLAY:
-  - fix crooked trajectory
-  - add g++ sorcerer
+  - fix crooked trajectory (still could be fine-tuned?)
   - prevent boxes from generating off the screen
 
 AESTHETICS:
@@ -12,6 +11,9 @@ AESTHETICS:
 ADDITIONAL FEATURES:
   - customize character options
   - sound
+  - make it so you can reset state and start a new game? Also, it does funny
+    things if you go back to the start screen and then click 'start game'
+    again.
 
 CODE:
   - see if all variables need to be private?

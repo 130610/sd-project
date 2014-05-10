@@ -518,9 +518,8 @@ void idle()
         /* move sorcerer */
         sorcerer->move();
         if (sorcerer->isHit(koala.posn, 100, 100, offset)) {
-          koala.velocityZero();
-          koala.jumps = true;
-          cerr << "sorcerer isHit" << endl;
+          cerr << "You win!" << endl;
+          screen = START;
         }
 
         /* move koala */
