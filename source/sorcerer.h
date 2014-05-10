@@ -6,18 +6,19 @@
 
 class Sorcerer {
 private:
-  Point2d posn;
   bool movingRight;
-  Hitbox* hitbox;
 
 public:
+  bool isMoving;
+  Hitbox* hitbox;
+  Point2 posn;
   Sorcerer(unsigned numTargets);
   ~Sorcerer() { delete hitbox; }
 
   void turnAround() { movingRight = !movingRight; }
   void move();
   void draw(int offset);
-  bool isHit();
+  bool isHit(Point2d &pos, int w, int h, int offset);
 };
 
 #endif

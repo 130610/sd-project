@@ -512,7 +512,18 @@ void idle()
       case QUIT_MOVE:
         glutPostRedisplay();
         break;
+
       case GAME:
+      {
+        /* move sorcerer */
+        sorcerer->move();
+        if (sorcerer->isHit(koala.posn, 100, 100, offset)) {
+          koala.velocityZero();
+          koala.jumps = true;
+          cerr << "sorcerer isHit" << endl;
+        }
+
+        /* move koala */
         koala.move();
         if (rootTarget[0]->checkCollisions(koala.posn, 100, 100, offset)) {
           koala.velocityZero();
@@ -537,6 +548,8 @@ void idle()
 
         glutPostRedisplay();
         break;
+
+      }
 
       default:
         break;

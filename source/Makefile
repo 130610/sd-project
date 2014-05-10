@@ -12,7 +12,7 @@ endif
 start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o sorcerer.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
-start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o text.o date.o
+start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o text.o date.o sorcerer.o
 
 	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
 

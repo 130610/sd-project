@@ -274,5 +274,5 @@ unsigned Target::getNumTargets(unsigned level)
     if (thisN > maxN)
       maxN = thisN;
 	}
-  return ( level == 1 ? ++maxN : maxN );
+  return ( level == 1 ? ++maxN : maxN ); // add one for root
 }

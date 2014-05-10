@@ -27,7 +27,9 @@ class Hitbox
 	int height;
 public:
 	Hitbox(int x, int y, int w, int h): pos(x, y), width(w), height(h) {}
+  void display() { pos.display(); }
 	bool detect(Point2 &p, int w, int h);
+  void setPosn(Point2 p) { pos = p; }
 };
 
 #endif
