@@ -11,14 +11,15 @@ private:
   int texture;
 
 public:
-  Velocity vel;
   Point2d posn; // location of upper-left corner
+  Velocity vel;
   bool jumps;
 
   Koala();
 
   int getX() { return (int) posn.x; }
   int getY() { return (int) posn.y; }
+  Point2d getPosn() { return posn; }
   int getCtrX() { return (int) posn.x+40; } // visual center of koala for
   int getCtrY() { return (int) posn.y-40; } // trajectory display, etc.
   bool isAtBottom() { return atBottom; }

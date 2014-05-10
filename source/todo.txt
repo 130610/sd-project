@@ -5,8 +5,8 @@ GAMEPLAY:
 AESTHETICS:
   - colorful makefile platforms
   - dependency lines
-  - water texture
   - green laser pointer for trajectory
+  - g++ sorcerer texture
 
 ADDITIONAL FEATURES:
   - customize character options

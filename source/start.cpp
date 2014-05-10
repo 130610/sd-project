@@ -176,9 +176,7 @@ void display()
       // drawBox(0,0 + offset,1024,100,1,1,1);
       else {
         koala.vel.toggleGravity(true);
-        drawBox(0,-900 + offset,1024,1000,0,0,1);
-        koala.vel.toggleGravity(true);
-        drawTexture(waterTexture,0,100,1024,-100);
+        drawTexture(waterTexture,0,100 + offset,1024,-500);
       }
 
       break;
@@ -528,6 +526,8 @@ void idle()
           koala.velocityZero();
           koala.jumps = true;
         }
+
+        // ?
         if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
           koala.makeAtBottom();
           koala.vel.toggleGravity(false);
@@ -537,6 +537,8 @@ void idle()
           offset = 0;
           screen = START;
         }
+
+        // scrolling
         if (koala.getY() >= HEIGHT - 200) {
           offset += HEIGHT - 200 - koala.getY();
           koala.scrollKoalaUp();
@@ -547,7 +549,6 @@ void idle()
 
         glutPostRedisplay();
         break;
-
       }
 
       default:
