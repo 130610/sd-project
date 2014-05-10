@@ -44,7 +44,7 @@ public:
 	bool checkCollisions(Point2d &pos, int w, int h, int offset);
 	void drawDependLines();
 	void printTree();
-  unsigned getNumTargets();
+  unsigned getNumTargets(unsigned level=0);
 };
 
 /* other functions */

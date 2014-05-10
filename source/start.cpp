@@ -1,5 +1,6 @@
 #define DEBUG // allows quitting with 'q' to avoid the quit sequence
 //#define MOUSECOORDS // display current mouse posn in terminal
+#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
@@ -27,6 +28,7 @@
 #include "draw.h"
 #include "koala.h"
 #include "date.h"
+#include "sorcerer.h"
 using namespace std;
 
 // root target
@@ -34,7 +36,7 @@ Target **rootTarget;
 const char *defaultMakefile = "Makefile.level";
 
 // general state of program
-char programName[] = "Makefile Madness";
+char programName[] = "Makefile Madness 2";
 enum screenType screen;
 int backgroundTexture;
 int keyboardTexture;
@@ -86,12 +88,16 @@ int loadBoxText1[] = {182, 350, 600,40};
 int loadBoxText2[] = {188, 355, 590, 30 };
 textBox loadBox{false, loadBoxText1, loadBoxText2};
 
+Sorcerer *sorcerer;
 
 bool innitted = false;
 
 void quitProgram()
 {
   cout << "You're good to go back to the real world! Quitting." << endl;
+  
+  delete sorcerer;
+
   int win = glutGetWindow();
   glutDestroyWindow(win);
   exit(0);
@@ -158,6 +164,8 @@ void display()
 
       koala.drawTrajectory(mouseposx, mouseposy);
       koala.drawKoala(mouseposx);
+
+      sorcerer->draw(offset);
 
       // draw base box
       if(koala.isAtBottom())
@@ -281,7 +289,11 @@ void keyboard(unsigned char c, int x, int y)
         if ( koala.isAtBottom() )
           koala.leaveBottom();
         Point2d tmppos(mouseposx - 100, mouseposy);
+#ifdef INFINITEJUMPS
+        if (true) {
+#else
         if (koala.jumps) {
+#endif
           koala.setTarget(tmppos);//, (double).5);
           koala.jumps = false;
         }
@@ -497,7 +509,7 @@ void idle()
         koala.move();
         if (rootTarget[0]->checkCollisions(koala.posn, 100, 100, offset)) {
           koala.velocityZero();
-                      koala.jumps = true;
+          koala.jumps = true;
         }
         if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
           koala.makeAtBottom();
@@ -570,6 +582,8 @@ int main()
   rootTarget = parseTargets(defaultMakefile);
   rootTarget[0]->initPositions();
   lastTime = getCurrentTime();
+
+  sorcerer = new Sorcerer( rootTarget[0]->getNumTargets() );
 
   screen = START;
   init_buttons();

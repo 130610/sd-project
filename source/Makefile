@@ -9,7 +9,7 @@ else
 endif
 
 # opengl section
-start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o
+start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o sorcerer.o
 	g++ $(OPTS) -o start $^ $(LIBS)
 
 start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o text.o date.o
@@ -33,6 +33,9 @@ draw.o: draw.cpp draw.h
 
 koala.o: koala.cpp koala.h physics.o
 	g++ $(OPTS) $(MACOSX_DEFINE) -c koala.cpp
+
+sorcerer.o: sorcerer.h sorcerer.cpp
+	g++ $(OPTS) $(MACOSX_DEFINE) -c sorcerer.cpp
 
 
 # makefile parser
