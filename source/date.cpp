@@ -62,7 +62,6 @@ bool Date::compareDay(unsigned dayToCheck)
   centuryCode = (5*(century%4));
   correctCode = (monthCode + dayCode + yearCode + centuryCode) % 7;
 
-  cerr << "correct date code: " << correctCode << endl;
   if ( correctCode == dayToCheck )
     return true;
   else
