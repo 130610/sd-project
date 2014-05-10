@@ -58,7 +58,7 @@ void Koala::drawTrajectory(int mouseposx, int mouseposy)
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
     glVertex3f(getCtrX(), getCtrY(), 0);
-    glVertex3f(getCtrX()+(mouseposx-getCtrX()), getCtrY()+(mouseposy-getCtrY()), 0);
+    glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
   glEnd();
 }
 
