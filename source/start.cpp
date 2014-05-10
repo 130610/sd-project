@@ -1,6 +1,6 @@
 #define DEBUG // allows quitting with 'q' to avoid the quit sequence
 //#define MOUSECOORDS // display current mouse posn in terminal
-#define INFINITEJUMPS // what it sounds like
+//#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
@@ -516,7 +516,7 @@ void idle()
         /* move sorcerer */
         sorcerer->move();
         if (sorcerer->isHit(koala.posn, 100, 100, offset)) {
-          cerr << "You win!" << endl;
+          cout << "You win!" << endl;
           screen = START;
         }
 
@@ -527,7 +527,7 @@ void idle()
           koala.jumps = true;
         }
 
-        // ?
+        // lose if you fall below the water
         if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
           koala.makeAtBottom();
           koala.vel.toggleGravity(false);
@@ -536,6 +536,7 @@ void idle()
                       koala.jumps = true;
           offset = 0;
           screen = START;
+          cout << "You lose!" << endl;
         }
 
         // scrolling
