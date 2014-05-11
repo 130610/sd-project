@@ -163,7 +163,7 @@ void display()
       }
       // draw the target boxes
       rootTarget[0]->drawTargetBoxes(offset);
-      //rootTarget[0]->drawDependLines(); // this doesn't work yet
+      rootTarget[0]->drawDependLines(offset); // this doesn't work yet
 
       koala.drawTrajectory(mouseposx, mouseposy);
       koala.drawKoala(mouseposx);
