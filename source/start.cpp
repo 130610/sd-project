@@ -176,9 +176,9 @@ void display()
       // drawBox(0,0 + offset,1024,100,1,1,1);
       else {
         koala.vel.toggleGravity(true);
-        drawBox(0,-900 + offset,1024,1000,0,0,1);
-        koala.vel.toggleGravity(true);
-        drawTexture(waterTexture,0,100,1024,-100);
+//        drawBox(0,-900 + offset,1024,1000,0,0,1);
+//        koala.vel.toggleGravity(true);
+        drawTexture(waterTexture,0,100 + offset,1024,-200);
       }
 
       break;
