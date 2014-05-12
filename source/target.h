@@ -4,12 +4,9 @@
 #include <string>
 #include <vector>
 #include "physics.h"
+#include "globaldefs.h"
 using namespace std;
 
-#define MAX_X_FACTOR 250
-#define MAX_Y_FACTOR 500
-#define BOX_WIDTH 150
-#define BOX_HEIGHT 250
 
 class Target
 {
@@ -39,12 +36,12 @@ public:
 	int getPosY() { return pos.y; }
 	int getPosX() { return pos.x; }
 	Target* findTarget(string n);
-	void initPositions(int d = 0, int ind = 0);
+	void initPositions(int depth = 0, int ind = 0);
 	void drawTargetBoxes(int offset);
 	bool checkCollisions(Point2d &pos, int w, int h, int offset);
 	void drawDependLines(int offset);
 	void printTree();
-  unsigned getNumTargets(unsigned level=0);
+	unsigned getNumTargets(unsigned level=0);
 };
 
 /* other functions */
