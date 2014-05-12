@@ -11,49 +11,14 @@ using namespace std;
 #include "globaldefs.h"
 #include "koala.h"
 #include "texture.h"
-/*
-Koala::Koala()
-{
-  posn.x = 10, posn.y = 200;
-  atBottom = true;
-  jumps = 1;
-}
-*/
+
 Animal::Animal()
 {
   posn.x = 10, posn.y =200;
   atBottom = true;
   jumps =1;
 }
-/*
-Jaguar::Jaguar()
-{
-  posn.x = 10, posn.y =200;
-  atBottom = true;
-  jumps =1;
-}
-/*
-FlyingSquirrel::FlyingSquirrel()
-{
-  posn.x = 10, posn.y =200;
-  atBottom = true;
-  jumps =1;
-}
 
-Swan::Swan()
-{
-  posn.x = 10, posn.y =200;
-  atBottom = true;
-  jumps =1;
-}
-
-SeaTurtle::SeaTurtle()
-{
-  posn.x = 10, posn.y =200;
-  atBottom = true;
-  jumps =1;
-}
-*/
 void Animal::move()
 {
 	vel.move(posn);
@@ -77,7 +42,7 @@ void Animal::scrollAnimalDown()
   posn.y = 200;
 }
 
-void Animal::drawTrajectory(int mouseposx, int mouseposy)
+void Koala::drawTrajectory(int mouseposx, int mouseposy)
 {
   /* not yet implemented -- see also some code removed in
    * 5bdf728d5fa4cff5eccdabd27f18cc06a9df895f
@@ -93,6 +58,50 @@ void Animal::drawTrajectory(int mouseposx, int mouseposy)
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
     glVertex3f(getCtrX(), getCtrY(), 0);
+    glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+  glEnd();
+}
+
+void Jaguar::drawTrajectory(int mouseposx, int mouseposy)
+{
+  glColor3f(1,1,1);
+    glLineStipple(1, 0xAAAA);
+    glEnable(GL_LINE_STIPPLE);
+    glBegin(GL_LINES);
+    glVertex3f(getCtrX()+50, getCtrY(), 0);
+    glVertex3f(getCtrX()+(mouseposx-getCtrX()-54), getCtrY()+(mouseposy-getCtrY()), 0);
+  glEnd();
+}
+
+void FlyingSquirrel::drawTrajectory(int mouseposx, int mouseposy)
+{
+glColor3f(1,1,1);
+    glLineStipple(1, 0xAAAA);
+    glEnable(GL_LINE_STIPPLE);
+    glBegin(GL_LINES);
+    glVertex3f(getCtrX()+50, getCtrY(), 0);
+    glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+  glEnd();
+}
+
+void Swan::drawTrajectory(int mouseposx, int mouseposy)
+{
+glColor3f(1,1,1);
+    glLineStipple(1, 0xAAAA);
+    glEnable(GL_LINE_STIPPLE);
+    glBegin(GL_LINES);
+    glVertex3f(getCtrX()+50, getCtrY()-50, 0);
+    glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+  glEnd();
+}
+
+void SeaTurtle::drawTrajectory(int mouseposx, int mouseposy)
+{
+glColor3f(1,1,1);
+    glLineStipple(1, 0xAAAA);
+    glEnable(GL_LINE_STIPPLE);
+    glBegin(GL_LINES);
+    glVertex3f(getCtrX()+50, getCtrY()-10, 0);
     glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
   glEnd();
 }
