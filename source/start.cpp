@@ -29,6 +29,7 @@
 #include "koala.h"
 #include "date.h"
 #include "sorcerer.h"
+
 using namespace std;
 
 // root target
@@ -41,6 +42,10 @@ enum screenType screen;
 int backgroundTexture;
 int keyboardTexture;
 int koalaTexture;
+int swanTexture;
+int flyingSquirrelTexture;
+int jaguarTexture;
+int seaTurtleTexture;
 int waterTexture;
 int brickTexture;
 
@@ -54,23 +59,33 @@ Date randomDate;
 const int buttonHeight = 118;
 const int bufferHeight = buttonHeight / 4;
 const int buttonX = 256;//x position of where button starts
-const char numButtons = 10;
+const char numButtons = 15;
 
 //Start Screen Buttons//
-Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464);
-Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452);
-Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2),500,118, INSTRUCTIONS,START, 460);
-Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight),500,118, CUSTOMIZE,START, 420);
-MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT_MOVE,START, 235);
+Button startButton("Start Game", buttonX, (bufferHeight*5 + buttonHeight*4),500, 118, GAME,START, 464, false);
+Button loadButton("Load Makefile", buttonX, (bufferHeight*4 + buttonHeight*3),500, 118, LOAD,START, 452,false);
+Button instructionsButton("Instructions", buttonX, (bufferHeight*3 + buttonHeight*2),500,118, INSTRUCTIONS,START, 460,false);
+Button customizeButton("Customize Character", buttonX, (bufferHeight*2 + buttonHeight),500,118, CUSTOMIZE,START, 420,false);
+MovingButton quitButton("Quit", buttonX, (bufferHeight),500, 118, QUIT_MOVE,START, 235,false);
 
 //Instruction Screen Buttons //
-Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4);
-Button backButton2("Go Back", 0,0,80,768, START, LOAD,4);
-Button backButton3("Go Back", 0,0,80,768, START, CUSTOMIZE, 4);
+Button backButton("Go Back", 0,0,80,768, START, INSTRUCTIONS, 4,false);
+Button backButton2("Go Back", 0,0,80,768, START, LOAD,4,false);
+Button backButton3("Go Back", 0,0,80,768, START, CUSTOMIZE, 4,false);
 //Load Screen Button
-Button loadMakefileButton("Load", 360,250,200,40, LOAD, LOAD, 442);
+Button loadMakefileButton("Load", 360,250,200,40, LOAD, LOAD, 442,false);
 //Quit Screen Button
-Button submitDateButton("Submit", 380,290,200,40, CHECK_QUIT_DATE, QUIT_DATE, 450);
+Button submitDateButton("Submit", 380,290,200,40, CHECK_QUIT_DATE, QUIT_DATE, 450,false);
+
+// Customize Screen Buttons //
+Button koalaButton("Click Here", buttonX-100, 574,100, 100,CUSTOMIZE,CUSTOMIZE, buttonX-92,false);
+Button jaguarButton("Click Here", buttonX-100, 454,100, 100,CUSTOMIZE,CUSTOMIZE, buttonX-92,false);
+Button flyingSquirrelButton("Click Here", buttonX-100, 334,100, 100,CUSTOMIZE,CUSTOMIZE, buttonX-92,false);
+Button swanButton("Click Here", buttonX-100, 214,100, 100,CUSTOMIZE,CUSTOMIZE, buttonX-92,false);
+Button seaTurtleButton("Click Here", buttonX-100, 94,100, 100,CUSTOMIZE,CUSTOMIZE, buttonX-92,false);
+
+bool pressed=false;
+
 
 // Main Button Array//
 Button* Buttons[numButtons];
@@ -79,7 +94,12 @@ Button* Buttons[numButtons];
 int mouseposx;
 int mouseposy;
 
-Koala koala {};
+Animal *animal;
+Koala koala{};
+SeaTurtle seaTurtle{};
+FlyingSquirrel flyingSquirrel{};
+Jaguar jaguar{};
+Swan swan{};
 
 //QUIT_DATE TextBox
 int quitBoxText1[] = {182, 350, 600, 40};
@@ -139,7 +159,6 @@ void drawInstructions()
   f1Key.draw();
 }
 
-
 void display()
 {
   // clear the buffer
@@ -163,19 +182,57 @@ void display()
       }
       // draw the target boxes
       rootTarget[0]->drawTargetBoxes(offset);
-      //rootTarget[0]->drawDependLines(); // this doesn't work yet
+      rootTarget[0]->drawDependLines(offset); // this doesn't work yet
 
-      koala.drawTrajectory(mouseposx, mouseposy);
-      koala.drawKoala(mouseposx);
+
+      if(Buttons[10]->getkeepPressed())
+	{
+	  animal = &koala;
+	  koala.drawKoala(mouseposx);
+	  koala.drawTrajectory(mouseposx, mouseposy);
+	}
+      else if(Buttons[11]->getkeepPressed())
+	{
+	  animal = &jaguar;
+	  jaguar.drawTrajectory(mouseposx, mouseposy);
+	  jaguar.drawJaguar(mouseposx);
+	}
+      else if(Buttons[12]->getkeepPressed())
+	{
+	  animal = &flyingSquirrel;
+	  flyingSquirrel.drawTrajectory(mouseposx, mouseposy);
+	  flyingSquirrel.drawflyingSquirrel(mouseposx);
+	}
+      else if(Buttons[13]->getkeepPressed())
+	{
+	  animal = &swan;
+	  swan.drawTrajectory(mouseposx, mouseposy);
+	  swan.drawSwan(mouseposx);
+	}
+      else if(Buttons[14]->getkeepPressed())
+	{
+	  animal = &seaTurtle;
+	  seaTurtle.drawTrajectory(mouseposx, mouseposy);
+	  seaTurtle.drawseaTurtle(mouseposx);
+	}
+      else
+	{
+	  animal = &koala;
+	  koala.drawKoala(mouseposx);
+	  koala.drawTrajectory(mouseposx, mouseposy);
+	}
+      //koala.drawTrajectory(mouseposx, mouseposy);
+      //koala.drawKoala(mouseposx);
+      //animal ->drawTrajectory(mouseposx, mouseposy);
 
       sorcerer->draw(offset);
 
       // draw base box
-      if(koala.isAtBottom())
-      drawTexture(brickTexture,0,100,1024,-100);
+      if(animal->isAtBottom())
+	drawTexture(brickTexture,0,100,1024,-100);
       // drawBox(0,0 + offset,1024,100,1,1,1);
       else {
-        koala.vel.toggleGravity(true);
+        animal->vel.toggleGravity(true);
         drawTexture(waterTexture,0,100 + offset,1024,-500);
       }
 
@@ -213,6 +270,15 @@ void display()
         if(Buttons[i]->active == screen)
           Buttons[i]->draw();
       }
+      drawTexture(koalaTexture,buttonX+50,768-94,100,-100);
+      drawTexture(jaguarTexture, buttonX+50, 768-214, 268, -100);
+      drawTexture(flyingSquirrelTexture,buttonX+50, 768-334, 147, -100); 
+      drawTexture(swanTexture, buttonX+50, 768-454, 178-1,-100);
+      drawTexture(seaTurtleTexture, buttonX+50, 768-574+20, 165,-140);
+      glColor3f(1,1,1);
+      drawWhiteText(300,700,(string) "Please Choose An Animal!");
+      glColor3f(0,0,0);
+      
       break;
 
     case QUIT_MOVE:
@@ -290,16 +356,16 @@ void keyboard(unsigned char c, int x, int y)
     case ' ':
     {
       if ( screen == GAME ) {
-        if ( koala.isAtBottom() )
-          koala.leaveBottom();
+        if ( animal->isAtBottom() )
+          animal->leaveBottom();
         Point2d tmppos(mouseposx - 100, mouseposy);
 #ifdef INFINITEJUMPS
         if (true) {
 #else
-        if (koala.jumps) {
+        if (animal->jumps) {
 #endif
-          koala.setTarget(tmppos);//, (double).5);
-          koala.jumps = false;
+          animal ->setTarget(tmppos);//, (double).5);
+          animal ->jumps = false;
         }
       }
       break;
@@ -354,9 +420,10 @@ void mouse(int mouseButton, int state, int x, int y)
       {
         if(Buttons[i]->active == screen && Buttons[i]->onButton(x,y))
         {
-          Buttons[i]->IsPressed = true;
+          //Buttons[i]->IsPressed = true;
           if (Buttons[i]->getLabel() == "Load")
           {
+	    Buttons[i]->IsPressed = true;
             if((!innitted))
             {
               init_targets(loadBox.getTextInBox().c_str());
@@ -370,10 +437,30 @@ void mouse(int mouseButton, int state, int x, int y)
           }
           else if (screen == QUIT_MOVE && Buttons[i]->active == QUIT_MOVE)
           {
+	    Buttons[i]->IsPressed = true;
             // quit button, and already pressed once; move to date part
             screen = QUIT_DATE;
             Buttons[i]->active = QUIT_DATE;
           }
+	  else if (Buttons[i]->getLabel() == "Click Here")
+	    {
+	      if((Buttons[i]->IsPressed = true) && (pressed))
+		{
+		  pressed = false;
+		  for(short i=0; i<numButtons; ++i)
+		    {
+		      Buttons[i]->changekeepPressed(pressed);
+		    }
+		  Buttons[i]->changekeepPressed(true);
+		  pressed=true;
+		}
+	      else if((Buttons[i]->IsPressed = true) && (!pressed))
+		{
+		  pressed = true;
+		  Buttons[i]->changekeepPressed(pressed);
+		 
+		}
+	    }
           else
           {
             screen = Buttons[i]->screen;
@@ -386,7 +473,13 @@ void mouse(int mouseButton, int state, int x, int y)
       for (short int i=0; i<numButtons; ++i)
       {
         if ( Buttons[i]->onButton(x,y) && Buttons[i]->IsPressed )
-          Buttons[i]->IsPressed = false;
+	  {
+	   if(Buttons[i]->active != CUSTOMIZE)
+	     Buttons[i]->IsPressed = false;
+	    if(Buttons[i]->active == CUSTOMIZE)
+	      Buttons[i]->IsPressed = false;
+	  }
+	
       }
     }
     glutPostRedisplay();
@@ -475,7 +568,15 @@ void init_gl_window()
   backgroundTexture = loadTexture("../images/background.pam");
   keyboardTexture = loadTexture("../images/keyboard.pam");
   koalaTexture = loadTexture("../images/Koala.pam");
+  jaguarTexture = loadTexture("../images/jaguar.pam");
+  flyingSquirrelTexture = loadTexture("../images/flyingSquirrel.pam");
+  seaTurtleTexture = loadTexture("../images/seaTurtle.pam");
+  swanTexture = loadTexture("../images/swan.pam");
   koala.loadTexture(koalaTexture);
+  jaguar.loadTexture(jaguarTexture);
+  flyingSquirrel.loadTexture(flyingSquirrelTexture);
+  seaTurtle.loadTexture(seaTurtleTexture);
+  swan.loadTexture(swanTexture);
   brickTexture = loadTexture("../images/brickwall.pam");
   waterTexture = loadTexture("../images/waterTexture.pam");
   glutDisplayFunc(display);
@@ -520,32 +621,30 @@ void idle()
           screen = START;
         }
 
-        /* move koala */
-        koala.move();
-        if (rootTarget[0]->checkCollisions(koala.posn, 100, 100, offset)) {
-          koala.velocityZero();
-          koala.jumps = true;
+        /* move animal */
+        animal ->move();
+        if (rootTarget[0]->checkCollisions(animal->posn, 100, 100, offset)) {
+          animal ->velocityZero();
+          animal ->jumps = true;
         }
-
-        // lose if you fall below the water
-        if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
-          koala.makeAtBottom();
-          koala.vel.toggleGravity(false);
-          koala.setPosition(10, 200);
-          koala.vel.set(koala.posn, koala.posn);
-                      koala.jumps = true;
+        if (animal ->getY() - offset <= 100 && !animal ->isAtBottom()) {
+          animal ->makeAtBottom();
+          animal ->vel.toggleGravity(false);
+          animal ->setPosition(10, 200);
+          animal ->vel.set(animal ->posn, animal ->posn);
+                      animal ->jumps = true;
           offset = 0;
           screen = START;
           cout << "You lose!" << endl;
         }
 
         // scrolling
-        if (koala.getY() >= HEIGHT - 200) {
-          offset += HEIGHT - 200 - koala.getY();
-          koala.scrollKoalaUp();
-        } else if (koala.getY() <= 200) {
-          offset += 200 - koala.getY();
-          koala.scrollKoalaDown();
+        if (animal ->getY() >= HEIGHT - 200) {
+          offset += HEIGHT - 200 - animal ->getY();
+          animal ->scrollAnimalUp();
+        } else if (animal ->getY() <= 200) {
+          offset += 200 - animal ->getY();
+          animal ->scrollAnimalDown();
         }
 
         glutPostRedisplay();
@@ -572,6 +671,11 @@ void init_buttons()
   Buttons[7] = &backButton2;
   Buttons[8] = &backButton3;
   Buttons[9] = &submitDateButton;
+  Buttons[10] = &koalaButton;
+  Buttons[11] = &jaguarButton;
+  Buttons[12] = & flyingSquirrelButton;
+  Buttons[13] = &swanButton;
+  Buttons[14] = &seaTurtleButton;
   for (short int i=0; i<numButtons; ++i) {
     Buttons[i]->IsPressed = false;
     Buttons[i]->overButton = false;
@@ -593,6 +697,7 @@ void init_targets(const char *filename)
     delete [] rootTarget;
     rootTarget = parseTargets(filename);
     rootTarget[0]->initPositions();
+    innitted=true;
   } else {
     cerr << "That file does not exist!" << endl;
   }

@@ -11,15 +11,50 @@ using namespace std;
 #include "globaldefs.h"
 #include "koala.h"
 #include "texture.h"
-
+/*
 Koala::Koala()
 {
   posn.x = 10, posn.y = 200;
   atBottom = true;
   jumps = 1;
 }
+*/
+Animal::Animal()
+{
+  posn.x = 10, posn.y =200;
+  atBottom = true;
+  jumps =1;
+}
+/*
+Jaguar::Jaguar()
+{
+  posn.x = 10, posn.y =200;
+  atBottom = true;
+  jumps =1;
+}
+/*
+FlyingSquirrel::FlyingSquirrel()
+{
+  posn.x = 10, posn.y =200;
+  atBottom = true;
+  jumps =1;
+}
 
-void Koala::move()
+Swan::Swan()
+{
+  posn.x = 10, posn.y =200;
+  atBottom = true;
+  jumps =1;
+}
+
+SeaTurtle::SeaTurtle()
+{
+  posn.x = 10, posn.y =200;
+  atBottom = true;
+  jumps =1;
+}
+*/
+void Animal::move()
 {
 	vel.move(posn);
 }
@@ -30,19 +65,19 @@ void Koala::move()
 //  posn.y += (target.y - posn.y) / 15;
 //}
 
-void Koala::scrollKoalaUp()
+void Animal::scrollAnimalUp()
 {
 //  target.y += HEIGHT - 200 - posn.y;
   posn.y = HEIGHT - 200;
 }
 
-void Koala::scrollKoalaDown()
+void Animal::scrollAnimalDown()
 {
 //  target.y += 100 - posn.y;
   posn.y = 200;
 }
 
-void Koala::drawTrajectory(int mouseposx, int mouseposy)
+void Animal::drawTrajectory(int mouseposx, int mouseposy)
 {
   /* not yet implemented -- see also some code removed in
    * 5bdf728d5fa4cff5eccdabd27f18cc06a9df895f
@@ -68,4 +103,36 @@ void Koala::drawKoala(int mouseposx)
     drawTexture(texture,posn.x,posn.y,100,-100);
   else
     drawTexture(texture, posn.x, posn.y, 100,-100, 1.0,M_PI);
+}
+
+void Jaguar::drawJaguar(int mouseposx)
+{
+  if(mouseposx >posn.x)
+    drawTexture(texture, posn.x, posn.y, 200, -100, 1.0, -3.14/4);
+  else
+    drawTexture(texture, posn.x, posn.y, 200, -100, 1.0, -3.14/4);
+}
+
+void FlyingSquirrel::drawflyingSquirrel(int mouseposx)
+{
+  if(mouseposx > posn.x)
+    drawTexture(texture, posn.x, posn.y, 200,-100,1.0, 0);
+  else
+    drawTexture(texture, posn.x, posn.y, 200,-100,1.0, 0);
+}
+
+void Swan::drawSwan(int mouseposx)
+{
+  if(mouseposx>posn.x)
+    drawTexture(texture, posn.x, posn.y, 200,-100,1.0,0);
+  else
+    drawTexture(texture, posn.x, posn.y, 200,-100,1.0,0);
+}
+
+void SeaTurtle::drawseaTurtle(int mouseposx)
+{
+  if(mouseposx > posn.x)
+    drawTexture(texture, posn.x, posn.y, 200, -100,1.0,0);
+  else
+    drawTexture(texture, posn.x, posn.y, 200,-100,1.0,0);
 }

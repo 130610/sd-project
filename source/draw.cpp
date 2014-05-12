@@ -28,6 +28,15 @@ void drawBox(double x, double y, double width, double height)
   glEnd();
 }
 
+void drawLine(double x1, double y1, double x2, double y2, int r, int g, int b)
+{
+  glColor3f(r, g, b);
+  glBegin(GL_LINES);
+    glVertex3f(x1, y1, 0);
+    glVertex3f(x2, y2, 0);
+  glEnd();
+}
+
 void drawBox(int *pos)
 {
   drawBox(pos[0], pos[1], pos[2], pos[3]);

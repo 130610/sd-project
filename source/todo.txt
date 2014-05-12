@@ -1,5 +1,5 @@
 GAMEPLAY:
-  - fix crooked trajectory (still could be fine-tuned?)
+  - add g++ sorcerer
   - prevent boxes from generating off the screen
 
 AESTHETICS:

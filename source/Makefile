@@ -3,8 +3,8 @@ LIBS = -lGL -lglut -lm
 ARCH := $(shell uname)
 ifeq ($(ARCH), Linux)
 else
- MACOSX_DEFINE = -DMACOSX -I/sw/include
- LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++
+MACOSX_DEFINE = -DMACOSX -I/sw/include
+LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++
 
 endif
 
@@ -42,7 +42,7 @@ sorcerer.o: sorcerer.h sorcerer.cpp
 target-driver: target-driver.o target.o draw.o physics.o
 	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
-target.o: target.cpp target.h draw.o physics.o
+target.o: target.cpp target.h draw.o physics.o globaldefs.h
 	g++ $(OPTS) -c target.cpp
 
 target-driver.o: target-driver.cpp target.h

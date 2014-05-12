@@ -6,7 +6,7 @@
 #include "physics.h"
 using namespace std;
 
-#define MAX_X_FACTOR 400
+#define MAX_X_FACTOR 250
 #define MAX_Y_FACTOR 500
 #define BOX_WIDTH 150
 #define BOX_HEIGHT 250
@@ -36,13 +36,13 @@ public:
 	void addParent(Target *p);
 	void setName(string n) { targetName = n; }
 	string getName() { return targetName; }
-	int getPosY() { return pos.x; }
-	int getPosX() { return pos.y; }
+	int getPosY() { return pos.y; }
+	int getPosX() { return pos.x; }
 	Target* findTarget(string n);
 	void initPositions(int d = 0, int ind = 0);
 	void drawTargetBoxes(int offset);
 	bool checkCollisions(Point2d &pos, int w, int h, int offset);
-	void drawDependLines();
+	void drawDependLines(int offset);
 	void printTree();
   unsigned getNumTargets(unsigned level=0);
 };
@@ -52,7 +52,14 @@ Target **parseTargets(const char *filename);
 vector<string> splitString(string s, char d);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);
-bool matchTargetLine(string l, string& n, string& d);
 void addTarget(Target** r, string n, string d);
+
+/* string parsing functions */
+bool matchEmptyLine(string l);
+bool matchCommentLine(string l);
+bool matchKeywordLine(string l);
+bool matchRuleLine(string l);
+bool matchVariableLine(string l);
+bool matchTargetLine(string l, string& n, string& d);
 
 #endif

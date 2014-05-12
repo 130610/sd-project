@@ -7,6 +7,7 @@ using namespace std;
 void drawBox(double x, double y, double width, double height, float a, float b, float c);
 void drawText(int x, int y, string text);
 void drawBox(double x, double y, double width, double height);
+void drawLine(double x1, double y1, double x2, double y2, int r, int g, int b);
 void drawBox(int *pos);
 void exitAll();
 #endif
