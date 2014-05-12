@@ -3,8 +3,8 @@ LIBS = -lGL -lglut -lm
 ARCH := $(shell uname)
 ifeq ($(ARCH), Linux)
 else
- MACOSX_DEFINE = -DMACOSX -I/sw/include
- LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++
+MACOSX_DEFINE = -DMACOSX -I/sw/include
+LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework GLUT -framework OpenGL -lGL -lm -lobjc -lstdc++
 
 endif
 
@@ -39,37 +39,37 @@ sorcerer.o: sorcerer.h sorcerer.cpp
 
 
 # makefile parser
-target-driver: target-driver.o target.o draw.o physics.o
-	g++ $(OPTS) -o target-driver $^ $(LIBS)
+#target-driver: target-driver.o target.o draw.o physics.o
+#	g++ $(OPTS) -o target-driver $^ $(LIBS)
 
-target.o: target.cpp target.h draw.o physics.o
+target.o: target.cpp target.h draw.o physics.o globaldefs.h
 	g++ $(OPTS) -c target.cpp
 
-target-driver.o: target-driver.cpp target.h
-	g++ $(OPTS) -c target-driver.cpp
+#target-driver.o: target-driver.cpp target.h
+#	g++ $(OPTS) -c target-driver.cpp
 
 # dater
-dates: date-driver.o date.o
+#dates: date-driver.o date.o
 	g++ $(OPTS) $^ -o date-driver $(LIBS)
 
 date.o: date.cpp date.h
 	g++ $(OPTS) -c date.cpp
 
-date-driver.o: date-driver.cpp date.h
+#date-driver.o: date-driver.cpp date.h
 	g++ $(OPTS) -c date-driver.cpp
 
-clean:
-	rm -f *.o start
-	rm -f target-driver
-	rm -f date-driver
-	rm -f physics-driver
+#clean:
+#	rm -f *.o start
+#	rm -f target-driver
+#	rm -f date-driver
+#	rm -f physics-driver
 
 # physics
-physics-driver: physics-driver.o physics.o
-	g++ $(OPTS) -o physics-driver $^ $(LIBS)
+#physics-driver: physics-driver.o physics.o
+#	g++ $(OPTS) -o physics-driver $^ $(LIBS)
 
 physics.o: physics.cpp physics.h globaldefs.h
 	g++ $(OPTS) -c physics.cpp
 
-physics-driver.o: physics-driver.cpp
-	g++ $(OPTS) -c physics-driver.cpp
+#physics-driver.o: physics-driver.cpp
+#	g++ $(OPTS) -c physics-driver.cpp

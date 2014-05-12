@@ -6,12 +6,17 @@
 #include "target.h"
 #include "draw.h"
 #include "physics.h"
+#include "globaldefs.h"
 #ifdef MACOSX
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
 using namespace std;
+
+#define LEN(arr) (sizeof(arr)/sizeof(arr[0]))
+
+const char *MAKEFILE_KEYWORDS[] = { "ifeq", "else", "endif" };
 
 int numRoots = 1;
 int seed = (int) time(NULL);
@@ -127,7 +132,7 @@ Target *Target::findTarget(string n)
 void Target::initPositions(int d, int ind)
 {
 	for (int i = 0; i < numChildren; i++) {
-		children[i]->initPositions(d + 1, i + ind);
+			children[i]->initPositions(d + (numChildren % 4) - (i % 4), i + (ind % 4));
 	}
 
 	if (!posInited) {
@@ -160,15 +165,17 @@ vector<string> splitString(string s, char d)
 
 Target **parseTargets(const char *filename)
 {
+	cout << "============NEW MAKEFILE==================" << endl;
 	Target **root = new Target *[1];
 	string *lineList = new string[1]; 
-	char line[128];
+	char line[256];
 	char c;
 	int i = 0;
 	int numTargets = 0;
 	ifstream ifs(filename);
 	string tName, tDepends;
 
+	cout << "before" << endl;
 	while (ifs.get(c)) {
 		line[i++] = c;
 		if (c == '\n') {
@@ -177,13 +184,31 @@ Target **parseTargets(const char *filename)
 			i = 0;
 		}
 	}
+	cout << "after" << endl;
 
 	for (int i = 0; i < getLineListSize(lineList); i++) {
-		if (matchTargetLine(lineList[i], tName, tDepends) && numTargets == 0) {
+		if (matchEmptyLine(lineList[i])) {
+			cout << i << endl;
+			continue;
+		} else if (matchCommentLine(lineList[i])) {
+			cout << i << endl;
+			continue;
+		} else if (matchKeywordLine(lineList[i])) {
+			cout << i << endl;
+			continue;
+		} else if (matchRuleLine(lineList[i])) {
+			cout << i << endl;
+			continue;
+		} else if (matchVariableLine(lineList[i])) {
+			cout << i << endl;
+			continue;
+		} else if (matchTargetLine(lineList[i], tName, tDepends) && numTargets == 0) {
+			cout << i << endl;
 			root[0] = new Target(tName);
 			root[0]->addChildren(tDepends, root);
 			numTargets++;
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
+			cout << i << endl;
 			addTarget(root, tName, tDepends);
 			numTargets++;
 		}
@@ -215,20 +240,74 @@ int getLineListSize(string *ll)
 	return len;
 }
 
+bool matchEmptyLine(string l)
+{
+	if (l.empty()) {
+		cout << "found empty line" ;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool matchCommentLine(string l)
+{
+	if (l[0] == '#') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool matchKeywordLine(string l)
+{
+	for (unsigned i = 0; i < LEN(MAKEFILE_KEYWORDS); i++) {
+		if (l.rfind(MAKEFILE_KEYWORDS[i], 0) == 0) {
+			cout << "found keyword line";
+			return true;
+		}
+	}
+	return false;
+}
+
+bool matchRuleLine(string l)
+{
+	if (l[0] == '\t' || l[0] == '\n') {
+		cout << "found rule line" ;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool matchVariableLine(string l) {
+	unsigned i = 0;
+	while (l[i] != '\n' && i < l.length()) {
+		if (l[i] == '=') {
+			cout << "found variable line" ;
+			return true;
+		}
+		else if (l[i] == ':') {
+			if (l[i + 1] == '=') {
+				cout << "found variable line" ;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		i++;
+	}
+	return false;
+}
+
 // reads a string s, and returns whether it is the declaration of a rule in a
 // makefile; reads the rule into the string n, and the dependencies into d
 bool matchTargetLine(string l, string& n, string& d)
 {
+	cout << "found target line" ;
 	unsigned i = 0;
 	bool inName = true;
 	n = d = "";
-
-	if (l[0] == '\t' || l[0] == '\n') {
-		return false;
-	}
-	if (l.empty()) {
-		return false;
-	}
 	while (l[i] != '\n' && i < l.length()) {
 		if (l[i] == ':'){
 			inName = false;
@@ -239,7 +318,7 @@ bool matchTargetLine(string l, string& n, string& d)
 		}
 		i++;
 	}
-	return true;
+	return (!inName);
 }
 
 void addTarget(Target **r, string n, string d)
@@ -266,15 +345,15 @@ void addTarget(Target **r, string n, string d)
 
 unsigned Target::getNumTargets(unsigned level)
 {
-  level++;
-  unsigned maxN = 0;
-  unsigned thisN = 0;
+	level++;
+	unsigned maxN = 0;
+	unsigned thisN = 0;
 
 	for (int i = 0; i < numChildren; i++) {
 		thisN = children[i]->getNumTargets(level);
-    ++thisN;
-    if (thisN > maxN)
-      maxN = thisN;
+		++thisN;
+		if (thisN > maxN)
+			maxN = thisN;
 	}
-  return ( level == 1 ? ++maxN : maxN );
+	return ( level == 1 ? ++maxN : maxN );
 }

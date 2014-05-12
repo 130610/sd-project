@@ -6,7 +6,7 @@
 #include "physics.h"
 using namespace std;
 
-#define MAX_X_FACTOR 400
+#define MAX_X_FACTOR 250
 #define MAX_Y_FACTOR 500
 #define BOX_WIDTH 150
 #define BOX_HEIGHT 250
@@ -52,7 +52,14 @@ Target **parseTargets(const char *filename);
 vector<string> splitString(string s, char d);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);
-bool matchTargetLine(string l, string& n, string& d);
 void addTarget(Target** r, string n, string d);
+
+/* string parsing functions */
+bool matchEmptyLine(string l);
+bool matchCommentLine(string l);
+bool matchKeywordLine(string l);
+bool matchRuleLine(string l);
+bool matchVariableLine(string l);
+bool matchTargetLine(string l, string& n, string& d);
 
 #endif
