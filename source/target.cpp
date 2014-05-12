@@ -66,11 +66,24 @@ void Target::drawTargetBoxes(int offset)
 {
 	for (int i = 0; i < numChildren; i++) {
 		children[i]->drawTargetBoxes(offset);
+
 	}
 
 	drawBox(pos.x, pos.y + offset, BOX_WIDTH, BOX_HEIGHT, 1, 1, 1);
-	drawText(pos.x + 3, pos.y + 3+offset, targetName);
+	drawText(pos.x + 3, pos.y + 3 + offset, targetName);
 
+}
+
+void Target::drawDependLines(int offset)
+{
+  	glColor3f(0, 0, 1);
+	for (int i = 0; i < numChildren; i++) {
+		children[i]->drawDependLines(offset);
+		if (children) drawLine((double) pos.x, (double) pos.y + offset,
+		                       (double) children[i]->getPosX(), (double) children[i]->getPosY() + offset,
+		                       0, 0, 1);
+
+	}
 }
 
 bool Target::checkCollisions(Point2d &pos, int w, int h, int offset)
@@ -84,17 +97,6 @@ bool Target::checkCollisions(Point2d &pos, int w, int h, int offset)
 	ret = hitbox->detect(tmppos, w, h);
 	pos.x = tmppos.x; pos.y = tmppos.y + offset + 100;
 	return ret;
-}
-
-void Target::drawDependLines()
-{
-	for (int i = 0; i < numChildren; i++) {
-		children[i]->drawDependLines();
-		glBegin(GL_LINES);
-			glVertex3f(pos.x, pos.y, 0);
-			glVertex3f(children[i]->getPosX(), children[i]->getPosY(), 0);
-		glEnd();
-	}
 }
 
 void Target::printTree()

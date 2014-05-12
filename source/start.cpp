@@ -182,7 +182,7 @@ void display()
       }
       // draw the target boxes
       rootTarget[0]->drawTargetBoxes(offset);
-      //rootTarget[0]->drawDependLines(); // this doesn't work yet
+      rootTarget[0]->drawDependLines(offset); // this doesn't work yet
 
       koala.drawTrajectory(mouseposx, mouseposy);
       koala.drawKoala(mouseposx);
@@ -198,7 +198,7 @@ void display()
         //drawBox(0,-900 + offset,1024,1000,0,0,1);
         koala.vel.toggleGravity(true);
         drawTexture(waterTexture,0,100+offset,1024,-420);
-      }
+
 
       break;
     }

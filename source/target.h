@@ -36,13 +36,13 @@ public:
 	void addParent(Target *p);
 	void setName(string n) { targetName = n; }
 	string getName() { return targetName; }
-	int getPosY() { return pos.x; }
-	int getPosX() { return pos.y; }
+	int getPosY() { return pos.y; }
+	int getPosX() { return pos.x; }
 	Target* findTarget(string n);
 	void initPositions(int d = 0, int ind = 0);
 	void drawTargetBoxes(int offset);
 	bool checkCollisions(Point2d &pos, int w, int h, int offset);
-	void drawDependLines();
+	void drawDependLines(int offset);
 	void printTree();
   unsigned getNumTargets(unsigned level=0);
 };
