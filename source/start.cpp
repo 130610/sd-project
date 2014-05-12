@@ -94,11 +94,12 @@ Button* Buttons[numButtons];
 int mouseposx;
 int mouseposy;
 
-Koala koala {};
-Koala seaTurtle{};
-Koala flyingSquirrel{};
-Koala jaguar{};
-Koala swan{};
+Animal *animal;
+Koala koala{};
+SeaTurtle seaTurtle{};
+FlyingSquirrel flyingSquirrel{};
+Jaguar jaguar{};
+Swan swan{};
 
 //QUIT_DATE TextBox
 int quitBoxText1[] = {182, 350, 600, 40};
@@ -158,7 +159,6 @@ void drawInstructions()
   f1Key.draw();
 }
 
-
 void display()
 {
   // clear the buffer
@@ -184,19 +184,57 @@ void display()
       rootTarget[0]->drawTargetBoxes(offset);
       rootTarget[0]->drawDependLines(offset); // this doesn't work yet
 
-      koala.drawTrajectory(mouseposx, mouseposy);
-      koala.drawKoala(mouseposx);
+
+      if(Buttons[10]->getkeepPressed())
+	{
+	  animal = &koala;
+	  koala.drawKoala(mouseposx);
+	  koala.drawTrajectory(mouseposx, mouseposy);
+	}
+      else if(Buttons[11]->getkeepPressed())
+	{
+	  animal = &jaguar;
+	  jaguar.drawTrajectory(mouseposx, mouseposy);
+	  jaguar.drawJaguar(mouseposx);
+	}
+      else if(Buttons[12]->getkeepPressed())
+	{
+	  animal = &flyingSquirrel;
+	  flyingSquirrel.drawTrajectory(mouseposx, mouseposy);
+	  flyingSquirrel.drawflyingSquirrel(mouseposx);
+	}
+      else if(Buttons[13]->getkeepPressed())
+	{
+	  animal = &swan;
+	  swan.drawTrajectory(mouseposx, mouseposy);
+	  swan.drawSwan(mouseposx);
+	}
+      else if(Buttons[14]->getkeepPressed())
+	{
+	  animal = &seaTurtle;
+	  seaTurtle.drawTrajectory(mouseposx, mouseposy);
+	  seaTurtle.drawseaTurtle(mouseposx);
+	}
+      else
+	{
+	  animal = &koala;
+	  koala.drawKoala(mouseposx);
+	  koala.drawTrajectory(mouseposx, mouseposy);
+	}
+      //koala.drawTrajectory(mouseposx, mouseposy);
+      //koala.drawKoala(mouseposx);
+      //animal ->drawTrajectory(mouseposx, mouseposy);
 
       sorcerer->draw(offset);
 
       // draw base box
-      if(koala.isAtBottom())
+      if(animal->isAtBottom())
 	drawTexture(brickTexture,0,100,1024,-100);
       // drawBox(0,0 + offset,1024,100,1,1,1);
       else {
-        koala.vel.toggleGravity(true);
+        //koala.vel.toggleGravity(true);
         //drawBox(0,-900 + offset,1024,1000,0,0,1);
-        koala.vel.toggleGravity(true);
+        //koala.vel.toggleGravity(true);
         drawTexture(waterTexture,0,100+offset,1024,-420);
       }
 
@@ -320,16 +358,16 @@ void keyboard(unsigned char c, int x, int y)
     case ' ':
     {
       if ( screen == GAME ) {
-        if ( koala.isAtBottom() )
-          koala.leaveBottom();
+        if ( animal->isAtBottom() )
+          animal->leaveBottom();
         Point2d tmppos(mouseposx - 100, mouseposy);
 #ifdef INFINITEJUMPS
         if (true) {
 #else
-        if (koala.jumps) {
+        if (animal->jumps) {
 #endif
-          koala.setTarget(tmppos);//, (double).5);
-          koala.jumps = false;
+          animal ->setTarget(tmppos);//, (double).5);
+          animal ->jumps = false;
         }
       }
       break;
@@ -576,26 +614,26 @@ void idle()
         glutPostRedisplay();
         break;
       case GAME:
-        koala.move();
-        if (rootTarget[0]->checkCollisions(koala.posn, 100, 100, offset)) {
-          koala.velocityZero();
-          koala.jumps = true;
+        animal ->move();
+        if (rootTarget[0]->checkCollisions(animal->posn, 100, 100, offset)) {
+          animal ->velocityZero();
+          animal ->jumps = true;
         }
-        if (koala.getY() - offset <= 100 && !koala.isAtBottom()) {
-          koala.makeAtBottom();
-          koala.vel.toggleGravity(false);
-          koala.setPosition(10, 200);
-          koala.vel.set(koala.posn, koala.posn);
-                      koala.jumps = true;
+        if (animal ->getY() - offset <= 100 && !animal ->isAtBottom()) {
+          animal ->makeAtBottom();
+          animal ->vel.toggleGravity(false);
+          animal ->setPosition(10, 200);
+          animal ->vel.set(animal ->posn, animal ->posn);
+                      animal ->jumps = true;
           offset = 0;
           screen = START;
         }
-        if (koala.getY() >= HEIGHT - 200) {
-          offset += HEIGHT - 200 - koala.getY();
-          koala.scrollKoalaUp();
-        } else if (koala.getY() <= 200) {
-          offset += 200 - koala.getY();
-          koala.scrollKoalaDown();
+        if (animal ->getY() >= HEIGHT - 200) {
+          offset += HEIGHT - 200 - animal ->getY();
+          animal ->scrollAnimalUp();
+        } else if (animal ->getY() <= 200) {
+          offset += 200 - animal ->getY();
+          animal ->scrollAnimalDown();
         }
 
         glutPostRedisplay();
