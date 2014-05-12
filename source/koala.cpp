@@ -69,3 +69,10 @@ void Koala::drawKoala(int mouseposx)
   else
     drawTexture(texture, posn.x, posn.y, 100,-100, 1.0,M_PI);
 }
+/*
+void Jaguar::drawJaguar(int mouseposx)
+{
+  if(mouseposx >posn.x)
+    drawTexture(texture, posn.x
+}
+*/
