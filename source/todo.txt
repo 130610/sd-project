@@ -1,12 +1,12 @@
 GAMEPLAY:
-  - fix crooked trajectory
+  - fix crooked trajectory - DONE
   - add g++ sorcerer
   - prevent boxes from generating off the screen
 
 AESTHETICS:
   - colorful makefile platforms
   - dependency lines
-  - water texture
+  - water texture - DONE
   - green laser pointer for trajectory
 
 ADDITIONAL FEATURES:

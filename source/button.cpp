@@ -9,13 +9,13 @@
 #include "globaldefs.h"
 #include "text.h"
 
-Button::Button (string label, int x, int y, int w, int h, enum screenType screen, enum screenType active, int labelStartX)
+Button::Button (string label, int x, int y, int w, int h, enum screenType screen, enum screenType active, int labelStartX, bool kP)
 {
   this->label = label;
   this->labelStartX = labelStartX;
-
   this->x = x;
   this->y = y;
+  keepPressed = kP;
   width = w;
   height = h;
 
@@ -38,6 +38,7 @@ void Button::drawButton()
   // color selection, based on pressed status
   if( IsPressed ) glColor3f(1., 1., 1.); // white;
   else if ( overButton ) glColor3f(0., 1., 0.); // green
+  else if (keepPressed) glColor3f(1,0,0); //red
   else glColor3f(color.red, color.green, color.blue); // as defined in object
 
   // button
