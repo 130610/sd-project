@@ -8,13 +8,17 @@ LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/Open
 
 endif
 
+FMOD_DIR = /usr/local/dept/apps/fmod
+FMOD_INCLUDE = -I$(FMOD_DIR)/api/inc -I$(FMOD_DIR)/examples/common
+FMOD_LIB = $(FMOD_DIR)/api/lib/libfmodex64.so
+
 # opengl section
-start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o sorcerer.o
-	g++ $(OPTS) -o start $^ $(LIBS)
+start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o sorcerer.o sound.o
+	g++ $(OPTS) -o start $^ $(LIBS) $(FMOD_LIB) 
 
-start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o text.o date.o sorcerer.o
+start.o: start.cpp start.h button.h globaldefs.h ColorPoint2.h InstructionLines.o target.h koala.o text.o date.o sorcerer.o sound.o
 
-	g++ $(OPTS) $(MACOSX_DEFINE) -c start.cpp
+	g++ $(OPTS) $(MACOSX_DEFINE) $(FMOD_INCLUDE) -c start.cpp
 
 InstructionLines.o: InstructionLines.cpp InstructionLines.h
 	g++ $(OPTS) $(MACOSX_DEFINE) -c InstructionLines.cpp
@@ -36,6 +40,8 @@ koala.o: koala.cpp koala.h physics.o
 
 sorcerer.o: sorcerer.h sorcerer.cpp
 	g++ $(OPTS) $(MACOSX_DEFINE) -c sorcerer.cpp
+sound.o: sound.h sound.cpp
+	g++ $(OPTS) $(FMOD_INCLUDE) -c sound.cpp
 
 
 # makefile parser
