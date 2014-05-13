@@ -32,7 +32,7 @@ Jaguar::Jaguar()
   atBottom = true;
   jumps =1;
 }
-/*
+
 FlyingSquirrel::FlyingSquirrel()
 {
   posn.x = 10, posn.y =200;
