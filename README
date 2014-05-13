@@ -1,17 +1,21 @@
-To The Team:
-	Hello Team Prancing Koala. I have set up this git repository in my
-	personal github account. I think if we get this set up early, it will
-	be very beneficial to our project, and save us a lot of time and stress
-	down the road.  I know that you had a github account as well, Soren, so
-	you know the drill for using a git repository. For Kalpit, it is pretty
-	simple to get started, and I'm sure you'll catch on fast. Maybe we can
-	just meet for half an hour this weekend, and Soren or I can show you
-	the basics (basically it just makes it so we can all work on the same
-	directory on different machines, with some other features to make it so
-	we don't step on each others toes)!
+Makefile Madness 2 (for certain values of 2)
+             by Prancing Koala
+============================================
 
-	This is a new function.
-	I'm editing this funciton...or am I?
-	
-This is going to take me a while to learn :( .......
-bryan edit
+Dependencies
+------------
+Makefile Madness 2 requires OpenGL. If you do not have it installed already,
+please do so before trying to build and play Makefile Madness 2.
+
+Compiling
+---------
+1. Change into the source/ directory.
+2. Run 'make'.
+3. That should hopefully be it!
+
+Playing the Game
+----------------
+To start playing Makefile Madness 2, run the 'start' command inside the source
+directory. There are in-game instructions on the 'instructions' page. You may
+also wish to look at the user manual, located in this directory in PDF and text
+format.

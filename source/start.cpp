@@ -1,6 +1,6 @@
 #define DEBUG // allows quitting with 'q' to avoid the quit sequence
 //#define MOUSECOORDS // display current mouse posn in terminal
-#define INFINITEJUMPS // what it sounds like
+//#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
@@ -571,20 +571,20 @@ void init_gl_window()
   glutCreateWindow(programName);
   init();
 
-  backgroundTexture = loadTexture("../images/background.pam");
-  keyboardTexture = loadTexture("../images/keyboard.pam");
-  koalaTexture = loadTexture("../images/Koala.pam");
-  jaguarTexture = loadTexture("../images/jaguar.pam");
-  flyingSquirrelTexture = loadTexture("../images/flyingSquirrel.pam");
-  seaTurtleTexture = loadTexture("../images/seaTurtle.pam");
-  swanTexture = loadTexture("../images/swan.pam");
+  backgroundTexture = loadTexture("../resources/background.pam");
+  keyboardTexture = loadTexture("../resources/keyboard.pam");
+  koalaTexture = loadTexture("../resources/Koala.pam");
+  jaguarTexture = loadTexture("../resources/jaguar.pam");
+  flyingSquirrelTexture = loadTexture("../resources/flyingSquirrel.pam");
+  seaTurtleTexture = loadTexture("../resources/seaTurtle.pam");
+  swanTexture = loadTexture("../resources/swan.pam");
   koala.loadTexture(koalaTexture);
   jaguar.loadTexture(jaguarTexture);
   flyingSquirrel.loadTexture(flyingSquirrelTexture);
   seaTurtle.loadTexture(seaTurtleTexture);
   swan.loadTexture(swanTexture);
-  brickTexture = loadTexture("../images/brickwall.pam");
-  waterTexture = loadTexture("../images/waterTexture.pam");
+  brickTexture = loadTexture("../resources/brickwall.pam");
+  waterTexture = loadTexture("../resources/waterTexture.pam");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
@@ -718,7 +718,7 @@ int main()
 
   sorcerer = new Sorcerer( rootTarget[0]->getNumTargets() );
   init_sound_system();
-  valkyrie = loadSoundFile("../images/valkyrie.ogg");
+  valkyrie = loadSoundFile("../resources/valkyrie.ogg");
   if(USE_SOUND) playSound(valkyrie,0);
   screen = START;
   init_buttons();
