@@ -128,18 +128,20 @@ Target *Target::findTarget(string n)
 }
 
 // initializes the positions of a target and all of its children based on their
-// depth d in the tree, and their index ind in children with their same depth
-void Target::initPositions(int d, int ind)
+// depth in the tree, and their index ind in children with their same depth
+// if there are more than WRAP children in one depth, they wrap to the next
+// depth. This addition of depth cascades through the next levels of children
+void Target::initPositions(int depth, int ind)
 {
 	for (int i = 0; i < numChildren; i++) {
-			children[i]->initPositions(d + (numChildren % 4) - (i % 4), i + (ind % 4));
+		children[i]->initPositions(depth + (numChildren % WRAP) - (i % WRAP), i + (ind % WRAP));
 	}
 
 	if (!posInited) {
 		srand(seed++);
 		pos.x = (ind * MAX_X_FACTOR) + (rand() % MAX_X_FACTOR);
 		srand(seed++);
-		pos.y = (d * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
+		pos.y = (depth * MAX_Y_FACTOR) + (rand() % MAX_Y_FACTOR);
 		hitbox = new Hitbox(pos.x, pos.y , BOX_WIDTH, BOX_HEIGHT);
 		posInited = true;
 	}
@@ -165,7 +167,7 @@ vector<string> splitString(string s, char d)
 
 Target **parseTargets(const char *filename)
 {
-	cout << "============NEW MAKEFILE==================" << endl;
+	//cout << "============NEW MAKEFILE==================" << endl;
 	Target **root = new Target *[1];
 	string *lineList = new string[1]; 
 	char line[256];
@@ -175,7 +177,7 @@ Target **parseTargets(const char *filename)
 	ifstream ifs(filename);
 	string tName, tDepends;
 
-	cout << "before" << endl;
+	//cout << "before" << endl;
 	while (ifs.get(c)) {
 		line[i++] = c;
 		if (c == '\n') {
@@ -184,31 +186,31 @@ Target **parseTargets(const char *filename)
 			i = 0;
 		}
 	}
-	cout << "after" << endl;
+	//cout << "after" << endl;
 
 	for (int i = 0; i < getLineListSize(lineList); i++) {
 		if (matchEmptyLine(lineList[i])) {
-			cout << i << endl;
+			//cout << i << endl;
 			continue;
 		} else if (matchCommentLine(lineList[i])) {
-			cout << i << endl;
+			//cout << i << endl;
 			continue;
 		} else if (matchKeywordLine(lineList[i])) {
-			cout << i << endl;
+			//cout << i << endl;
 			continue;
 		} else if (matchRuleLine(lineList[i])) {
-			cout << i << endl;
+			//cout << i << endl;
 			continue;
 		} else if (matchVariableLine(lineList[i])) {
-			cout << i << endl;
+			//cout << i << endl;
 			continue;
 		} else if (matchTargetLine(lineList[i], tName, tDepends) && numTargets == 0) {
-			cout << i << endl;
+			//cout << i << endl;
 			root[0] = new Target(tName);
 			root[0]->addChildren(tDepends, root);
 			numTargets++;
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
-			cout << i << endl;
+			//cout << i << endl;
 			addTarget(root, tName, tDepends);
 			numTargets++;
 		}
@@ -243,7 +245,7 @@ int getLineListSize(string *ll)
 bool matchEmptyLine(string l)
 {
 	if (l.empty()) {
-		cout << "found empty line" ;
+		//cout << "found empty line" ;
 		return true;
 	} else {
 		return false;
@@ -263,7 +265,7 @@ bool matchKeywordLine(string l)
 {
 	for (unsigned i = 0; i < LEN(MAKEFILE_KEYWORDS); i++) {
 		if (l.rfind(MAKEFILE_KEYWORDS[i], 0) == 0) {
-			cout << "found keyword line";
+			//cout << "found keyword line";
 			return true;
 		}
 	}
@@ -273,7 +275,7 @@ bool matchKeywordLine(string l)
 bool matchRuleLine(string l)
 {
 	if (l[0] == '\t' || l[0] == '\n') {
-		cout << "found rule line" ;
+		//cout << "found rule line" ;
 		return true;
 	} else {
 		return false;
@@ -284,12 +286,12 @@ bool matchVariableLine(string l) {
 	unsigned i = 0;
 	while (l[i] != '\n' && i < l.length()) {
 		if (l[i] == '=') {
-			cout << "found variable line" ;
+			//cout << "found variable line" ;
 			return true;
 		}
 		else if (l[i] == ':') {
 			if (l[i + 1] == '=') {
-				cout << "found variable line" ;
+				//cout << "found variable line" ;
 				return true;
 			} else {
 				return false;
@@ -304,7 +306,7 @@ bool matchVariableLine(string l) {
 // makefile; reads the rule into the string n, and the dependencies into d
 bool matchTargetLine(string l, string& n, string& d)
 {
-	cout << "found target line" ;
+	//cout << "found target line" ;
 	unsigned i = 0;
 	bool inName = true;
 	n = d = "";
@@ -343,17 +345,37 @@ void addTarget(Target **r, string n, string d)
 	}
 }
 
+//unsigned Target::getNumTargets(unsigned level)
+//{
+//	level++;
+//	unsigned maxN = 0;
+//	unsigned thisN = 0;
+//
+//	for (int i = 0; i < numChildren; i++) {
+//		thisN = children[i]->getNumTargets(level);
+//		++thisN;
+//		if (thisN > maxN)
+//			maxN = thisN;
+//	}
+//	return ( level == 1 ? ++maxN : maxN ); // add one for root
+//}
+
 unsigned Target::getNumTargets(unsigned level)
 {
-	level++;
 	unsigned maxN = 0;
-	unsigned thisN = 0;
+	unsigned thisN;
 
-	for (int i = 0; i < numChildren; i++) {
-		thisN = children[i]->getNumTargets(level);
-		++thisN;
-		if (thisN > maxN)
-			maxN = thisN;
+	/* if at the bottom, return depth */
+	if (children == 0) {
+		return level;
 	}
-  return ( level == 1 ? ++maxN : maxN ); // add one for root
+
+        for (int i = 0; i < numChildren; i++) {
+		/* account for wrapping and recurse */
+                thisN = children[i]->getNumTargets(level + (numChildren % WRAP) - (i % WRAP));
+		/* find the maximum depth */
+		maxN = (maxN > thisN ? maxN : thisN);
+        }
+
+	return ( level == 1 ? ++maxN : maxN ); // add one for root
 }

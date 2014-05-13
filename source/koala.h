@@ -35,7 +35,7 @@ public:
   void velocityReverse() { vel.velX -= 2 * vel.velX; vel.velY -= 2 * vel.velY; }
   void scrollAnimalUp();
   void scrollAnimalDown();
-  void drawTrajectory(int mouseposx, int mouseposy);
+  virtual void drawTrajectory(int mouseposx, int mouseposy)=0;
 
   
 };
@@ -45,6 +45,7 @@ class Koala:public Animal{
   //Koala();
   void loadTexture(int texture) { this->texture = texture; }
   void drawKoala(int mouseposx);
+  void drawTrajectory(int mouseposx, int mouseposy);
 
 };
 
@@ -52,24 +53,28 @@ class Jaguar:public Animal {
  public:
   void loadTexture(int texture){ this -> texture = texture;}
   void drawJaguar(int mouseposx);
+  void drawTrajectory(int mouseposx, int mouseposy);
 };
 
 class FlyingSquirrel:public Animal {
  public:
   void loadTexture(int texture){ this -> texture = texture;}
   void drawflyingSquirrel(int mouseposx);
+  void drawTrajectory(int mouseposx, int mouseposy);
 };
 
 class Swan:public Animal{
  public:
   void loadTexture(int texture) { this -> texture = texture; }
   void drawSwan(int mouseposx);
+  void drawTrajectory(int mouseposx, int mouseposy);
 };
 
 class SeaTurtle:public Animal{
  public:
   void loadTexture(int texture) { this -> texture = texture; }
   void drawseaTurtle(int mouseposx);
+  void drawTrajectory(int mouseposx, int mouseposy);
 };
 
 #endif
