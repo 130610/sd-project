@@ -15,13 +15,13 @@ Sorcerer::Sorcerer(unsigned numTargets)
   posn.x = SORCERER_START_X;
   movingRight = true;
   posn.y = (MAX_Y_FACTOR * (numTargets) + SORCERER_ABOVE_BOXES);
-  hitbox = new Hitbox(posn.x, posn.y, 100, 100);
-  cerr << posn.x << " " << posn.y << endl;
+  hitbox = new Hitbox(posn.x, posn.y, SORCERER_WIDTH, SORCERER_HEIGHT);
+  //cerr << posn.x << " " << posn.y << endl;
 }
 
 void Sorcerer::draw(int offset)
 {
-  drawBox(posn.x, posn.y + offset + SORCERER_ABOVE_BOXES,
+  drawBox(posn.x, posn.y + offset,// + SORCERER_ABOVE_BOXES,
           SORCERER_WIDTH, SORCERER_HEIGHT, 0,1,0);
 }
 
@@ -33,7 +33,7 @@ void Sorcerer::move()
     posn.x -= SORCERER_MOVE_RATE;
 
   Point2 tmppos = posn;
-  tmppos.y += 100;
+  tmppos.y += SORCERER_HEIGHT;
   hitbox->setPosn(tmppos);
   if ( (posn.x > WIDTH - SORCERER_WIDTH - 5) || (posn.x < 5) )
     turnAround();
@@ -41,8 +41,8 @@ void Sorcerer::move()
 
 bool Sorcerer::isHit(Point2d &koalaPosn, int w, int h, int offset)
 {
-  Point2 tmppos(koalaPosn.x, koalaPosn.y - offset - 400);
+  Point2 tmppos(koalaPosn.x, koalaPosn.y - offset);// - SORCERER_ABOVE_BOXES);
   bool ret = hitbox->detect(tmppos, w, h);
-	koalaPosn.x = tmppos.x; koalaPosn.y = tmppos.y + offset + 400;
+  koalaPosn.x = tmppos.x; koalaPosn.y = tmppos.y + offset;// + SORCERER_ABOVE_BOXES;
   return ret;
 }
