@@ -54,55 +54,60 @@ void Koala::drawTrajectory(int mouseposx, int mouseposy)
   */
   
   glColor3f(1,1,1);
-    glLineStipple(1, 0xAAAA);
+    glLineStipple(5, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
     glVertex3f(getCtrX(), getCtrY(), 0);
     glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+    glDisable(GL_LINE_STIPPLE);
   glEnd();
 }
 
 void Jaguar::drawTrajectory(int mouseposx, int mouseposy)
 {
   glColor3f(1,1,1);
-    glLineStipple(1, 0xAAAA);
+    glLineStipple(5, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
-    glVertex3f(getCtrX()+50, getCtrY(), 0);
+    glVertex3f(getCtrX(), getCtrY(), 0);
     glVertex3f(getCtrX()+(mouseposx-getCtrX()-54), getCtrY()+(mouseposy-getCtrY()), 0);
+    glDisable(GL_LINE_STIPPLE);
   glEnd();
 }
 
 void FlyingSquirrel::drawTrajectory(int mouseposx, int mouseposy)
 {
 glColor3f(1,1,1);
-    glLineStipple(1, 0xAAAA);
+    glLineStipple(5, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
     glVertex3f(getCtrX()+50, getCtrY(), 0);
     glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+    glDisable(GL_LINE_STIPPLE);
   glEnd();
 }
 
 void Swan::drawTrajectory(int mouseposx, int mouseposy)
 {
 glColor3f(1,1,1);
-    glLineStipple(1, 0xAAAA);
+    glLineStipple(5, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
-    glVertex3f(getCtrX()+50, getCtrY()-50, 0);
+    glVertex3f(getCtrX()+20, getCtrY()-30, 0);
     glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+    glDisable(GL_LINE_STIPPLE);
   glEnd();
 }
 
 void SeaTurtle::drawTrajectory(int mouseposx, int mouseposy)
 {
 glColor3f(1,1,1);
-    glLineStipple(1, 0xAAAA);
+    glLineStipple(5, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
-    glVertex3f(getCtrX()+50, getCtrY()-10, 0);
+    glVertex3f(getCtrX()+30, getCtrY()-20, 0);
     glVertex3f(getCtrX()+(mouseposx-getCtrX())-54, getCtrY()+(mouseposy-getCtrY()), 0);
+    glDisable(GL_LINE_STIPPLE);
   glEnd();
 }
 
@@ -117,31 +122,31 @@ void Koala::drawKoala(int mouseposx)
 void Jaguar::drawJaguar(int mouseposx)
 {
   if(mouseposx >posn.x)
-    drawTexture(texture, posn.x, posn.y, 200, -100, 1.0, -3.14/4);
+    drawTexture(texture, posn.x-50, posn.y+50, 200, -100, 1.0, -3.14/2);
   else
-    drawTexture(texture, posn.x+200, posn.y, -200, -100, 1.0, -3.14/4);
+    drawTexture(texture, posn.x+150, posn.y+50, -200, -100, 1.0, -3.14/2);
 }
 
 void FlyingSquirrel::drawflyingSquirrel(int mouseposx)
 {
   if(mouseposx > posn.x)
-    drawTexture(texture, posn.x, posn.y, 200,-100,1.0, 0);
+    drawTexture(texture, posn.x-20, posn.y, 200,-100,1.0, 0);
   else
-    drawTexture(texture, posn.x, posn.y, 200,-100,1.0, 0);
+    drawTexture(texture, posn.x+180, posn.y, -200,-100,1.0, 0);
 }
 
 void Swan::drawSwan(int mouseposx)
 {
   if(mouseposx>posn.x)
-    drawTexture(texture, posn.x, posn.y, 200,-100,1.0,0);
+    drawTexture(texture, posn.x-40, posn.y-10, 200,-100,1.0,0);
   else
-    drawTexture(texture, posn.x, posn.y, 200,-100,1.0,0);
+    drawTexture(texture, posn.x+150, posn.y-10, -200,-100,1.0,0);
 }
 
 void SeaTurtle::drawseaTurtle(int mouseposx)
 {
   if(mouseposx > posn.x)
-    drawTexture(texture, posn.x, posn.y, 200, -100,1.0,0);
+    drawTexture(texture, posn.x-30, posn.y, 200, -100,1.0,0);
   else
-    drawTexture(texture, posn.x, posn.y, 200,-100,1.0,0);
+    drawTexture(texture, posn.x+150, posn.y, -200,-100,1.0,0);
 }

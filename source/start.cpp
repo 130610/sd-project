@@ -29,8 +29,14 @@
 #include "koala.h"
 #include "date.h"
 #include "sorcerer.h"
+#include "sound.h"
+#include<vector>
+#include<iomanip>
+#include<sstream>
 
 using namespace std;
+//Sound Files
+FMOD::Sound *valkyrie, *splash;
 
 // root target
 Target **rootTarget;
@@ -167,6 +173,7 @@ void display()
   switch(screen) {
     case START:
       drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
+      glDisable(GL_LINE_STIPPLE);
       for (short int i=0; i<numButtons; ++i) {
         if (Buttons[i]->active == screen)
           Buttons[i]->draw();
@@ -579,6 +586,7 @@ void init_gl_window()
   swan.loadTexture(swanTexture);
   brickTexture = loadTexture("../resources/brickwall.pam");
   waterTexture = loadTexture("../resources/waterTexture.pam");
+
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(special_keyboard);
@@ -596,6 +604,17 @@ double getCurrentTime()
   gettimeofday(&tv, &tz);
   // cout << "tv is " << tv.tv_sec << " micro " << tv.tv_usec << endl;
   return tv.tv_sec + tv.tv_usec/(double)1000000.;
+}
+
+void resetGame()
+{
+  animal->makeAtBottom();
+  animal->vel.toggleGravity(false);
+  animal->setPosition(10, 200);
+  animal->vel.set(animal ->posn, animal ->posn);
+             animal ->jumps = true;
+  offset = 0;
+  screen = START;
 }
 
 void idle()
@@ -617,6 +636,7 @@ void idle()
         /* move sorcerer */
         sorcerer->move();
         if (sorcerer->isHit(koala.posn, 100, 100, offset)) {
+          resetGame();
           cout << "You win!" << endl;
           screen = START;
         }
@@ -628,13 +648,10 @@ void idle()
           animal ->jumps = true;
         }
         if (animal ->getY() - offset <= 100 && !animal ->isAtBottom()) {
-          animal ->makeAtBottom();
-          animal ->vel.toggleGravity(false);
-          animal ->setPosition(10, 200);
-          animal ->vel.set(animal ->posn, animal ->posn);
-                      animal ->jumps = true;
-          offset = 0;
-          screen = START;
+
+	  if(USE_SOUND) playSound(splash,1);
+          resetGame();
+
           cout << "You lose!" << endl;
         }
 
@@ -710,7 +727,10 @@ int main()
   lastTime = getCurrentTime();
 
   sorcerer = new Sorcerer( rootTarget[0]->getNumTargets() );
-
+  init_sound_system();
+  valkyrie = loadSoundFile("../resources/valkyrie.ogg");
+  splash = loadSoundFile("../resources/splash.wav");
+  if(USE_SOUND) playSound(valkyrie,0);
   screen = START;
   init_buttons();
   //init_targets();
