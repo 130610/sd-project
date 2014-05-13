@@ -47,6 +47,7 @@ char programName[] = "Makefile Madness 2";
 enum screenType screen;
 int backgroundTexture;
 int keyboardTexture;
+int mouseTexture;
 int koalaTexture;
 int swanTexture;
 int flyingSquirrelTexture;
@@ -136,7 +137,7 @@ void drawInstructions()
 {
   drawTexture(backgroundTexture,0., 768., 1024., -768.);
   drawTexture(keyboardTexture,170,548,768,-200);
-
+  //drawTexture(mouseTexture,200,250, 200, -200);
   Text spacet1(300, 275, "Spacebar allows the user to");
   Text spacet2(300, 255, "launch the koala");
   LegendItem spaceKey(360,396,300,372,2.5, spacet1, spacet2);
@@ -586,6 +587,7 @@ void init_gl_window()
   swan.loadTexture(swanTexture);
   brickTexture = loadTexture("../resources/brickwall.pam");
   waterTexture = loadTexture("../resources/waterTexture.pam");
+  mouseTexture = loadTexture("../resources/mouse.pam");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
