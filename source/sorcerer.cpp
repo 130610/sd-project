@@ -2,12 +2,13 @@
 #include "target.h"
 #include "physics.h"
 #include "draw.h"
+#include "texture.h"
 #include "globaldefs.h"
 
 const int SORCERER_ABOVE_BOXES = 400; // distance above last makefile box range -- DO NOT CHANGE THIS or hitbox will be messed up for some reason I don't understand
 const int SORCERER_START_X = 200; // where sorcerer begins across screen
 const int SORCERER_WIDTH = 100;
-const int SORCERER_HEIGHT = 100;
+const int SORCERER_HEIGHT = 161;
 const int SORCERER_MOVE_RATE = 10; // number of pixels moved on each move call
 
 Sorcerer::Sorcerer(unsigned numTargets)
@@ -16,13 +17,19 @@ Sorcerer::Sorcerer(unsigned numTargets)
   movingRight = true;
   posn.y = (MAX_Y_FACTOR * (numTargets) + SORCERER_ABOVE_BOXES);
   hitbox = new Hitbox(posn.x, posn.y, 100, 100);
+#ifdef DEBUG
   cerr << posn.x << " " << posn.y << endl;
+#endif
 }
 
 void Sorcerer::draw(int offset)
 {
-  drawBox(posn.x, posn.y + offset + SORCERER_ABOVE_BOXES,
-          SORCERER_WIDTH, SORCERER_HEIGHT, 0,1,0);
+  /* this line for some odd reason doesn't work if it's anywhere else */
+  sorcererTexture = loadTexture("../resources/gppsorcerer.pam");
+
+  /* this draws the texture upside down, so make sure the texture is
+   * upside down on disk */
+  drawTexture(sorcererTexture, posn.x, (posn.y + offset + SORCERER_ABOVE_BOXES), SORCERER_WIDTH, SORCERER_HEIGHT);
 }
 
 void Sorcerer::move()

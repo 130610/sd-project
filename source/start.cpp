@@ -54,6 +54,7 @@ int jaguarTexture;
 int seaTurtleTexture;
 int waterTexture;
 int brickTexture;
+int gppTexture;
 
 double lastTime;
 int offset = 0;
@@ -722,7 +723,7 @@ int main()
   rootTarget[0]->initPositions();
   lastTime = getCurrentTime();
 
-  sorcerer = new Sorcerer( rootTarget[0]->getNumTargets() );
+  sorcerer = new Sorcerer(rootTarget[0]->getNumTargets());
   init_sound_system();
   valkyrie = loadSoundFile("../resources/valkyrie.ogg");
   if(USE_SOUND) playSound(valkyrie,0);

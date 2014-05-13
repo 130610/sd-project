@@ -7,6 +7,7 @@
 class Sorcerer {
 private:
   bool movingRight;
+  int sorcererTexture;
 
 public:
   bool isMoving;
