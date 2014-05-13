@@ -1,6 +1,6 @@
 #define DEBUG // allows quitting with 'q' to avoid the quit sequence
 //#define MOUSECOORDS // display current mouse posn in terminal
-//#define INFINITEJUMPS // what it sounds like
+#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
@@ -606,6 +606,17 @@ double getCurrentTime()
   return tv.tv_sec + tv.tv_usec/(double)1000000.;
 }
 
+void resetGame()
+{
+  animal->makeAtBottom();
+  animal->vel.toggleGravity(false);
+  animal->setPosition(10, 200);
+  animal->vel.set(animal ->posn, animal ->posn);
+             animal ->jumps = true;
+  offset = 0;
+  screen = START;
+}
+
 void idle()
 {
   // do things only if a certain amount of time has passed
@@ -625,6 +636,7 @@ void idle()
         /* move sorcerer */
         sorcerer->move();
         if (sorcerer->isHit(koala.posn, 100, 100, offset)) {
+          resetGame();
           cout << "You win!" << endl;
           screen = START;
         }
@@ -636,14 +648,10 @@ void idle()
           animal ->jumps = true;
         }
         if (animal ->getY() - offset <= 100 && !animal ->isAtBottom()) {
+
 	  if(USE_SOUND) playSound(splash,1);
-          animal ->makeAtBottom();
-          animal ->vel.toggleGravity(false);
-          animal ->setPosition(10, 200);
-          animal ->vel.set(animal ->posn, animal ->posn);
-                      animal ->jumps = true;
-          offset = 0;
-          screen = START;
+          resetGame();
+
           cout << "You lose!" << endl;
         }
 
