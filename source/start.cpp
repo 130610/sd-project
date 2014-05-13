@@ -36,7 +36,7 @@
 
 using namespace std;
 //Sound Files
-FMOD::Sound *valkyrie;
+FMOD::Sound *valkyrie, *splash;
 
 // root target
 Target **rootTarget;
@@ -173,6 +173,7 @@ void display()
   switch(screen) {
     case START:
       drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
+      glDisable(GL_LINE_STIPPLE);
       for (short int i=0; i<numButtons; ++i) {
         if (Buttons[i]->active == screen)
           Buttons[i]->draw();
@@ -635,6 +636,7 @@ void idle()
           animal ->jumps = true;
         }
         if (animal ->getY() - offset <= 100 && !animal ->isAtBottom()) {
+	  if(USE_SOUND) playSound(splash,1);
           animal ->makeAtBottom();
           animal ->vel.toggleGravity(false);
           animal ->setPosition(10, 200);
@@ -719,6 +721,7 @@ int main()
   sorcerer = new Sorcerer( rootTarget[0]->getNumTargets() );
   init_sound_system();
   valkyrie = loadSoundFile("../resources/valkyrie.ogg");
+  splash = loadSoundFile("../resources/splash.wav");
   if(USE_SOUND) playSound(valkyrie,0);
   screen = START;
   init_buttons();

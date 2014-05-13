@@ -28,13 +28,16 @@ void drawBox(double x, double y, double width, double height)
   glEnd();
 }
 
-void drawLine(double x1, double y1, double x2, double y2, int r, int g, int b)
+void drawLine(double x1, double y1, double x2, double y2, float r, float g, float b)
 {
+  glDisable(GL_LINE_STIPPLE);
   glColor3f(r, g, b);
+  glLineWidth(5);
   glBegin(GL_LINES);
     glVertex3f(x1, y1, 0);
     glVertex3f(x2, y2, 0);
   glEnd();
+  glLineWidth(1);
 }
 
 void drawBox(int *pos)

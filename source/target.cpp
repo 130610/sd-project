@@ -81,12 +81,11 @@ void Target::drawTargetBoxes(int offset)
 
 void Target::drawDependLines(int offset)
 {
-  	glColor3f(0, 0, 1);
+
 	for (int i = 0; i < numChildren; i++) {
 		children[i]->drawDependLines(offset);
-		if (children) drawLine((double) pos.x, (double) pos.y + offset,
-		                       (double) children[i]->getPosX(), (double) children[i]->getPosY() + offset,
-		                       0, 0, 1);
+		if (children) 
+		  drawLine((double) pos.x, (double) pos.y + offset,(double) children[i]->getPosX(), (double) children[i]->getPosY() + offset,(float)242/255,(float)230/255,(float)65/255);
 
 	}
 }
