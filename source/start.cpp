@@ -29,8 +29,14 @@
 #include "koala.h"
 #include "date.h"
 #include "sorcerer.h"
+#include "sound.h"
+#include<vector>
+#include<iomanip>
+#include<sstream>
 
 using namespace std;
+//Sound Files
+FMOD::Sound *valkyrie;
 
 // root target
 Target **rootTarget;
@@ -579,6 +585,7 @@ void init_gl_window()
   swan.loadTexture(swanTexture);
   brickTexture = loadTexture("../images/brickwall.pam");
   waterTexture = loadTexture("../images/waterTexture.pam");
+
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(special_keyboard);
@@ -710,7 +717,9 @@ int main()
   lastTime = getCurrentTime();
 
   sorcerer = new Sorcerer( rootTarget[0]->getNumTargets() );
-
+  init_sound_system();
+  valkyrie = loadSoundFile("../images/valkyrie.ogg");
+  if(USE_SOUND) playSound(valkyrie,0);
   screen = START;
   init_buttons();
   //init_targets();
