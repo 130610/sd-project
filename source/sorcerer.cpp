@@ -4,7 +4,7 @@
 #include "draw.h"
 #include "globaldefs.h"
 
-const int SORCERER_ABOVE_BOXES = 400; // distance above last makefile box range
+const int SORCERER_ABOVE_BOXES = 400; // distance above last makefile box range -- DO NOT CHANGE THIS or hitbox will be messed up for some reason I don't understand
 const int SORCERER_START_X = 200; // where sorcerer begins across screen
 const int SORCERER_WIDTH = 100;
 const int SORCERER_HEIGHT = 100;
@@ -14,7 +14,7 @@ Sorcerer::Sorcerer(unsigned numTargets)
 {
   posn.x = SORCERER_START_X;
   movingRight = true;
-  posn.y = MAX_Y_FACTOR * (numTargets); // const defined in target.h
+  posn.y = (MAX_Y_FACTOR * (numTargets) + SORCERER_ABOVE_BOXES);
   hitbox = new Hitbox(posn.x, posn.y, 100, 100);
   cerr << posn.x << " " << posn.y << endl;
 }
@@ -32,7 +32,9 @@ void Sorcerer::move()
   else
     posn.x -= SORCERER_MOVE_RATE;
 
-  hitbox->setPosn(posn);
+  Point2 tmppos = posn;
+  tmppos.y += 100;
+  hitbox->setPosn(tmppos);
   if ( (posn.x > WIDTH - SORCERER_WIDTH - 5) || (posn.x < 5) )
     turnAround();
 }
