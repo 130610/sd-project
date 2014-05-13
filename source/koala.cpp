@@ -111,7 +111,7 @@ void Koala::drawKoala(int mouseposx)
   if(mouseposx > posn.x)
     drawTexture(texture,posn.x,posn.y,100,-100);
   else
-    drawTexture(texture, posn.x, posn.y, 100,-100, 1.0,M_PI);
+    drawTexture(texture, posn.x+100, posn.y, -100,-100, 1.0);
 }
 
 void Jaguar::drawJaguar(int mouseposx)
@@ -119,7 +119,7 @@ void Jaguar::drawJaguar(int mouseposx)
   if(mouseposx >posn.x)
     drawTexture(texture, posn.x, posn.y, 200, -100, 1.0, -3.14/4);
   else
-    drawTexture(texture, posn.x, posn.y, 200, -100, 1.0, -3.14/4);
+    drawTexture(texture, posn.x+200, posn.y, -200, -100, 1.0, -3.14/4);
 }
 
 void FlyingSquirrel::drawflyingSquirrel(int mouseposx)
