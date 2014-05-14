@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>ColorPoint2</title>
+<header>This file contain classes to represent colors and locations </header>
+<credits>Prancing Koala</credits>
+
+<class name="Color">
+
+<nosuperclass/>
+
+<variables>
+<var name="red" type="float">Holds red channel</var>
+<var name="green" type="float">Holds green channel</var>
+<var name="blue" type="float">Holds blue channel</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Initialilzes the color channels</desc>
+<arguments>
+<arg name="r" type="float">temp for red color channel</arg>
+<arg name="g" type="float">temp for the green color channel</arg>
+<arg name="b" type="float">temp for the blue color channel</arg>
+</arguments>
+<statechange>Assigns the values to red,green,blue</statechange>
+</constructor>
+
+<constructor>
+<desc>Default color for color channel</desc>
+<noarguments />
+<statechange>Assigns red=1,green=1 and blue = 1</statechange>
+</constructor>
+
+</constructors-list>
+
+
+
+<methods-list>
+
+<method name="display" returntype="void">
+<desc>Displays the values held by the color channels</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+</methods-list>
+
+</class>
+<class name="Point2d">
+
+<nosuperclass/>
+
+<variables>
+<var name="x" type="double">Holds x position</var>
+<var name="y" type="double">Holds y position</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Initializes x and y values</desc>
+<arguments>
+<arg name="posx" type="double">Temp for the x position</arg>
+<arg name="posy" type="double">Temp for the y position</arg>
+</arguments>
+<statechange>Assigns the value of posx to x and posy to y </statechange>
+</constructor>
+
+<constructor>
+<desc>Default Constructor</desc>
+<noarguments />
+<nostatechange />
+</constructor>
+
+</constructors-list>
+
+<methods-list>
+
+<method name="display" returntype="void">
+<desc>Displays the value of x and y</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="==" returntype="bool">
+<desc>Redifines the operator ==</desc>
+<arguments>
+<arg name="p" type="Point2d">Temporary object to hold Point2d</arg>
+</arguments>
+<statechange>checks if x is equal to p.x and y is equal to p.y</statechange>
+<return>Returns true or false based on if x==p.x and y==p.y</return>
+</method>
+
+</methods-list>
+
+</class>
+
+<class name="Point2">
+
+<nosuperclass/>
+
+<variables>
+<var name="x" type="int">Holds x position</var>
+<var name="y" type="int">Holds y position</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Initializes the x and y variables</desc>
+<arguments>
+<arg name="posx" type="int">Temporary to hold x position</arg>
+<arg name="posy" type="int">Temporary to hold y position</arg>
+</arguments>
+<statechange>Assigns posx to x and posy to y</statechange>
+</constructor>
+
+<constructor>
+<desc>Conversion Constructor - converts Point2d to Point2</desc>
+<arguments>
+<arg name="p" type="const Point2d &amp;">Temp to hold Point2d by reference </arg>
+</arguments>
+<statechange>Converts p.x to int and assigns to x and p.y to int and assigns to y</statechange>
+</constructor>
+
+<constructor>
+<desc>Default Constructor</desc>
+<noarguments />
+<nostatechange />
+</constructor>
+
+</constructors-list>
+
+<methods-list>
+
+<method name="display" returntype="void">
+<desc>Displays the value of x and y variables</desc>
+<noarguments />
+<statechange>Displays via cout the values of the x and y variables</statechange>
+<noreturn />
+</method>
+
+<method name="==" returntype="bool">
+<desc>Redefines the == opertor</desc>
+<arguments>
+<arg name="p" type="Point2">Temporary to hold a Point2 object called p</arg>
+</arguments>
+<statechange>Checks if x variable is equal to the Point2 object's x member and if y member is equal to the Point2 object's y member</statechange>
+<return>returns a true or false statement based on the check</return>
+</method>
+
+</methods-list>
+
+</class>
+
+
+</spec>

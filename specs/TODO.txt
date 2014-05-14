@@ -4,7 +4,7 @@ List of Specs to Complete
 COMPLETED
 ---------
 date
-
+ColorPoint2
 
 TO UPDATE
 ---------
@@ -15,7 +15,6 @@ target
 TO CREATE
 ---------
 
-ColorPoint2
 date
 draw
 globaldefs
