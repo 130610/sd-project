@@ -5,7 +5,7 @@ COMPLETED
 ---------
 button
 date
-
+ColorPoint2
 
 TO UPDATE
 ---------
@@ -14,8 +14,6 @@ target
 
 TO CREATE
 ---------
-
-ColorPoint2
 draw
 globaldefs
 InstructionLines
