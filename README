@@ -19,3 +19,9 @@ To start playing Makefile Madness 2, run the 'start' command inside the source
 directory. There are in-game instructions on the 'instructions' page. You may
 also wish to look at the user manual, located in this directory in PDF and text
 format.
+
+Levels
+------
+Provided with the game as levels are the project's makefile itself (Makefile),
+BryanMakefile.txt, Makefile.level, and Makefile.level2. You can load these
+through the Load Makefile option on the main screen.
