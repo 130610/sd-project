@@ -35,7 +35,6 @@ Target::~Target()
 
 void Target::addChildren(string dl, Target **r)
 {
-	cout << "ADDING CHILDREN======" << endl;
 	Target **tmpList;
 	vector<string> dependsList = splitString(dl, ' ');
 	tmpList = new Target*[numChildren + dependsList.size()];
@@ -135,7 +134,7 @@ Target *Target::findTarget(string n)
 void Target::initPositions(int depth, int ind)
 {
 	for (int i = 0; i < numChildren; i++) {
-		children[i]->initPositions(depth + (numChildren % WRAP) - (i % WRAP), i + (ind % WRAP));
+		children[i]->initPositions(depth + 1 + (i / WRAP), ind + (i % WRAP));
 	}
 
 	if (!posInited) {
@@ -170,7 +169,6 @@ Target **parseTargets(const char *filename)
 {
 	//cout << "============NEW MAKEFILE==================" << endl;
 	Target **root = new Target *[1];
-	cout << "1" << endl;
 	string *lineList = new string[1]; 
 	char line[256];
 	char c;
@@ -188,11 +186,9 @@ Target **parseTargets(const char *filename)
 			i = 0;
 		}
 	}
-	cout << "2" << endl;
 	//cout << "after" << endl;
 
 	for (int i = 0; i < getLineListSize(lineList); i++) {
-		cout << "LINE: " << i << endl;
 		if (matchEmptyLine(lineList[i])) {
 			//cout << i << endl;
 			continue;
@@ -216,12 +212,9 @@ Target **parseTargets(const char *filename)
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
 			//cout << i << endl;
 			addTarget(root, tName, tDepends);
-			if (numRoots == 2) cout << root[1]->getName() << endl;
-			cout << "going back to controling func" << endl;
 			numTargets++;
 		}
 	}
-	cout << "3" << endl;
 	return root;
 }
 
@@ -335,16 +328,13 @@ void addTarget(Target **&r, string n, string d)
 	Target **tmpRoot;
 	bool exists = false;
 	for (int i = 0; i < numRoots; i++) {
-		cout << "START======" << endl;
 		if (r[i]->findTarget(n)) {
-			cout << "FOUND TARGET======" << endl;
 			r[i]->findTarget(n)->addChildren(d, r);
 			exists = true;
 			break;
 		}
 	}
 	if (!exists) {
-		cout << "adding new root..." << endl;
 		tmpRoot = new Target *[numRoots + 1];
 		for (int i = 0; i < numRoots; i++) {
 			tmpRoot[i] = r[i];
@@ -355,8 +345,6 @@ void addTarget(Target **&r, string n, string d)
 
 		delete [] r;
 		r = tmpRoot;
-		cout << "numRoots: " << numRoots << endl;
-		cout << "added new root" << endl;
 	}
 }
 
@@ -387,7 +375,7 @@ unsigned Target::getNumTargets(unsigned level)
 
         for (int i = 0; i < numChildren; i++) {
 		/* account for wrapping and recurse */
-                thisN = children[i]->getNumTargets(level + (numChildren % WRAP) - (i % WRAP));
+                thisN = children[i]->getNumTargets(level + 1 + (i / WRAP));
 		/* find the maximum depth */
 		maxN = (maxN > thisN ? maxN : thisN);
         }
