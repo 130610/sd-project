@@ -35,17 +35,26 @@ Target::~Target()
 
 void Target::addChildren(string dl, Target **r)
 {
+	cout << "ADDING CHILDREN======" << endl;
 	Target **tmpList;
 	vector<string> dependsList = splitString(dl, ' ');
+	cout << "1" << endl;
 	tmpList = new Target*[numChildren + dependsList.size()];
+	cout << "2" << endl;
 
 	for (int i = 0; i < numChildren; i++) {
 		tmpList[i] = children[i];
 	}
+	cout << "3" << endl;
 	for (unsigned i = 0; i < dependsList.size(); i++) for (int j = 0; j < numRoots; j++) {
+		cout << "4" << endl;
+		cout << dependsList[i] << endl;
 		if (r[j]->findTarget(dependsList[i])) {
+			cout << "5" << endl;
 			tmpList[i + numChildren] = r[j]->findTarget(dependsList[i]);
+			cout << "6" << endl;
 			tmpList[i + numChildren]->addParent(this);
+			cout << "7" << endl;
 		} else {
 			tmpList[i + numChildren] = new Target(dependsList[i], this);
 		}
@@ -119,6 +128,7 @@ Target *Target::findTarget(string n)
 {
 	if (targetName == n) return this;
 
+//	if (numRoots > 1) cout << targetName << endl;
 	for (int i = 0; i < numChildren; i++) {
 		if (children[i]->findTarget(n)) return children[i]->findTarget(n);
 	}
@@ -168,6 +178,7 @@ Target **parseTargets(const char *filename)
 {
 	//cout << "============NEW MAKEFILE==================" << endl;
 	Target **root = new Target *[1];
+	cout << "1" << endl;
 	string *lineList = new string[1]; 
 	char line[256];
 	char c;
@@ -185,9 +196,11 @@ Target **parseTargets(const char *filename)
 			i = 0;
 		}
 	}
+	cout << "2" << endl;
 	//cout << "after" << endl;
 
 	for (int i = 0; i < getLineListSize(lineList); i++) {
+		cout << "LINE: " << i << endl;
 		if (matchEmptyLine(lineList[i])) {
 			//cout << i << endl;
 			continue;
@@ -211,9 +224,11 @@ Target **parseTargets(const char *filename)
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
 			//cout << i << endl;
 			addTarget(root, tName, tDepends);
+			cout << "going back to controling func" << endl;
 			numTargets++;
 		}
 	}
+	cout << "3" << endl;
 	return root;
 }
 
@@ -327,13 +342,16 @@ void addTarget(Target **r, string n, string d)
 	Target **tmpRoot;
 	bool exists = false;
 	for (int i = 0; i < numRoots; i++) {
+		cout << "START======" << endl;
 		if (r[i]->findTarget(n)) {
+			cout << "FOUND TARGET======" << endl;
 			r[i]->findTarget(n)->addChildren(d, r);
 			exists = true;
 			break;
 		}
 	}
 	if (!exists) {
+		cout << "adding new root..." << endl;
 		tmpRoot = new Target *[numRoots + 1];
 		for (int i = 0; i < numRoots; i++) {
 			tmpRoot[i] = r[i];
@@ -341,6 +359,7 @@ void addTarget(Target **r, string n, string d)
 		tmpRoot[numRoots + 1] = new Target(n);
 		tmpRoot[numRoots + 1]->addChildren(d, r);
 		numRoots++;
+		cout << "added new root" << endl;
 	}
 }
 
