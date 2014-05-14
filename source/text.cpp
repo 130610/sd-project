@@ -51,7 +51,7 @@ void textBox::writeTextinBox()
   }
 }
 
-void textBox::keyboardfunction(unsigned char c, int x, int y)
+void textBox::keyboardfunction(unsigned char c)
 {
   if(overTextBox) {
 #ifdef DEBUG

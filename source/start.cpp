@@ -376,8 +376,8 @@ void launch()
 void keyboard(unsigned char c, int x, int y)
 {
   // if we're in a text box, type as normal there
-  loadBox.keyboardfunction(c,x,y);
-  dateBox.keyboardfunction(c,x,y);
+  loadBox.keyboardfunction(c);
+  dateBox.keyboardfunction(c);
   switch(c) {
     case ' ':
       launch();

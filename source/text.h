@@ -10,8 +10,8 @@ class textBox {
 private:
   bool overTextBox;
   string textInBox;
-  int textBox1[4];
-  int textBox2[4];
+  int textBox1[4]; // x, y, width, height
+  int textBox2[4]; // similar
   const unsigned int MAX_NUM_CHARS_IN_TEXTBOX = 100;
 
 public:
@@ -26,7 +26,7 @@ public:
 
   void drawTextBox();
   void writeTextinBox();
-  void keyboardfunction(unsigned char c, int x, int y);
+  void keyboardfunction(unsigned char c);
 
 };
 
