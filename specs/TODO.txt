@@ -6,6 +6,7 @@ COMPLETED
 button
 date
 ColorPoint2
+sorcerer
 
 TO UPDATE
 ---------
@@ -18,5 +19,4 @@ draw
 InstructionLines
 koala
 physics
-sorcerer
 text

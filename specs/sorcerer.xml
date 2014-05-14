@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>The Sorcerer Class</title>
+<header>This class implements the G++ Sorcerer, the evil villain in Makefile Madness 2.</header>
+<credits>Written by Prancing Koala.</credits>
+
+<class name="Sorcerer">
+
+<nosuperclass/>
+
+<variables>
+<var name="movingRight" type="bool">Whether the sorcerer is currently moving right (true) or left (false).</var>
+<var name="sorcererTexture" type="int">An integer storing the texture used to display the sorcerer.</var>
+<var name="hitbox" type="Hitbox*">Pointer to a Hitbox which represents the hitbox of this sorcerer.</var>
+<var name="posn" type="Point2">The current position of the upper-left corner of the sorcerer.</var>
+</variables>
+
+<constructors-list>
+<constructor>
+<desc>The constructor.</desc>
+<arguments>
+<arg name="numTargets" type="unsigned int">The number of levels of targets in the Makefile.</arg>
+</arguments>
+<statechange>Initializes values based on constants and the numTargets variable (which is used to determine how high the sorcerer should be generated). Also dynamically allocates a Hitbox and assigns it to the hitbox pointer.</statechange>
+</constructor>
+</constructors-list>
+
+<destructor>
+<desc>Destructor.</desc>
+<statechange>Frees the dynamically allocated hitbox.</statechange>
+</destructor>
+
+<methods-list>
+<method name="turnAround" returntype="void">
+<desc>Inverts the direction the sorcerer is moving.</desc>
+<noarguments />
+<statechange>Changes the movingRight variable to the opposite of its current value.</statechange>
+<noreturn />
+</method>
+
+<method name="move" returntype="void">
+<desc>Moves the sorcerer across the screen.</desc>
+<noarguments />
+<statechange>Changes the x position of the sorcerer based on the constant SORCERER_MOVE_RATE, then moves the hitbox accordingly. Finally, runs turnAround() if the sorcerer is nearing the edge of the screen.</statechange>
+<noreturn />
+</method>
+
+<method name="draw" returntype="void">
+<desc>(Re)draws the sorcerer texture on the screen.</desc>
+<arguments>
+<arg name="offset" type="int">The offset value, describing how far we have scrolled up the screen.</arg>
+</arguments>
+<statechange>If it hasn't been loaded, load the sorcerer texture. Otherwise, none.</statechange>
+<noreturn />
+</method>
+
+<method name="isHit" returntype="bool">
+<desc>Checks whether the sorcerer has been hit, and also adjust the character's position if it has hit.</desc>
+<arguments>
+<arg name="pos" type="Point2d&amp;">The position of the character, to check if it's within our hitbox.</arg>
+<arg name="w" type="int">The width of the character.</arg>
+<arg name="h" type="int">The height of the character.</arg>
+<arg name="offset" type="int">The offset value, describing how far we have scrolled up the screen (necessary to adjust pos and determine if we've actually hit the hitbox or if it's just in the same relative position on the screen).</arg>
+</arguments>
+<statechange>None.</statechange>
+<return>True if we've hit the sorcerer, False otherwise.</return>
+</method>
+
+</methods-list>
+</class>
+</spec>
