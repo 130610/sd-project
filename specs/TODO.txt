@@ -15,12 +15,8 @@ target
 TO CREATE
 ---------
 draw
-globaldefs
 InstructionLines
 koala
 physics
 sorcerer
-sound
-start
 text
-texture
