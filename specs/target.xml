@@ -16,6 +16,12 @@
 <variables>
 <var name="targetName" type="string">the name of the target</var>
 <var name="children" type="Target **">an array of pointers to the Target's children dependencies</var>
+<var name="parents" type="Target **">an array of pointers to the targets that depend on this target</var>
+<var name="numChildren" type="int">number of children in the array children</var>
+<var name="numParents" type="int">number of parents in the array parents</var>
+<var name="pos" type="Point2">the x and y coordinates of the Target</var>
+<var name="hitbox" type="Hitbox *">a Hitbox object that will be initialize to match the position and size of the Target</var>
+<var name="posInited" type="bool">a switch to prevent the reinitialization of positions in a target</var>
 </variables>
 
 <constructors-list>
@@ -48,7 +54,7 @@
 
 <destructor>
 <desc/>
-<statechange>if memory was allocated at children or parents, it is deallocated</statechange>
+<statechange>(most) memory allocated in the target is deleted</statechange>
 </destructor>
 
 <methods-list>
@@ -112,6 +118,36 @@
 </arguments>
 <statechange>posX and posY of caller and all of its children are initialized based on their depth, horizantal index in the search, and random numbers between 1 and 100</statechange>
 </method>
+
+<method name="drawTargetBoxes" returntype="void">
+<desc>recursive function which draws boxes for all children targets based on the position of the target, and the values of the global variables</desc>
+<arguments>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+</arguments>
+<statechange>None.</statechange>
+</method>
+
+<method name="drawDependLines" returntype="void">
+<desc>recursive function which draws lines based on the dependencies of the target between it and its parents</desc>
+<arguments>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+</arguments>
+<statechange>None.</statechange>
+</method>
+
+<method name="checkCollisions" returntype="bool">
+<desc>detects if the given point is contained in the calling target's hitbox, and changes the position of the point to be outside of the hitbox.</desc>
+<arguments>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+</arguments>
+<statechange>None.</statechange>
+</method>
+	bool checkCollisions(Point2d &pos, int w, int h, int offset);
+	unsigned getNumTargets(unsigned level=0);
 
 <method name="printTree" returntype="void">
 <desc>convenient way to debug the positions and dependencies of tree</desc>

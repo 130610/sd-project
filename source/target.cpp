@@ -119,6 +119,7 @@ Target *Target::findTarget(string n)
 {
 	if (targetName == n) return this;
 
+//	if (children == 0) cout << "NUM CHILDREN: " << numChildren << endl;
 	for (int i = 0; i < numChildren; i++) {
 		if (children[i]->findTarget(n)) return children[i]->findTarget(n);
 	}
@@ -133,7 +134,7 @@ Target *Target::findTarget(string n)
 void Target::initPositions(int depth, int ind)
 {
 	for (int i = 0; i < numChildren; i++) {
-		children[i]->initPositions(depth + (numChildren % WRAP) - (i % WRAP), i + (ind % WRAP));
+		children[i]->initPositions(depth + 1 + (i / WRAP), ind + (i % WRAP));
 	}
 
 	if (!posInited) {
@@ -322,7 +323,7 @@ bool matchTargetLine(string l, string& n, string& d)
 	return (!inName);
 }
 
-void addTarget(Target **r, string n, string d)
+void addTarget(Target **&r, string n, string d)
 {
 	Target **tmpRoot;
 	bool exists = false;
@@ -338,9 +339,12 @@ void addTarget(Target **r, string n, string d)
 		for (int i = 0; i < numRoots; i++) {
 			tmpRoot[i] = r[i];
 		}
-		tmpRoot[numRoots + 1] = new Target(n);
-		tmpRoot[numRoots + 1]->addChildren(d, r);
+		tmpRoot[numRoots] = new Target(n);
+		tmpRoot[numRoots]->addChildren(d, r);
 		numRoots++;
+
+		delete [] r;
+		r = tmpRoot;
 	}
 }
 
@@ -371,7 +375,7 @@ unsigned Target::getNumTargets(unsigned level)
 
         for (int i = 0; i < numChildren; i++) {
 		/* account for wrapping and recurse */
-                thisN = children[i]->getNumTargets(level + (numChildren % WRAP) - (i % WRAP));
+                thisN = children[i]->getNumTargets(level + 1 + (i / WRAP));
 		/* find the maximum depth */
 		maxN = (maxN > thisN ? maxN : thisN);
         }

@@ -727,6 +727,7 @@ void init_targets(const char *filename)
   } else {
     cerr << "That file does not exist!" << endl;
   }
+  cout << "just loaded a makefile" << endl;
 }
 
 int main()
