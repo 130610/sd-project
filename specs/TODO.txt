@@ -6,6 +6,7 @@ COMPLETED
 button
 date
 ColorPoint2
+InstructionLines
 
 TO UPDATE
 ---------
@@ -14,8 +15,6 @@ target
 
 TO CREATE
 ---------
-draw
-InstructionLines
 koala
 physics
 sorcerer
