@@ -29,7 +29,6 @@ public:
   void leaveBottom() { atBottom = false; }
   void setTarget(Point2d target/*, int frames*/) { vel.set(posn, target/*, frames*/); }
   void setPosition(int x, int y/*, int frames*/) { posn.x = x; posn.y = y; }
-  void approachTarget();
   void move();
   void velocityZero() { vel.set(posn, posn); }
   void velocityReverse() { vel.velX -= 2 * vel.velX; vel.velY -= 2 * vel.velY; }
