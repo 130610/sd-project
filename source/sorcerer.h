@@ -10,7 +10,6 @@ private:
   int sorcererTexture;
 
 public:
-  bool isMoving;
   Hitbox* hitbox;
   Point2 posn;
   Sorcerer(unsigned numTargets);
