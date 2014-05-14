@@ -24,12 +24,6 @@ void Animal::move()
 	vel.move(posn);
 }
 
-//void Koala::approachTarget()
-//{
-//  posn.x += (target.x - posn.x) / 15;
-//  posn.y += (target.y - posn.y) / 15;
-//}
-
 void Animal::scrollAnimalUp()
 {
 //  target.y += HEIGHT - 200 - posn.y;
@@ -44,15 +38,6 @@ void Animal::scrollAnimalDown()
 
 void Koala::drawTrajectory(int mouseposx, int mouseposy)
 {
-  /* not yet implemented -- see also some code removed in
-   * 5bdf728d5fa4cff5eccdabd27f18cc06a9df895f
-  int hypotenuse = sqrt(((mouseposx-getCtrX())*(mouseposx-getCtrX())) +
-                        ((mouseposy-getCtrY())*(mouseposy-getCtrY())));
-
-  if(hypotenuse > 100)
-    hypotenuse = 100;
-  */
-  
   glColor3f(1,1,1);
     glLineStipple(5, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
