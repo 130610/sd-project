@@ -138,16 +138,21 @@
 <method name="checkCollisions" returntype="bool">
 <desc>detects if the given point is contained in the calling target's hitbox, and changes the position of the point to be outside of the hitbox.</desc>
 <arguments>
+<arg name="pos" type="Point2d &amp;">the position to check against, as well as the position to modify</arg>
+<arg name="w" type="int">my good friend "w"</arg>
+<arg name="h" type="int">the height of the box, an acquaintance of "w"</arg>
 <arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
-<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
-<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
-<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
-<arg name="offset" type="int">the number of pixels to offset the drawing, to account for scrolling</arg>
+</arguments>
+<statechange>the value of pos is changed to be outside of the hitbox</statechange>
+</method>
+
+<method name="getNumTarget" returntype="bool">
+<desc>finds the maximum depth of the dependency tree</desc>
+<arguments>
+<arg name="level" type="int">the current depth of the target</arg>
 </arguments>
 <statechange>None.</statechange>
 </method>
-	bool checkCollisions(Point2d &pos, int w, int h, int offset);
-	unsigned getNumTargets(unsigned level=0);
 
 <method name="printTree" returntype="void">
 <desc>convenient way to debug the positions and dependencies of tree</desc>
