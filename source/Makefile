@@ -1,6 +1,7 @@
 OPTS = -Wall -g -std=c++11
 LIBS = -lGL -lglut -lm
 ARCH := $(shell uname)
+OS := $(shell uname -n)
 ifeq ($(ARCH), Linux)
 else
 MACOSX_DEFINE = -DMACOSX -I/sw/include
@@ -8,9 +9,18 @@ LIBS = -I/usr/common/include -I/usr/include/GL -L/System/Library/Frameworks/Open
 
 endif
 
+ifeq ($(OS), colin)
+# for building on Bryan's Machine (64-bit Arch Linux)
+FMOD_DIR1 = /usr/include/fmodex
+FMOD_DIR2 = /usr/share/doc/fmodex/examples/common
+FMOD_INCLUDE = -I$(FMOD_DIR1) -I$(FMOD_DIR2)
+FMOD_LIB = /usr/lib/libfmodex64.so
+else
+# for building on the lab machines, uncomment these
 FMOD_DIR = /usr/local/dept/apps/fmod
 FMOD_INCLUDE = -I$(FMOD_DIR)/api/inc -I$(FMOD_DIR)/examples/common
 FMOD_LIB = $(FMOD_DIR)/api/lib/libfmodex64.so
+endif
 
 # opengl section
 start: start.o texture.o text.o button.o InstructionLines.o target.o draw.o koala.o date.o physics.o sorcerer.o sound.o
