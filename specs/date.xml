@@ -26,7 +26,7 @@
 <constructor>
 <desc>Default constructor.</desc>
 <noarguments />
-<statechange>Generates random values for month, day, and year, and sets the month, day, and year members to these values. The values will be valid dates between Jan 1, 1900 and Dec 31, 2099.</statechange>
+<statechange>Generates random values for month, day, and year using the randomize() function, and sets the month, day, and year members to these values.</statechange>
 </constructor>
 
 <constructor>
@@ -42,6 +42,13 @@
 </constructors-list>
 
 <methods-list>
+
+<method name="randomize" returntype="void">
+<desc>Generates a new random date. The values will be valid dates between Jan 1, 1900 and Dec 31, 2099.</desc>
+<noarguments />
+<statechange>Set month, day, and year to the new values.</statechange>
+<noreturn />
+</method>
 
 <method name="compareDay" returntype="bool">
 <desc>Checks if the date stored by the object falls on the same day of the week as the given one.</desc>
@@ -59,38 +66,12 @@
 <return>True if it's a leap year.</return>
 </method>
 
-<method name="convertDayToNumber" returntype="unsigned">
-<desc>(NOT A METHOD, JUST A FUNCTION) Convert a day of the week given as its English name to the number representing it internally.</desc>
-<arguments>
-<arg name="s" type="string">The string to attempt to convert to an integer day of the week.</arg>
-</arguments>
+<method name="getStringRepr" returntype="string">
+<desc>Get a human-readable form of the date to display.</desc>
+<noarguments />
 <nostatechange />
-<return>An integer 0 to 6, with 0 representing Sunday and 6 Saturday, as used elsewhere in this class, or 9 if the string did not correspond to one of the days of the week. (Case is ignored.)</return>
+<return>A string representation of the date (format mm/dd/yyyy).</return>
 </method>
-
-<method name="validateDate" returntype="bool">
-<desc>(NAMJAF) Determine if the parameters given form a valid date.</desc>
-<arguments>
-<arg name="month" type="unsigned">The month of the date to check for validity.</arg>
-<arg name="day" type="unsigned">The day.</arg>
-<arg name="year" type="unsigned">The year.</arg>
-</arguments>
-<nostatechange />
-<return>True if this is a valid date in the Gregorian calendar.</return>
-</method>
-
-<!--
-&sto:ENTRY;<method name="&sto:ENTRY;" returntype="&sto:ENTRY;">
-<desc>&sto:ENTRY;</desc>
-<arguments>
-<arg name="&sto:ENTRY;" type="&sto:ENTRY;">&sto:ENTRY;</arg>
-&sto:ENTRY;<arg name="&sto:ENTRY;" type="&sto:ENTRY;">&sto:ENTRY;</arg>
-</arguments>
-<statechange>&sto:ENTRY;</statechange>
-<return>&sto:ENTRY;</return>
-</method>
--->
-
 
 </methods-list>
 </class>
