@@ -16,7 +16,6 @@ TO CREATE
 ---------
 
 ColorPoint2
-date
 draw
 globaldefs
 InstructionLines
