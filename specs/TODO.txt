@@ -1,0 +1,29 @@
+List of Specs to Complete
+-------------------------
+
+COMPLETED
+---------
+date
+
+
+TO UPDATE
+---------
+button
+target
+
+
+TO CREATE
+---------
+
+ColorPoint2
+date
+draw
+globaldefs
+InstructionLines
+koala
+physics
+sorcerer
+sound
+start
+text
+texture
