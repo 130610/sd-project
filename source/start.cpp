@@ -1,6 +1,6 @@
-#define DEBUG // allows quitting with 'q' to avoid the quit sequence
+//#define DEBUG // allows quitting with 'q' to avoid the quit sequence
 //#define MOUSECOORDS // display current mouse posn in terminal
-#define INFINITEJUMPS // what it sounds like
+//#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
@@ -36,7 +36,7 @@
 
 using namespace std;
 //Sound Files
-FMOD::Sound *valkyrie;
+FMOD::Sound *valkyrie, *splash;
 
 // root target
 Target **rootTarget;
@@ -47,6 +47,7 @@ char programName[] = "Makefile Madness 2";
 enum screenType screen;
 int backgroundTexture;
 int keyboardTexture;
+int mouseTexture;
 int koalaTexture;
 int swanTexture;
 int flyingSquirrelTexture;
@@ -137,7 +138,7 @@ void drawInstructions()
 {
   drawTexture(backgroundTexture,0., 768., 1024., -768.);
   drawTexture(keyboardTexture,170,548,768,-200);
-
+  //drawTexture(mouseTexture,200,250, 200, -200);
   Text spacet1(300, 275, "Spacebar allows the user to");
   Text spacet2(300, 255, "launch the koala");
   LegendItem spaceKey(360,396,300,372,2.5, spacet1, spacet2);
@@ -174,6 +175,7 @@ void display()
   switch(screen) {
     case START:
       drawTexture(backgroundTexture, 0.0, 768.0, 1024.0, -768.0);
+      glDisable(GL_LINE_STIPPLE);
       for (short int i=0; i<numButtons; ++i) {
         if (Buttons[i]->active == screen)
           Buttons[i]->draw();
@@ -586,6 +588,7 @@ void init_gl_window()
   swan.loadTexture(swanTexture);
   brickTexture = loadTexture("../resources/brickwall.pam");
   waterTexture = loadTexture("../resources/waterTexture.pam");
+  //mouseTexture = loadTexture("../resources/mouse.pam");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
@@ -648,7 +651,10 @@ void idle()
           animal ->jumps = true;
         }
         if (animal ->getY() - offset <= 100 && !animal ->isAtBottom()) {
+
+	  if(USE_SOUND) playSound(splash,1);
           resetGame();
+
           cout << "You lose!" << endl;
         }
 
@@ -726,6 +732,7 @@ int main()
   sorcerer = new Sorcerer(rootTarget[0]->getNumTargets());
   init_sound_system();
   valkyrie = loadSoundFile("../resources/valkyrie.ogg");
+  splash = loadSoundFile("../resources/splash.wav");
   if(USE_SOUND) playSound(valkyrie,0);
   screen = START;
   init_buttons();
