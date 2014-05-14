@@ -49,7 +49,7 @@ Target **parseTargets(const char *filename);
 vector<string> splitString(string s, char d);
 void addLine(string *&ll, char *l);
 int getLineListSize(string *ll);
-void addTarget(Target** r, string n, string d);
+void addTarget(Target** &r, string n, string d);
 
 /* string parsing functions */
 bool matchEmptyLine(string l);
