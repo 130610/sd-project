@@ -1,6 +1,6 @@
 //#define DEBUG // allows quitting with 'q' to avoid the quit sequence
 //#define MOUSECOORDS // display current mouse posn in terminal
-//#define INFINITEJUMPS // what it sounds like
+#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
