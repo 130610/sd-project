@@ -3,12 +3,12 @@ List of Specs to Complete
 
 COMPLETED
 ---------
+button
 date
 
 
 TO UPDATE
 ---------
-button
 target
 
 
