@@ -38,23 +38,15 @@ void Target::addChildren(string dl, Target **r)
 	cout << "ADDING CHILDREN======" << endl;
 	Target **tmpList;
 	vector<string> dependsList = splitString(dl, ' ');
-	cout << "1" << endl;
 	tmpList = new Target*[numChildren + dependsList.size()];
-	cout << "2" << endl;
 
 	for (int i = 0; i < numChildren; i++) {
 		tmpList[i] = children[i];
 	}
-	cout << "3" << endl;
 	for (unsigned i = 0; i < dependsList.size(); i++) for (int j = 0; j < numRoots; j++) {
-		cout << "4" << endl;
-		cout << dependsList[i] << endl;
 		if (r[j]->findTarget(dependsList[i])) {
-			cout << "5" << endl;
 			tmpList[i + numChildren] = r[j]->findTarget(dependsList[i]);
-			cout << "6" << endl;
 			tmpList[i + numChildren]->addParent(this);
-			cout << "7" << endl;
 		} else {
 			tmpList[i + numChildren] = new Target(dependsList[i], this);
 		}
@@ -128,7 +120,7 @@ Target *Target::findTarget(string n)
 {
 	if (targetName == n) return this;
 
-//	if (numRoots > 1) cout << targetName << endl;
+//	if (children == 0) cout << "NUM CHILDREN: " << numChildren << endl;
 	for (int i = 0; i < numChildren; i++) {
 		if (children[i]->findTarget(n)) return children[i]->findTarget(n);
 	}
@@ -224,6 +216,7 @@ Target **parseTargets(const char *filename)
 		} else if (matchTargetLine(lineList[i], tName, tDepends)) {
 			//cout << i << endl;
 			addTarget(root, tName, tDepends);
+			if (numRoots == 2) cout << root[1]->getName() << endl;
 			cout << "going back to controling func" << endl;
 			numTargets++;
 		}
@@ -337,7 +330,7 @@ bool matchTargetLine(string l, string& n, string& d)
 	return (!inName);
 }
 
-void addTarget(Target **r, string n, string d)
+void addTarget(Target **&r, string n, string d)
 {
 	Target **tmpRoot;
 	bool exists = false;
@@ -356,9 +349,13 @@ void addTarget(Target **r, string n, string d)
 		for (int i = 0; i < numRoots; i++) {
 			tmpRoot[i] = r[i];
 		}
-		tmpRoot[numRoots + 1] = new Target(n);
-		tmpRoot[numRoots + 1]->addChildren(d, r);
+		tmpRoot[numRoots] = new Target(n);
+		tmpRoot[numRoots]->addChildren(d, r);
 		numRoots++;
+
+		delete [] r;
+		r = tmpRoot;
+		cout << "numRoots: " << numRoots << endl;
 		cout << "added new root" << endl;
 	}
 }
