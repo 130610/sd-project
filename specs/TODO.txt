@@ -3,19 +3,17 @@ List of Specs to Complete
 
 COMPLETED
 ---------
+button
 date
 ColorPoint2
 
 TO UPDATE
 ---------
-button
 target
 
 
 TO CREATE
 ---------
-
-date
 draw
 globaldefs
 InstructionLines
