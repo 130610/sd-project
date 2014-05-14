@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>The Textbox Class</title>
+<header>This class implements a textbox in OpenGL.</header>
+<credits>Written by Prancing Koala.</credits>
+
+<class name="textBox">
+
+<nosuperclass/>
+
+<variables>
+<var name="overTextBox" type="bool">Whether the user's mouse is currently over this text box (i.e., the text box is active and will allow text to be entered into it).</var>
+<var name="textBox1" type="int[4]">Stores the x, y, width, and height values of the bottom (background) box of the text box.</var>
+<var name="textBox2" type="int[4]">Similar for the top (foreground) box.</var>
+<var name="MAX_NUM_CHARS_IN_TEXTBOX" type="const unsigned int">Stores the maximum length of text that a user may type in. Set to 100.</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>The constructor.</desc>
+<arguments>
+<arg name="a" type="bool">Whether overTextBox should be initialized to true.</arg>
+<arg name="c" type="int[]">The values to be placed into textBox1 (see there for documentation on what they are).</arg>
+<arg name="d" type="int[]">The values to be placed into textBox2 (see there for documentation on what they are).</arg>
+</arguments>
+<statechange>Sets members to the values provided, and sets the text in the box to an empty string.</statechange>
+</constructor>
+</constructors-list>
+
+<methods-list>
+<method name="onTextBox" returntype="bool">
+<desc>Determines whether the mouse pointer is over the text box.</desc>
+<arguments>
+<arg name="x" type="int">The x position of the mouse pointer.</arg>
+<arg name="y" type="int">The y position of the mouse pointer.</arg>
+</arguments>
+<nostatechange />
+<return>True or false depending on whether the mouse pointer is over the text box.</return>
+</method>
+
+<method name="getOverTextBox" returntype="bool">
+<desc>Getter for overTextBox member.</desc>
+<noarguments />
+<nostatechange />
+<return>Value of overTextBox.</return>
+</method>
+
+<method name="getTextInBox" returntype="string">
+<desc>Getter for textInBox member.</desc>
+<noarguments />
+<nostatechange />
+<return>Value of textInBox.</return>
+</method>
+
+<method name="erase" returntype="void">
+<desc>Erase the contents of the text box.</desc>
+<noarguments />
+<statechange>Set textInBox to the empty string.</statechange>
+<noreturn />
+</method>
+
+<method name="changeOverTextBox" returntype="void">
+<desc>Setter for overTextBox member.</desc>
+<arguments>
+<arg name="a" type="bool">The value to set overTextBox to.</arg>
+</arguments>
+<statechange>Set overTextBox to the value given.</statechange>
+<noreturn />
+</method>
+
+<method name="drawTextBox" returntype="void">
+<desc>Draw the text box on the screen.</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="writeTextinBox" returntype="void">
+<desc>Draw the text in the text box on the screen.</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+
+<method name="keyboardfunction" returntype="void">
+<desc>Stores characters typed while this text box is selected. Also handles backspace, and prints out the contents if Return is pressed and DEBUG is defined.</desc>
+<arguments>
+<arg name="c" type="unsigned char">The ASCII value of the key that was pressed.</arg>
+</arguments>
+<statechange>Update textInBox as appropriate.</statechange>
+<noreturn />
+</method>
+
+</methods-list>
+
+</class>
+
+</spec>

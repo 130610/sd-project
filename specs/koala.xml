@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>Koala.h file specs</title>
+<header>This spec gives an overview of the classes in the Koala.h file</header>
+<credits>Prancing Koala</credits>
+
+<class name="Animal">
+
+<nosuperclass/>
+
+<variables>
+<var name="atBottom" type="bool">Boolean to hold if koala is at the bottom</var>
+<var name="texture" type="int">Texture of a koala</var>
+<var name ="posn" type="Point2d"> Location of the upper-left corner </var>
+<var name ="velocity" type="Velocity"> holds the velocity of the koala </var>
+<var name="jumps" type="bool"> Sees if you can jump </var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Default Constructor</desc>
+<noarguments />
+<statechange>Sets atBottom to true, and posn.x to 10 and posn.y to 200 and sets jump to true</statechange>
+</constructor>
+</constructors-list>
+
+<methods-list>
+
+<method name="getX" returntype="int">
+<desc>Returns the x position (posn.x)</desc>
+<noarguments />
+<nostatechange />
+<return>return posn.x as an int</return>
+</method>
+
+<method name="getY" returntype="int">
+<desc>Returns the y position(posn.y)</desc>
+<noarguments />
+<nostatechange />
+<return>returns posn.y as an int</return>
+</method>
+
+<method name="getPosn" returntype="Point2d">
+<desc>Returns the entire posn for use</desc>
+<noarguments />
+<nostatechange />
+<return>Returns the posn member</return>
+</method>
+
+<method name="getCtrX" returntype="int">
+<desc>Returns the middle of the koala</desc>
+<noarguments />
+<nostatechange />
+<return>Returns the value of posn.x+40 as an int, which is the visual center x coordinate of koala for trajectory display</return>
+</method>
+
+<method name="getCtrY" returntype="int">
+<desc>Returns the middle of the koala</desc>
+<noarguments />
+<nostatechange />
+<return>Returns the value of posn.y-40 as an int, which is the visual center y coordinate of koala for trajectory display</return>
+</method>
+
+<method name="isAtBottom" returntype="bool">
+<desc>Returns if the koala is at the bottom</desc>
+<noarguments />
+<nostatechange />
+<return>return the value held by the atBottom member</return>
+</method>
+
+<method name="makeAtBottom" returntype="void">
+<desc>Sets the atBottom member to true </desc>
+<noarguments />
+<statechange> sets atBottom member to true </statechange>
+<noreturn />
+</method>
+
+<method name="loadTexture" returntype="virtual void">
+<desc>Loads the texture of the animal</desc>
+<arguments>
+<arg name="texture" type="int"> Temp to hold the texture</arg>
+</arguments>
+<statechange> Assigns the texture member to hold the value of texture</statechange>
+<noreturn />
+</method>
+
+<method name="leaveBottom" returntype="void">
+<desc>Sets atBottom to false...allows for the input of "water"</desc>
+<noarguments />
+<statechange>sets atBottom to false</statechange>
+<noreturn />
+</method>
+
+<method name="setTarget" returntype="void">
+<desc>Sets the velocity of the koala</desc>
+<arguments>
+<arg name="target" type="Point2d">temp to hold the position of the target</arg>
+</arguments>
+<statechange>sets the velocity to zero</statechange>
+<noreturn />
+</method>
+
+<method name="setPosition" returntype="void">
+<desc>Sets the position of the koala</desc>
+<arguments>
+<arg name="x" type="int">Temp to hold the x position</arg>
+<arg name="y" type="int">Temp to hold the y position</arg>
+</arguments>
+<statechange> Assigns x to posn.x and y to posn.y</statechange>
+<noreturn />
+</method>
+
+<method name="move" returntype="void">
+<desc>Moves the animal</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="velocityZero" returntype="void">
+<desc>Sets velocity to zero</desc>
+<noarguments />
+<statechange>sets velocity of the animal to zero</statechange>
+<noreturn />
+</method>
+
+<method name="velocityReverse" returntype="void">
+<desc>Implements air resistance for the Koala</desc>
+<noarguments />
+<statechange>decreases the x velocity and the y velocity of the koala</statechange>
+<noreturn />
+</method>
+
+<method name="scrollAnimalUp" returntype="void">
+<desc> Sets the koala's position based on how much the screen scrolls</desc>
+<noarguments />
+<statechange> sets' the koala position based on how much the screen scroll</statechange>
+<noreturn />
+</method>
+
+<method name="scrollAnimalDown" returntype="void">
+<desc>sets the koala's position based on how much the screen scrolls</desc>
+<noarguments />
+<statechange>sets the koala psoition based on how much the screen scrolsl</statechange>
+<noreturn />
+</method>
+
+<method name="drawTrajectory" returntype="virtual void">
+<desc>Pure Virtual function that allows the drawing of the trajectory</desc>
+<arguments>
+<arg name="mouseposx" type="int">Temp to hold the x mouseposition</arg>
+<arg name="mouseposy" type="int">Temp to hold the y mouseposition</arg>
+</arguments>
+<nostatechange />
+<noreturn />
+</method>
+</methods-list>
+</class>
+
+
+<class name="Koala">
+
+<superclass name="Animal"></superclass>
+
+<novariables />
+
+
+<methods-list>
+
+<method name="loadTexture" returntype="void">
+<desc>Loads the Koala Texture</desc>
+<arguments>
+<arg name="texture" type="int">Temp to hold the texture</arg>
+</arguments>
+<statechange>sets the texture member of the class to the value held by texture</statechange>
+<noreturn />
+</method>
+
+<method name="drawKoala" returntype="void">
+<desc>Draws the koala and sets direction it is facing</desc>
+<arguments>
+<arg name="mouseposx" type="int">Mouseposx allows us to set the koala to face in a special direction</arg>
+</arguments>
+<statechange>Koala is drawn and the koala faces based on mouseposx</statechange>
+<noreturn />
+</method>
+
+<method name="drawTrajectory" returntype="void">
+<desc>Draws the Koala Trajectory</desc>
+<arguments>
+<arg name="mouseposx" type="int">Holds the x coordinate of the mouseposition</arg>
+<arg name ="mouseposy" type="int"> Holds the y coordinate of the mouseposition </arg>
+</arguments>
+<statechange> Draws the Trajectory based on the mouseposition</statechange>
+<noreturn />
+</method>
+</methods-list>
+</class>
+
+
+
+
+
+<class name="Jaguar">
+
+<superclass name="Animal"></superclass>
+
+<novariables />
+
+
+<methods-list>
+
+<method name="loadTexture" returntype="void">
+<desc>Loads the Jaguar Texture</desc>
+<arguments>
+<arg name="texture" type="int">Temp to hold the texture</arg>
+</arguments>
+<statechange>sets the texture member of the class to the value held by texture</statechange>
+<noreturn />
+</method>
+
+<method name="drawJaguar" returntype="void">
+<desc>Draws the Jaguar and sets direction it is facing</desc>
+<arguments>
+<arg name="mouseposx" type="int">Mouseposx allows us to set the jaguar to face in a special direction</arg>
+</arguments>
+<statechange>Jaguar is drawn and the Jaguar faces based on mouseposx</statechange>
+<noreturn />
+</method>
+
+<method name="drawTrajectory" returntype="void">
+<desc>Draws the Jaguar Trajectory</desc>
+<arguments>
+<arg name="mouseposx" type="int">Holds the x coordinate of the mouseposition</arg>
+<arg name ="mouseposy" type="int"> Holds the y coordinate of the mouseposition </arg>
+</arguments>
+<statechange> Draws the Trajectory based on the mouseposition</statechange>
+<noreturn />
+</method>
+</methods-list>
+</class>
+
+
+<class name="FlyingSquirrel">
+
+<superclass name="Animal"></superclass>
+
+<novariables />
+
+
+<methods-list>
+
+<method name="loadTexture" returntype="void">
+<desc>Loads the FlyingSquirrel Texture</desc>
+<arguments>
+<arg name="texture" type="int">Temp to hold the texture</arg>
+</arguments>
+<statechange>sets the texture member of the class to the value held by texture</statechange>
+<noreturn />
+</method>
+
+<method name="drawflyingSquirrel" returntype="void">
+<desc>Draws the FlyingSquirrel and sets direction it is facing</desc>
+<arguments>
+<arg name="mouseposx" type="int">Mouseposx allows us to set the FlyingSquirrel to face in a special direction</arg>
+</arguments>
+<statechange>FlyingSquirrel is drawn and the FlyingSquirrel faces based on mouseposx</statechange>
+<noreturn />
+</method>
+
+<method name="drawTrajectory" returntype="void">
+<desc>Draws the FlyingSquirrel Trajectory</desc>
+<arguments>
+<arg name="mouseposx" type="int">Holds the x coordinate of the mouseposition</arg>
+<arg name ="mouseposy" type="int"> Holds the y coordinate of the mouseposition </arg>
+</arguments>
+<statechange> Draws the Trajectory based on the mouseposition</statechange>
+<noreturn />
+</method>
+</methods-list>
+</class>
+
+
+
+
+<class name="Swan">
+
+<superclass name="Animal"></superclass>
+
+<novariables />
+
+
+<methods-list>
+
+<method name="loadTexture" returntype="void">
+<desc>Loads the Swan Texture</desc>
+<arguments>
+<arg name="texture" type="int">Temp to hold the texture</arg>
+</arguments>
+<statechange>sets the texture member of the class to the value held by texture</statechange>
+<noreturn />
+</method>
+
+<method name="drawSwan" returntype="void">
+<desc>Draws the Swan and sets direction it is facing</desc>
+<arguments>
+<arg name="mouseposx" type="int">Mouseposx allows us to set the Swan to face in a special direction</arg>
+</arguments>
+<statechange>Swan is drawn and the Swan faces based on mouseposx</statechange>
+<noreturn />
+</method>
+
+<method name="drawTrajectory" returntype="void">
+<desc>Draws the Swan Trajectory</desc>
+<arguments>
+<arg name="mouseposx" type="int">Holds the x coordinate of the mouseposition</arg>
+<arg name ="mouseposy" type="int"> Holds the y coordinate of the mouseposition </arg>
+</arguments>
+<statechange> Draws the Trajectory based on the mouseposition</statechange>
+<noreturn />
+</method>
+</methods-list>
+</class>
+
+
+<class name="SeaTurtle">
+
+<superclass name="Animal"></superclass>
+
+<novariables />
+
+
+<methods-list>
+
+<method name="loadTexture" returntype="void">
+<desc>Loads the SeaTurtle Texture</desc>
+<arguments>
+<arg name="texture" type="int">Temp to hold the texture</arg>
+</arguments>
+<statechange>sets the texture member of the class to the value held by texture</statechange>
+<noreturn />
+</method>
+
+<method name="drawseaTurtle" returntype="void">
+<desc>Draws the SeaTurtle and sets direction it is facing</desc>
+<arguments>
+<arg name="mouseposx" type="int">Mouseposx allows us to set the SeaTurtle to face in a special direction</arg>
+</arguments>
+<statechange>SeaTurtle is drawn and the SeaTurtle faces based on mouseposx</statechange>
+<noreturn />
+</method>
+
+<method name="drawTrajectory" returntype="void">
+<desc>Draws the SeaTurtle Trajectory</desc>
+<arguments>
+<arg name="mouseposx" type="int">Holds the x coordinate of the mouseposition</arg>
+<arg name ="mouseposy" type="int"> Holds the y coordinate of the mouseposition </arg>
+</arguments>
+<statechange> Draws the Trajectory based on the mouseposition</statechange>
+<noreturn />
+</method>
+</methods-list>
+</class>
+
+</spec>

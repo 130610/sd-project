@@ -20,35 +20,34 @@
 <var name="label" type="string">The label on the button.</var>
 <var name="labelStartX" type="int">The position that the label starts on the screen. (Each label needs to start at a different point to be centered, depending on its length.)</var>
 <var name="color" type="Color">The color of the button.</var>
+<var name="keepPressed" type="bool">Whether the button stays pressed down on the display (used for character selection buttons).</var>
+<var name="screen" type="enum screenType">The screen this button takes you to when you click on it.</var>
+<var name="active" type="enum screenType">The screen on which the button appears.</var>
+<var name="IsPressed" type="bool">Whether the button is currently pressed (it becomes pressed when the user is holding down the mouse button over it).</var>
+<var name="overButton" type="bool">Whether the mouse is currently over the button's coordinates.</var>
 </variables>
 
 <constructors-list>
 <constructor>
 <desc>The constructor.</desc>
 <arguments>
-<arg name="l" type="string">The label on the button.</arg>
-<arg name="xx" type="int">The x position.</arg>
-<arg name="yy" type="int">The y position.</arg>
+<arg name="label" type="string">The label on the button.</arg>
+<arg name="x" type="int">The x position.</arg>
+<arg name="y" type="int">The y position.</arg>
 <arg name="w" type="int">The width.</arg>
 <arg name="h" type="int">The height.</arg>
-<arg name="s" type="enum screenType">The screen that pressing the button will take you to.</arg>
-<arg name="p" type="enum screenType">The screen that the button appears on.</arg>
-<arg name="lx" type="int">The x-coordinate that the label starts at (placed into labelStartX).</arg>
+<arg name="screen" type="enum screenType">The screen that pressing the button will take you to.</arg>
+<arg name="active" type="enum screenType">The screen that the button appears on.</arg>
+<arg name="labelStartX" type="int">The x-coordinate that the label starts at (placed into labelStartX).</arg>
+<arg name="kP" type="bool">Whether the button should be kept pressed down on the display (state variable keepPressed).</arg>
 </arguments>
-<statechange>Sets all the values of the button to those described in the constructor, and sets the color to the default button color (a gray).</statechange>
+<statechange>Sets all the state variables of the button to those described in the constructor, and sets the color to the default button color (a gray).</statechange>
 </constructor>
 </constructors-list>
 
 <methods-list>
 <method name="move" returntype="void">
-<desc>This function is empty and virtual in this class, only defined in a subclass.</desc>
-<noarguments />
-<nostatechange />
-<noreturn />
-</method>
-
-<method name="drawButton" returntype="void">
-<desc>This function draws the button on the screen (but not the label). It uses the state of the Button to determine what color to use, location, and so on. It is called only from the draw() function, which is virtual and overwritten in subclasses. Draw() handles placing the label on the button.</desc>
+<desc>This function is protected, empty and virtual in this class, only defined in a subclass.</desc>
 <noarguments />
 <nostatechange />
 <noreturn />
@@ -61,6 +60,20 @@
 <noreturn />
 </method>
 
+<method name="drawButton" returntype="void">
+<desc>This function draws the button on the screen (but not the label). It uses the state of the Button to determine what color to use, location, and so on. It is called only from the draw() function, which is virtual and overwritten in subclasses. Draw() handles placing the label on the button.</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="getLabel" returntype="string">
+<desc>Return the label on the button.</desc>
+<noarguments />
+<nostatechange />
+<return>A string containing the text of the label.</return>
+</method>
+
 <method name="onButton" returntype="bool">
 <desc>This function, given the coordinates of the mouse pointer at the moment, determines whether the mouse pointer is over this button.</desc>
 <arguments>
@@ -71,6 +84,21 @@
 <return>True if the pointer is within the bounds of the button; False otherwise.</return>
 </method>
 
+<method name="getkeepPressed" returntype="bool">
+<desc>Determine if keepPressed is set.</desc>
+<noarguments />
+<nostatechange />
+<return>A boolean representing whether keepPressed is set.</return>
+</method>
+
+<method name="changeKeepPressed" returntype="bool">
+<desc>Set the value of keepPressed for this button.</desc>
+<arguments>
+<arg name="x" type="bool">A boolean that keepPressed will be set to.</arg>
+</arguments>
+<nostatechange />
+<noreturn />
+</method>
 </methods-list>
 </class>
 
@@ -91,20 +119,13 @@
 <arg name="s" type="enum screenType">The screen that pressing the button will take you to.</arg>
 <arg name="p" type="enum screenType">The screen that the button appears on.</arg>
 <arg name="lx" type="int">The x-coordinate that the label starts at (placed into labelStartX).</arg>
+<arg name="kP" type="bool">Whether the button should be kept pressed down on the display (state variable keepPressed).</arg>
 </arguments>
 <statechange>Runs the superclass constructor.</statechange>
 </constructor>
 </constructors-list>
 
 <methods-list>
-
-<method name="move" returntype="void">
-<desc>This function moves the quit button down and left 4 pixels at a time until it goes off the screen in either the x or y direction, when it resets it to the other location. It should be called every time the screen is redrawn after the MovingButton has been pressed once.</desc>
-<noarguments />
-<nostatechange />
-<noreturn />
-</method>
-
 <method name="draw" returntype="void">
 <desc>This function runs the drawButton() function, then additionally adds the label to the button. It's different from the superclass's draw() because it needs to account for the fact that the label needs to move when the button move()s.</desc>
 <noarguments />
@@ -112,6 +133,12 @@
 <noreturn />
 </method>
 
+<method name="move" returntype="void">
+<desc>This function moves the quit button down and left 4 pixels at a time until it goes off the screen in either the x or y direction, when it resets it to the other location. It should be called every time the screen is redrawn after the MovingButton has been pressed once.</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
 </methods-list>
 </class>
 

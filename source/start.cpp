@@ -1,6 +1,7 @@
-//#define DEBUG // allows quitting with 'q' to avoid the quit sequence
-//#define MOUSECOORDS // display current mouse posn in terminal
-#define INFINITEJUMPS // what it sounds like
+/* debugging options */
+//#define DEBUG         // allows quitting with 'q' to avoid the quit sequence
+//#define MOUSECOORDS   // display current mouse posn in terminal
+//#define INFINITEJUMPS // what it sounds like
 
 #include <iostream>
 #include <iomanip>
@@ -355,30 +356,33 @@ void display()
   glutSwapBuffers();
 }
 
+void launch()
+{
+  if ( screen == GAME ) {
+    if ( animal->isAtBottom() )
+      animal->leaveBottom();
+    Point2d tmppos(mouseposx - 100, mouseposy);
+#ifdef INFINITEJUMPS
+    if (true) {
+#else
+    if (animal->jumps) {
+#endif
+      animal->setTarget(tmppos);//, (double).5);
+      animal->jumps = false;
+    }
+  }
+}
+
 // process keyboard events
 void keyboard(unsigned char c, int x, int y)
 {
   // if we're in a text box, type as normal there
-  loadBox.keyboardfunction(c,x,y);
-  dateBox.keyboardfunction(c,x,y);
+  loadBox.keyboardfunction(c);
+  dateBox.keyboardfunction(c);
   switch(c) {
     case ' ':
-    {
-      if ( screen == GAME ) {
-        if ( animal->isAtBottom() )
-          animal->leaveBottom();
-        Point2d tmppos(mouseposx - 100, mouseposy);
-#ifdef INFINITEJUMPS
-        if (true) {
-#else
-        if (animal->jumps) {
-#endif
-          animal ->setTarget(tmppos);//, (double).5);
-          animal ->jumps = false;
-        }
-      }
+      launch();
       break;
-    }
 
 #ifdef DEBUG
     case 'q':
@@ -493,6 +497,8 @@ void mouse(int mouseButton, int state, int x, int y)
     }
     glutPostRedisplay();
   }
+  else if ( GLUT_RIGHT_BUTTON == mouseButton )
+    launch();
 }
 
 //mouse_motion function...called from init function

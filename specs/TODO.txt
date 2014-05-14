@@ -1,0 +1,23 @@
+List of Specs to Complete
+-------------------------
+
+COMPLETED
+---------
+button
+date
+ColorPoint2
+koala
+InstructionLines
+sorcerer
+text
+physics
+
+
+TO UPDATE
+---------
+target
+
+
+TO CREATE
+---------
+

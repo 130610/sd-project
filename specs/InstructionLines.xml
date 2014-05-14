@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>InstructionLines classes</title>
+<header>These are the classes in the InstructionLines file, which are necessary to creating the Lines and Text on the Instructions screen</header>
+<credits>Prancing Koala</credits>
+
+<class name="Line">
+
+<nosuperclass/>
+
+<variables>
+<var name="xstart" type="int">Holds the start x position of the Line</var>
+<var name="xend" type="int">Holds the end x position of the Line</var>
+<var name="ystart" type="int">Holds the start y position of the Line</var>
+<var name="yend" type="int">Holds the end y position of the LIne</var>
+<var name="z" type="float">Holds the z positon of the line..but is unused</var>
+<var name="lineWidth" type="float">Holds the value of the width of the line</var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Initializes the members of the Line class</desc>
+<arguments>
+<arg name="startx" type="int">Temp to hold the start x position of the Line</arg>
+<arg name="endx" type="int">Temp ot hold the end x position of the LIne</arg>
+<arg name="starty" type="int"> Temp to hold the start y position of the Line</arg>
+<arg name="endy" type="int"> Temp to hold the end y position of the Line</arg>
+<arg name="lw" type="float"> Temp to hold the line width of the Line </arg>
+</arguments>
+<statechange>Assigns the value of the temp variables to the members of the class</statechange>
+</constructor>
+<constructor>
+<desc>Default Construction of the Line class</desc>
+<noarguments />
+<nostatechange />
+</constructor>
+</constructors-list>
+
+<methods-list>
+
+<method name="draw" returntype="void">
+<desc>Draws the line</desc>
+<noarguments />
+<statechange>Draws lines based on the info in the members of the class</statechange>
+<noreturn />
+</method>
+</methods-list>
+
+</class>
+
+<class name="Text">
+
+<nosuperclass/>
+
+<variables>
+<var name="xpos" type="int">Holds x position of text</var>
+<var name="ypos" type="int">Holds y position of text</var>
+<var name="text" type="string"> Holds the text to be printed on the screen </var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Initializes the members of the class</desc>
+<arguments>
+<arg name="xpos" type="int">Temp to hold the xpos of the text</arg>
+<arg name="ypos" type="int">Temp to hold the ypos of the text</arg>
+<arg name="text" type="string"> Temp to hold the text to be printed on the screen </arg>
+</arguments>
+<statechange>Assigns xpos to xpos, ypos to ypos and text to text members</statechange>
+</constructor>
+
+<constructor>
+<desc>Default Constructor</desc>
+<noarguments />
+<nostatechange />
+</constructor>
+
+</constructors-list>
+
+<methods-list>
+
+<method name="draw" returntype="void">
+<desc>Draws the text on the screen</desc>
+<noarguments />
+<statechange>Prints the text on the screen</statechange>
+<noreturn />
+</method>
+</methods-list>
+
+</class>
+
+
+
+<class name="LegendItem">
+
+<nosuperclass/>
+
+<variables>
+<var name="line" type="Line"> Holds coordinates of the line</var>
+<var name="t1" type="Text">Holds the first line of the text</var>
+<var name="t2" type="Text">Holds the second line of the text </var>
+<var name="t3" type="Text">Holds the third line of the text </var>
+</variables>
+
+<constructors-list>
+
+<constructor>
+<desc>Initializes the members of the class when there are 3 lines of text</desc>
+<arguments>
+<arg name="startx" type="int">Start x position of line</arg>
+<arg name="endx" type="int">End x position of the line</arg>
+<arg name="starty" type="int">Start y position of the line </arg>
+<arg name="endy" type="int">End y position of the line</arg>
+<arg name="lw" type="float">The line width of the line </arg>
+<arg name="t1" type="const Text &amp;"> Holds the first line of the text </arg>
+<arg name="t2" type="const Text &amp;"> Holds the second line of the text </arg>
+<arg name="t3" type="const Tex &amp;"> Holds the third line of the text </arg>
+
+</arguments>
+<statechange>Assigns the values of the constructor arguments to the members</statechange>
+</constructor>
+
+<constructor>
+<desc>Initializes the members of the class when there are 2 lines of text</desc>
+<arguments>
+<arg name="startx" type="int">Start x position of line</arg>
+<arg name="endx" type="int">End x position of the line</arg>
+<arg name="starty" type="int">Start y position of the line </arg>
+<arg name="endy" type="int">End y position of the line</arg>
+<arg name="lw" type="float">The line width of the line </arg>
+<arg name="t1" type="const Text &amp;"> Holds the first line of the text </arg>
+<arg name="t2" type="const Text &amp;"> Holds the second line of the text </arg>
+</arguments>
+<statechange>Assigns the values of the constructor arguments to the members</statechange>
+</constructor>
+
+<constructor>
+<desc>Initializes the members of the class when there are 1 line of text</desc>
+<arguments>
+<arg name="startx" type="int">Start x position of line</arg>
+<arg name="endx" type="int">End x position of the line</arg>
+<arg name="starty" type="int">Start y position of the line </arg>
+<arg name="endy" type="int">End y position of the line</arg>
+<arg name="lw" type="float">The line width of the line </arg>
+<arg name="t1" type="const Text &amp;"> Holds the first line of the text </arg>
+</arguments>
+<statechange>Assigns the values of the constructor arguments to the members</statechange>
+</constructor>
+
+</constructors-list>
+
+<methods-list>
+
+<method name="draw" returntype="void">
+<desc>draws the text and lines on the instruction page</desc>
+<noarguments />
+<statechange>Draws the text and lines ont he instructions page</statechange>
+<noreturn />
+</method>
+
+</methods-list>
+
+</class>
+
+</spec>

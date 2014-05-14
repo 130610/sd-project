@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE spec SYSTEM "http://www.cs.stolaf.edu/lib/SpecML/SpecML.dtd">
+<?xml-stylesheet
+   href="http://www.cs.stolaf.edu/lib/SpecML/SpecMLToHTML.xsl"
+   type="text/xsl"?>
+
+<spec>
+<title>Physics Classes</title>
+<header>This file implements Velocity and Hitbox classes, used for simulating physics-ish movement.</header>
+<credits>Written by Prancing Koala.</credits>
+
+<class name="Velocity">
+
+<nosuperclass/>
+
+<variables>
+<var name="gravity" type="bool">Whether gravity is enabled for this Velocity object (turned off when we're holding onto or sitting on top of something).</var>
+<var name="velX" type="double">Velocity in the X direction, expressed in units of pixels per frame.</var>
+<var name="velY" type="double">Velocity in the Y direction.</var>
+</variables>
+
+<constructors-list>
+<constructor>
+<desc>Default constructor.</desc>
+<noarguments />
+<statechange>Set gravity to false and velocities to 0.</statechange>
+</constructor>
+</constructors-list>
+
+<methods-list>
+<method name="set" returntype="void">
+<desc>Set the start and end velocity based on the frames per second and the distance that the object needs to be moved.</desc>
+<arguments>
+<arg name="start" type="Point2d">The position that the object starts at.</arg>
+<arg name="end" type="Point2d">The position that the object is going to.</arg>
+</arguments>
+<statechange>Sets velX and velY based on FPS and POWER_TIME constants and the start and end position.</statechange>
+<noreturn />
+</method>
+
+<method name="move" returntype="void">
+<desc>Adjust the position passed by one frame based on the velocity of this Velocity object.</desc>
+<arguments>
+<arg name="p" type="Point2d&amp;p">The point whose position you want to adjust.</arg>
+</arguments>
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="applyGravity" returntype="void">
+<desc>Decrease velY by a factor depending on the frames per second and meter.</desc>
+<arguments>
+<arg name="meter" type="double">The number of pixels defined as a meter.</arg>
+</arguments>
+<statechange>Adjust y velocity as appropriate.</statechange>
+<noreturn />
+</method>
+
+<method name="friction" returntype="void">
+<desc>Slow down velocity (x and y) to account for air friction.</desc>
+<arguments>
+<arg name="factor" type="double">The amount to slow down the velocity per call to this function.</arg>
+</arguments>
+<statechange>Decrease (or increase, depending on current direction of motion) velX and velY by factor.</statechange>
+<noreturn />
+</method>
+
+<method name="show" returntype="void">
+<desc>Print the values of velx and vely to stdout.</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="toggleGravity" returntype="void">
+<desc>Set the value of gravity to argument g, turning the effects of gravity on or off.</desc>
+<arguments>
+<arg name="g" type="bool">The value to set gravity to.</arg>
+</arguments>
+<statechange>Set gravity to g.</statechange>
+<noreturn />
+</method>
+
+</methods-list>
+</class>
+
+<class name="Hitbox">
+
+<nosuperclass/>
+
+<variables>
+<var name="pos" type="Point2">The position of the upper-left corner of the hitbox.</var>
+<var name="width" type="int">The width of the hitbox.</var>
+<var name="height" type="int">The height of the hitbox.</var>
+</variables>
+
+<constructors-list>
+<constructor>
+<desc>The constructor.</desc>
+<arguments>
+<arg name="x" type="int">The x position of the corner of the hitbox.</arg>
+<arg name="y" type="int">The y position of the corner of the hitbox.</arg>
+<arg name="w" type="int">The width of the hitbox.</arg>
+<arg name="h" type="int">The height of the hitbox.</arg>
+</arguments>
+<statechange>Sets the position, width, and height as described by the arguments.</statechange>
+</constructor>
+</constructors-list>
+
+<methods-list>
+
+<method name="display" returntype="void">
+<desc>Display the position of the hitbox using the Point2 function.</desc>
+<noarguments />
+<nostatechange />
+<noreturn />
+</method>
+
+<method name="detect" returntype="bool">
+<desc>Detects whether the hitbox has been hit by the parameters passed in, and adjust the location of the object that we're checking collision with (passed by reference) if there has been a collision.</desc>
+<arguments>
+<arg name="p" type="Point2&amp;">The position of the object to check for collisions with.</arg>
+<arg name="w" type="int">The width of that object.</arg>
+<arg name="h" type="int">The height of that object.</arg>
+</arguments>
+<nostatechange />
+<noreturn />
+</method>
+
+</methods-list>
+
+</class>
+</spec>
